@@ -86,7 +86,7 @@ def check_output_files(f):
     return valid_file
 
 #def prepare_jobs(input_ntuples_list, inputs_base_folder, inputs_friends_folders, events_per_job, batch_cluster, executable, walltime, max_jobs_per_batch, custom_workdir_path, restrict_to_channels, restrict_to_shifts, output_server_xrootd, output_server_srm):
-def prepare_jobs(input_ntuples_list, inputs_base_folder, inputs_friends_folders, events_per_job, batch_cluster, executable, walltime, max_jobs_per_batch, custom_workdir_path, restrict_to_channels, restrict_to_shifts):
+def prepare_jobs(input_ntuples_list, inputs_base_folder, inputs_friends_folders, events_per_job, batch_cluster, executable, walltime, max_jobs_per_batch, custom_workdir_path, restrict_to_channels, restrict_to_shifts, mode):
     ntuple_database = {}
     for f in input_ntuples_list:
         restrict_to_channels_file = copy.deepcopy(restrict_to_channels)
@@ -166,22 +166,32 @@ def prepare_jobs(input_ntuples_list, inputs_base_folder, inputs_friends_folders,
         shellscript.write(shellscript_content.replace("$1","$FRIEND_TREE_ARGUMENT"))
         os.chmod(executable_path, os.stat(executable_path).st_mode | stat.S_IEXEC)
         shellscript.close()
+    if mode == 'xrootd':
+        with open(os.path.join(os.environ["CMSSW_BASE"],"src","condor_"+executable+"_forGC.sh"),"w") as shellscript:
+            shellscript.write(shellscript_content.replace("$1","$FRIEND_TREE_ARGUMENT"))
+            os.chmod(executable_path, os.stat(executable_path).st_mode | stat.S_IEXEC)
+            shellscript.close()
+        gc_executable_path = "$CMSSW_BASE/src/condor_"+executable+"_forGC.sh"
     condorjdl_template_path = os.path.join(os.environ["CMSSW_BASE"],"src/HiggsAnalysis/friend-tree-producer/data/submit_condor_%s.jdl"%batch_cluster)
     condorjdl_template_file = open(condorjdl_template_path,"r")
     condorjdl_template = condorjdl_template_file.read()
+    if mode == 'local':
+        gc_storage_dir = workdir_path
+    elif mode == 'xrootd':
+        gc_storage_dir = "srm://cmssrm-kit.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/cms/disk-only/store/user/{}/gc_storage/{}_{}".format(os.environ["USER"], executable, time.strftime("%Y-%m-%d_%H-%M-%S"))
 
     gc_template_path = os.path.join(os.environ["CMSSW_BASE"],"src/HiggsAnalysis/friend-tree-producer/data/grid-control_%s.conf"%batch_cluster)
     gc_template_file = open(gc_template_path, "r")
     gc_template = gc_template_file.read()
     if walltime > 0:
         if walltime < 86399:
-            gc_content = gc_template.format(TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME=time.strftime("%H:%M:%S", time.gmtime(walltime)),NJOBS=job_number)
+            gc_content = gc_template.format(STORAGE_DIR=gc_storage_dir,TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME=time.strftime("%H:%M:%S", time.gmtime(walltime)),NJOBS=job_number)
         else: 
             print "Warning: Please set walltimes greater than 24 hours manually in gc config."
-            gc_content = gc_template.format(TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME="24:00:00",NJOBS=job_number)
+            gc_content = gc_template.format(STORAGE_DIR=gc_storage_dir,TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME="24:00:00",NJOBS=job_number)
     else:
         print "Warning: walltime for %s cluster not set. Setting it to 1h."%batch_cluster
-        gc_content = gc_template.format(TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME="1:00:00",NJOBS=job_number)
+        gc_content = gc_template.format(STORAGE_DIR=gc_storage_dir,TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME="1:00:00",NJOBS=job_number)
     gc_path =  os.path.join(workdir_path,"grid_control_{}.conf".format(executable))
     with open(gc_path, "w") as gc:
         gc.write(gc_content)
@@ -388,8 +398,12 @@ def main():
         if args.extended_file_access:
             input_ntuples_list = ["/".join([args.extended_file_access,f]) for f in input_ntuples_list]
     elif args.mode == 'xrootd':
+        print server_xrootd
+        print args.input_server
         myclient = client.FileSystem(server_xrootd[args.input_server])
         status, listing = myclient.dirlist(args.input_ntuples_directory, DirListFlags.STAT)
+        print status
+        print listing
         dataset_dirs = [ entry.name for entry in listing]
         all_files = []
         for sd in dataset_dirs:
@@ -404,7 +418,7 @@ def main():
     extracted_friend_paths = extract_friend_paths(args.friend_ntuples_directories)
     if args.command == "submit":
         #prepare_jobs(input_ntuples_list, args.input_ntuples_directory, extracted_friend_paths, args.events_per_job, args.batch_cluster, args.executable, args.walltime, args.max_jobs_per_batch, args.custom_workdir_path, args.restrict_to_channels, args.restrict_to_shifts, args.output_server_xrootd, output_server_srm)
-        prepare_jobs(input_ntuples_list, args.input_ntuples_directory, extracted_friend_paths, args.events_per_job, args.batch_cluster, args.executable, args.walltime, args.max_jobs_per_batch, args.custom_workdir_path, args.restrict_to_channels, args.restrict_to_shifts)
+        prepare_jobs(input_ntuples_list, args.input_ntuples_directory, extracted_friend_paths, args.events_per_job, args.batch_cluster, args.executable, args.walltime, args.max_jobs_per_batch, args.custom_workdir_path, args.restrict_to_channels, args.restrict_to_shifts, args.mode)
     elif args.command == "collect":
         collect_outputs(args.executable, args.cores, args.custom_workdir_path)
     elif args.command == "check":
