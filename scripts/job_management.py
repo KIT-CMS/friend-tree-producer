@@ -168,7 +168,7 @@ def prepare_jobs(input_ntuples_list, inputs_base_folder, inputs_friends_folders,
         shellscript.close()
     if mode == 'xrootd':
         with open(os.path.join(os.environ["CMSSW_BASE"],"src","condor_"+executable+"_forGC.sh"),"w") as shellscript:
-            shellscript.write(shellscript_content.replace("$1","$FRIEND_TREE_ARGUMENT"))
+            shellscript.write(shellscript_content.replace("$1","$FRIEND_TREE_ARGUMENT").replace("cd {TASKDIR}\n".format(TASKDIR=workdir_path),""))
             os.chmod(executable_path, os.stat(executable_path).st_mode | stat.S_IEXEC)
             shellscript.close()
         gc_executable_path = "$CMSSW_BASE/src/condor_"+executable+"_forGC.sh"
