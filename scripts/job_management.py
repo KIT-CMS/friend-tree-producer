@@ -188,21 +188,22 @@ def prepare_jobs(input_ntuples_list, inputs_base_folder, inputs_friends_folders,
     condorjdl_template = condorjdl_template_file.read()
     if mode == 'local':
         gc_storage_dir = workdir_path
+        extra_se_info = ""
     elif mode == 'xrootd':
         gc_storage_dir = server_srm[output_server_srm]+"store/user/{}/gc_storage/{}".format(os.environ["USER"], gc_date_tag)
-
+        extra_se_info = "se output files = *.root\nse output pattern = @XBASE@.@XEXT@"
     gc_template_path = os.path.join(os.environ["CMSSW_BASE"],"src/HiggsAnalysis/friend-tree-producer/data/grid-control_%s.conf"%batch_cluster)
     gc_template_file = open(gc_template_path, "r")
     gc_template = gc_template_file.read()
     if walltime > 0:
         if walltime < 86399:
-            gc_content = gc_template.format(STORAGE_DIR=gc_storage_dir,TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME=time.strftime("%H:%M:%S", time.gmtime(walltime)),NJOBS=job_number)
+            gc_content = gc_template.format(STORAGE_DIR=gc_storage_dir,EXTRA_SE_INFO=extra_se_info,TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME=time.strftime("%H:%M:%S", time.gmtime(walltime)),NJOBS=job_number)
         else: 
             print "Warning: Please set walltimes greater than 24 hours manually in gc config."
-            gc_content = gc_template.format(STORAGE_DIR=gc_storage_dir,TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME="24:00:00",NJOBS=job_number)
+            gc_content = gc_template.format(STORAGE_DIR=gc_storage_dir,EXTRA_SE_INFO=extra_se_info,TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME="24:00:00",NJOBS=job_number)
     else:
         print "Warning: walltime for %s cluster not set. Setting it to 1h."%batch_cluster
-        gc_content = gc_template.format(STORAGE_DIR=gc_storage_dir,TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME="1:00:00",NJOBS=job_number)
+        gc_content = gc_template.format(STORAGE_DIR=gc_storage_dir,EXTRA_SE_INFO=extra_se_info,TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME="1:00:00",NJOBS=job_number)
     gc_path =  os.path.join(workdir_path,"grid_control_{}.conf".format(executable))
     with open(gc_path, "w") as gc:
         gc.write(gc_content)
