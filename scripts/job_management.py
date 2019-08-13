@@ -146,6 +146,8 @@ def prepare_jobs(input_ntuples_list, inputs_base_folder, inputs_friends_folders,
             else:
                 print "Warning: %s has no entries in pipeline %s"%(nick,p)
     if custom_workdir_path:
+        if not os.path.exists(custom_workdir_path):
+            os.mkdir(custom_workdir_path)
         workdir_path = os.path.join(custom_workdir_path,executable+"_workdir")
     else:
         workdir_path = os.path.join(os.environ["CMSSW_BASE"],"src",executable+"_workdir")
