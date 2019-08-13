@@ -204,6 +204,8 @@ def prepare_jobs(input_ntuples_list, inputs_base_folder, inputs_friends_folders,
     else:
         print "Warning: walltime for %s cluster not set. Setting it to 1h."%batch_cluster
         gc_content = gc_template.format(STORAGE_DIR=gc_storage_dir,EXTRA_SE_INFO=extra_se_info,TASKDIR=workdir_path,EXECUTABLE=gc_executable_path,WALLTIME="1:00:00",NJOBS=job_number)
+    if mode == 'xrootd':
+        gc_content = gc_content.replace("&&(TARGET.ProvidesEKPResources==True)","")
     gc_path =  os.path.join(workdir_path,"grid_control_{}.conf".format(executable))
     with open(gc_path, "w") as gc:
         gc.write(gc_content)
@@ -287,7 +289,7 @@ def collect_outputs(executable,cores,custom_workdir_path ,mode):
     if mode=="local":
         pool = Pool(cores)
         pool.map(write_trees_to_files, zip(nicks,[collection_path]*len(nicks), [datasetdb]*len(nicks)))
-    elif mode=="xrootd":
+    elif mode=="xrootd": # it did not complete when using Pool in xrootd mode
         for nick in nicks:
             write_trees_to_files([nick, collection_path, datasetdb])
             
