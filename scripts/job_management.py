@@ -149,6 +149,8 @@ def prepare_jobs(input_ntuples_list, inputs_base_folder, inputs_friends_folders,
     commandlist = []
     for jobnumber in job_database:
         options = " ".join(["--"+k+" "+str(v) for (k,v) in job_database[jobnumber].items() if k != "status" ])
+        if mode == 'xrootd':
+            options += " --organize_outputs=false"
         commandline = "{EXEC} {OPTIONS}".format(EXEC=executable, OPTIONS=options)
         command = command_template.format(JOBNUMBER=str(jobnumber), COMMAND=commandline)
         commandlist.append(command)
@@ -167,18 +169,19 @@ def prepare_jobs(input_ntuples_list, inputs_base_folder, inputs_friends_folders,
         os.chmod(executable_path, os.stat(executable_path).st_mode | stat.S_IEXEC)
         shellscript.close()
     if mode == 'xrootd':
-        with open(os.path.join(os.environ["CMSSW_BASE"],"src","condor_"+executable+"_forGC.sh"),"w") as shellscript:
+        gc_date_tag = "{}_{}".format(executable, time.strftime("%Y-%m-%d_%H-%M-%S"))
+        with open(os.path.join(os.environ["CMSSW_BASE"],"src",gc_date_tag,"condor_{}_forGC.sh".format(executable),"w")) as shellscript:
             shellscript.write(shellscript_content.replace("$1","$FRIEND_TREE_ARGUMENT").replace("cd {TASKDIR}\n".format(TASKDIR=workdir_path),""))
             os.chmod(executable_path, os.stat(executable_path).st_mode | stat.S_IEXEC)
             shellscript.close()
-        gc_executable_path = "$CMSSW_BASE/src/condor_"+executable+"_forGC.sh"
+        gc_executable_path = "$CMSSW_BASE/src/{}/condor_{}_forGC.sh".format(gc_date_tag, executable)
     condorjdl_template_path = os.path.join(os.environ["CMSSW_BASE"],"src/HiggsAnalysis/friend-tree-producer/data/submit_condor_%s.jdl"%batch_cluster)
     condorjdl_template_file = open(condorjdl_template_path,"r")
     condorjdl_template = condorjdl_template_file.read()
     if mode == 'local':
         gc_storage_dir = workdir_path
     elif mode == 'xrootd':
-        gc_storage_dir = "srm://cmssrm-kit.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/cms/disk-only/store/user/{}/gc_storage/{}_{}".format(os.environ["USER"], executable, time.strftime("%Y-%m-%d_%H-%M-%S"))
+        gc_storage_dir = "srm://cmssrm-kit.gridka.de:8443/srm/managerv2?SFN=/pnfs/gridka.de/cms/disk-only/store/user/{}/gc_storage/{}".format(os.environ["USER"], gc_date_tag)
 
     gc_template_path = os.path.join(os.environ["CMSSW_BASE"],"src/HiggsAnalysis/friend-tree-producer/data/grid-control_%s.conf"%batch_cluster)
     gc_template_file = open(gc_template_path, "r")
