@@ -438,6 +438,7 @@ def main():
                 args.restrict_to_samples_wildcards.append("*")
             for wildcard in args.restrict_to_samples_wildcards:
                 input_ntuples_list += fnmatch.filter(all_files,wildcard)
+        input_ntuples_list = [ e for e in  input_ntuples_list if "SUSY" not in e]
 
         extracted_friend_paths = extract_friend_paths(args.friend_ntuples_directories)
         prepare_jobs(input_ntuples_list, args.input_ntuples_directory, extracted_friend_paths, args.events_per_job, args.batch_cluster, args.executable, args.walltime, args.max_jobs_per_batch, args.custom_workdir_path, args.restrict_to_channels, args.restrict_to_shifts, args.mode, args.output_server_xrootd)
