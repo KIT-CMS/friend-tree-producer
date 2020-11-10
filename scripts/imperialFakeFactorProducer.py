@@ -33,8 +33,7 @@ def setup_logging(output_file, level=logging.DEBUG):
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
-        description=
-        "create friend trees for imperial fake factors form the given RooWorkspace"
+        description="create friend trees for imperial fake factors form the given RooWorkspace"
     )
     parser.add_argument("--input", required=True, type=str, help="Input file.")
 
@@ -84,18 +83,6 @@ def parse_arguments():
                         default=".",
                         help="Tag of output files.")
 
-    # parser.add_argument(
-    #     "--rooworkspace-file",
-    #     type=str,
-    #     default=None,
-    #     help="location of the Roo Workspace file",
-    # )
-    # parser.add_argument("--config",
-    #                     nargs="?",
-    #                     type=str,
-    #                     default=None,
-    #                     help="Config")
-
     parser.add_argument("--dry",
                         action="store_true",
                         default=False,
@@ -103,43 +90,49 @@ def parse_arguments():
 
     return parser.parse_args()
 
+
 def calc_delta_phi(phi1, phi2):
-    dPhi=phi1-phi2
+    dPhi = phi1 - phi2
     if(dPhi > np.pi):
-        return dPhi-2*np.pi
+        return dPhi - 2 * np.pi
     if(dPhi < -np.pi):
-        return dPhi+2*np.pi
+        return dPhi + 2 * np.pi
     return dPhi
 
 
 def calculate_met_var_qcd(event):
-    met_phi=event.puppimetphi
-    met_et=event.puppimetsumet
-    hadron_pt=event.pt_2
-    hadron_phi=event.phi_2
-    delta_phi = calc_delta_phi(met_phi,hadron_phi)
-    return met_et/hadron_pt * np.cos(delta_phi)
+    met_phi = event.puppimetphi
+    met_et = event.puppimetsumet
+    hadron_pt = event.pt_2
+    hadron_phi = event.phi_2
+    delta_phi = calc_delta_phi(met_phi, hadron_phi)
+    return met_et / hadron_pt * np.cos(delta_phi)
+
 
 def calculate_met_var_w(event):
-    lepton_pt=event.pt_1
-    lepton_eta=event.eta_1
-    lepton_phi=event.phi_1
-    lepton_mt=event.mt_1_puppi
-    met=event.puppimet
-    met_phi=event.puppimetphi
-    met_eta=0.0
-    met_et=event.puppimetsumet
-    hadron_pt=event.pt_2
-    hadron_phi=event.phi_2
-    #construct met and lepton 4 vectors
-    lepton_vec = ROOT.Math.PtEtaPhiMVector(lepton_pt, lepton_eta, lepton_phi, lepton_mt)
+    lepton_pt = event.pt_1
+    lepton_eta = event.eta_1
+    lepton_phi = event.phi_1
+    lepton_mt = event.mt_1_puppi
+    met = event.puppimet
+    met_phi = event.puppimetphi
+    met_eta = 0.0
+    met_et = event.puppimetsumet
+    hadron_pt = event.pt_2
+    hadron_phi = event.phi_2
+    # construct met and lepton 4 vectors
+    lepton_vec = ROOT.Math.PtEtaPhiMVector(
+        lepton_pt, lepton_eta, lepton_phi, lepton_mt)
     met_vec = ROOT.Math.PtEtaPhiEVector(met, met_eta, met_phi, met_et)
-    # make the vectorial sum of the two, and use the resulting vector instead the pure met vector
-    comb =lepton_vec + met_vec
-    delta_phi = calc_delta_phi(comb.phi(),hadron_phi)
-    return comb.Et()/hadron_pt * np.cos(delta_phi)
+    # make the vectorial sum of the two, and use the resulting vector instead
+    # the pure met vector
+    comb = lepton_vec + met_vec
+    delta_phi = calc_delta_phi(comb.phi(), hadron_phi)
+    return comb.Et() / hadron_pt * np.cos(delta_phi)
+
 
 class FakeFactorProducer(object):
+
     def __init__(self, era, inputfile, outputfile, eventrange, workspace,
                  config, treename, channel, pipelines):
         self.inputfile = ROOT.TFile(inputfile, "read")
@@ -159,7 +152,8 @@ class FakeFactorProducer(object):
             for key in self.inputfile.GetListOfKeys():
                 if key.GetName().startswith(self.channel[0]):
                     pipelines.append(
-                        key.GetName().split("/")[0].replace(self.channel[0] + "_", "")
+                        key.GetName().split(
+                            "/")[0].replace(self.channel[0] + "_", "")
                     )
             print("process pipelines: %s" % pipelines)
 
@@ -169,8 +163,6 @@ class FakeFactorProducer(object):
         if not os.path.exists(os.path.dirname(outputfile)):
             os.makedirs(os.path.dirname(outputfile))
         return ROOT.TFile(outputfile, "recreate")
-
-
 
     def getQuantity(self, function, arguments, event, variable_mapping):
         # get quantities from the event
@@ -211,11 +203,12 @@ class FakeFactorProducer(object):
             # add up and down variation for all uncertainties
             branches = self.config[self.channel]["functions"]["main"].keys()
             for uncertainty in self.config[self.channel]["functions"]["uncertainties"]:
-                branches.extend(["{}_up".format(uncertainty), "{}_down".format(uncertainty)])
+                branches.extend(["{}_up".format(uncertainty),
+                                 "{}_down".format(uncertainty)])
             for branch in branches:
                 output_buffer[branch] = array("d", [0])
                 output_tree.Branch(branch, output_buffer[branch],
-                                    "%s/D" % branch)
+                                   "%s/D" % branch)
                 output_tree.SetBranchAddress(branch, output_buffer[branch])
             # Fill tree
             if self.eventrange[1] > 0:
@@ -239,7 +232,7 @@ class FakeFactorProducer(object):
                         break
                     elif evt_i in printout_on:
                         print("\t ...processing %d %% [Event %d]" %
-                                (printout_on.index(evt_i) * 10, evt_i))
+                              (printout_on.index(evt_i) * 10, evt_i))
 
                 # Evaluating weights
                 for branch in branches:
@@ -268,9 +261,12 @@ def main(args):
     era = str(datasets[nickname]["year"])
 
     # Set Workspace Path
-    workspacepath = cmsswbase + "/src/HiggsAnalysis/friend-tree-producer/data/imperial_ff/fakefactors_ws_{}_mssm_{}.root".format(channel, era)
+    workspacepath = cmsswbase + \
+        "/src/HiggsAnalysis/friend-tree-producer/data/imperial_ff/fakefactors_ws_{}_mssm_{}.root".format(
+            channel, era)
     # Set config path
-    configpath = cmsswbase + "/src/HiggsAnalysis/friend-tree-producer/data/config_imperialFakeFactorProducer.yaml"
+    configpath = cmsswbase + \
+        "/src/HiggsAnalysis/friend-tree-producer/data/config_imperialFakeFactorProducer.yaml"
 
     # Create friend tree
     output_path = os.path.join(args.output_dir, nickname)
