@@ -84,17 +84,17 @@ def parse_arguments():
                         default=".",
                         help="Tag of output files.")
 
-    parser.add_argument(
-        "--rooworkspace-file",
-        type=str,
-        default=None,
-        help="location of the Roo Workspace file",
-    )
-    parser.add_argument("--config",
-                        nargs="?",
-                        type=str,
-                        default=None,
-                        help="Config")
+    # parser.add_argument(
+    #     "--rooworkspace-file",
+    #     type=str,
+    #     default=None,
+    #     help="location of the Roo Workspace file",
+    # )
+    # parser.add_argument("--config",
+    #                     nargs="?",
+    #                     type=str,
+    #                     default=None,
+    #                     help="Config")
 
     parser.add_argument("--dry",
                         action="store_true",
@@ -141,7 +141,7 @@ def calculate_met_var_w(event):
 
 class FakeFactorProducer(object):
     def __init__(self, era, inputfile, outputfile, eventrange, workspace,
-                 config, treename, channels, pipelines):
+                 config, treename, channel, pipelines):
         self.inputfile = ROOT.TFile(inputfile, "read")
         self.era = era
         self.eventrange = eventrange
@@ -151,15 +151,15 @@ class FakeFactorProducer(object):
         self.config = yaml.load(open(config))["rooworkspace"]
         self.variable_mapping = yaml.load(open(config))["map_arguments"]
         self.treename = treename
-        self.channels = channels
+        self.channel = channel
         self.pipelines = pipelines
 
         if self.pipelines == "all":
             self.pipelines = []
             for key in self.inputfile.GetListOfKeys():
-                if key.GetName().startswith(self.channels[0]):
+                if key.GetName().startswith(self.channel[0]):
                     pipelines.append(
-                        key.GetName().split("/")[0].replace(self.channels[0] + "_", "")
+                        key.GetName().split("/")[0].replace(self.channel[0] + "_", "")
                     )
             print("process pipelines: %s" % pipelines)
 
@@ -197,66 +197,65 @@ class FakeFactorProducer(object):
 
     def run(self):
         self.functions = {}
-        for channel in self.channels:
-            for pipeline in self.pipelines:
-                pipeline = pipeline.replace(channel + "_", "")
-                # Prepare data inputs
-                input_tree = self.inputfile.Get(
-                    "%s_%s/%s" % (channel, pipeline, self.treename))
-                output_root_dir = self.outputfile.mkdir("%s_%s" %
-                                                        (channel, pipeline))
-                output_root_dir.cd()
-                output_tree = ROOT.TTree(self.treename, self.treename)
-                # Prepare branches
-                output_buffer = {}
-                # add up and down variation for all uncertainties
-                branches = self.config[channel]["functions"]["main"].keys()
-                for uncertainty in self.config[channel]["functions"]["uncertainties"]:
-                    branches.extend(["{}_up".format(uncertainty), "{}_down".format(uncertainty)])
+        for pipeline in self.pipelines:
+            pipeline = pipeline.replace(self.channel + "_", "")
+            # Prepare data inputs
+            input_tree = self.inputfile.Get(
+                "%s_%s/%s" % (self.channel, pipeline, self.treename))
+            output_root_dir = self.outputfile.mkdir("%s_%s" %
+                                                    (self.channel, pipeline))
+            output_root_dir.cd()
+            output_tree = ROOT.TTree(self.treename, self.treename)
+            # Prepare branches
+            output_buffer = {}
+            # add up and down variation for all uncertainties
+            branches = self.config[self.channel]["functions"]["main"].keys()
+            for uncertainty in self.config[self.channel]["functions"]["uncertainties"]:
+                branches.extend(["{}_up".format(uncertainty), "{}_down".format(uncertainty)])
+            for branch in branches:
+                output_buffer[branch] = array("d", [0])
+                output_tree.Branch(branch, output_buffer[branch],
+                                    "%s/D" % branch)
+                output_tree.SetBranchAddress(branch, output_buffer[branch])
+            # Fill tree
+            if self.eventrange[1] > 0:
+                nev = self.eventrange[1] - self.eventrange[0] + 1
+                if self.eventrange[1] >= input_tree.GetEntries():
+                    raise Exception("The last entry exceeds maximum")
+            else:
+                nev = input_tree.GetEntries() - self.eventrange[0]
+            printout_on = [
+                self.eventrange[0] + i * int(nev / 10)
+                for i in range(0, 11)
+            ]
+            for evt_i, event in enumerate(input_tree):
+                if self.eventrange is not None:
+                    if evt_i < self.eventrange[0]:
+                        continue
+                    elif (
+                            evt_i > self.eventrange[1]
+                            and self.eventrange[1] >= 0
+                    ):  # latter condition allows to set negative upper limit in order to have it ignored
+                        break
+                    elif evt_i in printout_on:
+                        print("\t ...processing %d %% [Event %d]" %
+                                (printout_on.index(evt_i) * 10, evt_i))
+
+                # Evaluating weights
                 for branch in branches:
-                    output_buffer[branch] = array("d", [0])
-                    output_tree.Branch(branch, output_buffer[branch],
-                                       "%s/D" % branch)
-                    output_tree.SetBranchAddress(branch, output_buffer[branch])
-                # Fill tree
-                if self.eventrange[1] > 0:
-                    nev = self.eventrange[1] - self.eventrange[0] + 1
-                    if self.eventrange[1] >= input_tree.GetEntries():
-                        raise Exception("The last entry exceeds maximum")
-                else:
-                    nev = input_tree.GetEntries() - self.eventrange[0]
-                printout_on = [
-                    self.eventrange[0] + i * int(nev / 10)
-                    for i in range(0, 11)
-                ]
-                for evt_i, event in enumerate(input_tree):
-                    if self.eventrange is not None:
-                        if evt_i < self.eventrange[0]:
-                            continue
-                        elif (
-                                evt_i > self.eventrange[1]
-                                and self.eventrange[1] >= 0
-                        ):  # latter condition allows to set negative upper limit in order to have it ignored
-                            break
-                        elif evt_i in printout_on:
-                            print("\t ...processing %d %% [Event %d]" %
-                                  (printout_on.index(evt_i) * 10, evt_i))
+                    output_buffer[branch] = self.getQuantity(
+                        branch,
+                        self.config[self.channel]["arguments"], event, self.variable_mapping[self.channel])
 
-                    # Evaluating weights
-                    for branch in branches:
-                        output_buffer[branch] = self.getQuantity(
-                            branch,
-                            self.config[channel]["arguments"], event, self.variable_mapping[channel])
-
-                    output_tree.Fill()
-                # Save
-                output_tree.Write()
-                print("Tree successfully written")
+                output_tree.Fill()
+            # Save
+            output_tree.Write()
+            print("Tree successfully written")
 
 
 def main(args):
     nickname = os.path.basename(args.input).replace(".root", "")
-    channels = [args.pipeline.split("_")[0]]
+    channel = args.pipeline.split("_")[0]
     # Get path to cmssw and fakefactordatabase
     cmsswbase = args.cmsswbase
 
@@ -268,13 +267,16 @@ def main(args):
         datasets = json.load(json_file)
     era = str(datasets[nickname]["year"])
 
+    # Set Workspace Path
+    workspacepath = cmsswbase + "/src/HiggsAnalysis/friend-tree-producer/data/imperial_ff/fakefactors_ws_{}_mssm_{}.root".format(channel, era)
+    # Set config path
+    configpath = cmsswbase + "/src/HiggsAnalysis/friend-tree-producer/data/config_imperialFakeFactorProducer.yaml"
+
     # Create friend tree
     output_path = os.path.join(args.output_dir, nickname)
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
-    if args.rooworkspace_file is None:
-        raise Exception("Rooworkspace file expected but not given")
     outputfile = os.path.join(
         output_path,
         "_".join(
@@ -293,10 +295,10 @@ def main(args):
         inputfile=args.input,
         outputfile=outputfile,
         eventrange=[args.first_entry, args.last_entry],
-        workspace=args.rooworkspace_file,
-        config=args.config,
+        workspace=workspacepath,
+        config=configpath,
         treename=args.tree,
-        channels=channels,
+        channel=channel,
         pipelines="all" if args.pipeline is None else [args.pipeline])
     producer.run()
 
