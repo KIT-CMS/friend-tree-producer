@@ -20,6 +20,7 @@ def setup_parser():
             "TauTriggers",
             "HHKinFit",
             "emQCDWeightsProducer.py",
+            "imperialFakeFactorProducer.py",
             "electronScaleFactorProducer.py",
             "extraWeightsProducer.py",
         ],
