@@ -28,36 +28,11 @@ eval `scramv1 runtime -sh`
 git clone git@github.com:SVfit/ClassicSVfit TauAnalysis/ClassicSVfit -b fastMTT_19_02_2019
 git clone git@github.com:SVfit/SVfitTF TauAnalysis/SVfitTF
 
-# MELA
-git clone git@github.com:cms-analysis/HiggsAnalysis-ZZMatrixElement ZZMatrixElement -b v2.2.3
-# NOTE: The following two lines should be needed following the wiki, but it
-# seems to work either way. However, these lines introduce a dependency on AFS.
-# Wiki: https://twiki.cern.ch/twiki/bin/view/CMS/MELAProject#Checkout_instructions
-#cp ZZMatrixElement/MELA/data/mcfm.xml ../config/toolbox/$SCRAM_ARCH/tools/selected/
-#scram setup mcfm
-cd ZZMatrixElement/
-bash setup.sh -j $NUM_CORES
-cd ..
-
-# TODO NN mass
-
 # FF weights
-git clone ssh://git@github.com/CMS-HTT/Jet2TauFakes.git HTTutilities/Jet2TauFakes
-cd HTTutilities/Jet2TauFakes
-git checkout v0.2.2
 
-read -p "lxplus-username: " USERNMLXP
+cp -r /work/jbechtel/nmssm_friends/CMSSW_10_2_14/src/HTTutilities/Jet2TauFakes/data_201* HTTutilities/Jet2TauFakes/. 
 
-scp -r ${USERNMLXP}@lxplus.cern.ch:/afs/cern.ch/user/j/jbechtel/public/fake-factor-files/* ./
-
-cd ../..
-git clone git@github.com:KIT-CMS/fake-factor-application.git HiggsAnalysis/fake-factor-application
-
-# TODO NN MET
-
-# TODO NN max score
-
-# TODO single-tau HLT
+git clone git@github.com:KIT-CMS/fake-factor-application.git -b nmssm_analysis HiggsAnalysis/fake-factor-application
 
 # Tau Trigger
 git clone git@github.com:KIT-CMS/TauTriggerSFs.git TauAnalysisTools/TauTriggerSFs -b run2_SFs_TriggerFitsForEmbedded_DeepTau_SingleTau
@@ -66,15 +41,14 @@ git clone git@github.com:KIT-CMS/TauTriggerSFs.git TauAnalysisTools/TauTriggerSF
 git clone git@github.com:janekbechtel/HHKinFit.git HHKinFit/HHKinFit
 
 ### Checkout of friend tree producer setup
-git clone git@github.com:KIT-CMS/friend-tree-producer.git HiggsAnalysis/friend-tree-producer
+git clone git@github.com:KIT-CMS/friend-tree-producer.git HiggsAnalysis/friend-tree-producer -b nmssm_analysis
 git clone git@github.com:KIT-CMS/grid-control
 # Data sources
 mkdir HiggsAnalysis/friend-tree-producer/data/input_params
 cd HiggsAnalysis/friend-tree-producer/data/input_params
-scp ${USERNMLXP}@lxplus.cern.ch:/eos/home-s/swozniew/friend-tree-producer-input-params/* ./
-wget https://raw.githubusercontent.com/KIT-CMS/datasets/master/datasets.json
+wget https://raw.githubusercontent.com/KIT-CMS/datasets/master/datasets.json -b nmssm
 cd -
 
 ### Compiling under CMSSW
-USER_CXXFLAGS="-Wno-delete-non-virtual-dtor -Wno-error=unused-but-set-variable -Wno-error=unused-variable" scram b -j $NUM_CORES
+USER_CXXFLAGS="-Wno-error=unused-but-set-variable -Wno-error=unused-variable" scram b -j $NUM_CORES
 popd
