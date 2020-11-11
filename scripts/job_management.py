@@ -76,7 +76,9 @@ def main():
             myclient = client.FileSystem(server_xrootd[args.input_server])
             status, listing = myclient.dirlist(
                 args.input_ntuples_directory, DirListFlags.STAT
-            )
+            ) 
+            print status
+            print listing
             dataset_dirs = [entry.name for entry in listing]
             all_files = []
 

@@ -63,6 +63,15 @@ int main(int argc, char** argv)
   po::store(po::command_line_parser(argc, argv).options(config).run(), vm);
   po::notify(vm);
 
+  //double met_shift=0.973;
+  //if(folder=="em_embPuppiUp"||folder=="et_embPuppiUp"||folder=="mt_embPuppiUp"||folder=="tt_embPuppiUp"){
+  //  met_shift=0.965;
+  //}
+  //if(folder=="em_embPuppiDown"||folder=="et_embPuppiDown"||folder=="mt_embPuppiDown"||folder=="tt_embPuppiDown"){
+  //  met_shift=0.981;
+ // }
+
+
   // Access input file and tree
   TFile* in = TFile::Open(input.c_str(), "read");
   TDirectoryFile* dir = (TDirectoryFile*) in->Get(folder.c_str());
