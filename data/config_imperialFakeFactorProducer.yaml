@@ -203,4 +203,32 @@ rooworkspace:
         ff_total_low_pt: ff_total_low_pt
   tt:
     arguments: [pt, njets, nbjets, os, dR]
-    functions: []
+    functions:
+      main:
+        ff_total: ff_total
+      uncertainties:
+        # uncertainties
+        ff_total_qcd_stat_njet0_jet_pt_low_unc1: ff_total_qcd_stat_njet0_jet_pt_low_unc1
+        ff_total_qcd_stat_njet0_jet_pt_low_unc2: ff_total_qcd_stat_njet0_jet_pt_low_unc2
+        ff_total_qcd_stat_njet0_jet_pt_low_unc3: ff_total_qcd_stat_njet0_jet_pt_low_unc3
+        ff_total_qcd_stat_njet0_jet_pt_med_unc1: ff_total_qcd_stat_njet0_jet_pt_med_unc1
+        ff_total_qcd_stat_njet0_jet_pt_med_unc2: ff_total_qcd_stat_njet0_jet_pt_med_unc2
+        ff_total_qcd_stat_njet0_jet_pt_med_unc3: ff_total_qcd_stat_njet0_jet_pt_med_unc3
+        ff_total_qcd_stat_njet0_jet_pt_high_unc1: ff_total_qcd_stat_njet0_jet_pt_high_unc1
+        ff_total_qcd_stat_njet0_jet_pt_high_unc2: ff_total_qcd_stat_njet0_jet_pt_high_unc2
+        ff_total_qcd_stat_njet0_jet_pt_high_unc3: ff_total_qcd_stat_njet0_jet_pt_high_unc3
+        ff_total_qcd_stat_njet1_jet_pt_low_unc1: ff_total_qcd_stat_njet1_jet_pt_low_unc1
+        ff_total_qcd_stat_njet1_jet_pt_low_unc2: ff_total_qcd_stat_njet1_jet_pt_low_unc2
+        ff_total_qcd_stat_njet1_jet_pt_low_unc3: ff_total_qcd_stat_njet1_jet_pt_low_unc3
+        ff_total_qcd_stat_njet1_jet_pt_med_unc1: ff_total_qcd_stat_njet1_jet_pt_med_unc1
+        ff_total_qcd_stat_njet1_jet_pt_med_unc2: ff_total_qcd_stat_njet1_jet_pt_med_unc2
+        ff_total_qcd_stat_njet1_jet_pt_med_unc3: ff_total_qcd_stat_njet1_jet_pt_med_unc3
+        ff_total_qcd_stat_njet1_jet_pt_high_unc1: ff_total_qcd_stat_njet1_jet_pt_high_unc1
+        ff_total_qcd_stat_njet1_jet_pt_high_unc2: ff_total_qcd_stat_njet1_jet_pt_high_unc2
+        ff_total_qcd_stat_njet1_jet_pt_high_unc3: ff_total_qcd_stat_njet1_jet_pt_high_unc3
+        qcd_stat_dR_unc1: qcd_stat_dR_unc1
+        qcd_stat_dR_unc2: qcd_stat_dR_unc2
+        qcd_stat_pt_unc1: qcd_stat_pt_unc1
+        qcd_stat_pt_unc2: qcd_stat_pt_unc2
+        ff_total_qcd_syst: ff_total_qcd_syst
+        ff_total_ttbar_syst: ff_total_ttbar_syst
