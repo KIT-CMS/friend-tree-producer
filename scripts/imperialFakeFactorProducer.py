@@ -83,11 +83,6 @@ def parse_arguments():
                         default=".",
                         help="Tag of output files.")
 
-    parser.add_argument("--dry",
-                        action="store_true",
-                        default=False,
-                        help="dry run")
-
     return parser.parse_args()
 
 
@@ -158,7 +153,6 @@ class FakeFactorProducer(object):
             print("process pipelines: %s" % pipelines)
 
     def make_outputfile(self, outputfile):
-        print outputfile
         outputfile = os.path.abspath(outputfile)
         if not os.path.exists(os.path.dirname(outputfile)):
             os.makedirs(os.path.dirname(outputfile))
@@ -205,11 +199,13 @@ class FakeFactorProducer(object):
             for uncertainty in self.config[self.channel]["functions"]["uncertainties"]:
                 branches.extend(["{}_up".format(uncertainty),
                                  "{}_down".format(uncertainty)])
-            for branch in branches:
+            # also prepare branches for met_var_w and met_var_qcd
+            for branch in branches + ["met_var_w", "met_var_qcd"]:
                 output_buffer[branch] = array("d", [0])
                 output_tree.Branch(branch, output_buffer[branch],
                                    "%s/D" % branch)
                 output_tree.SetBranchAddress(branch, output_buffer[branch])
+
             # Fill tree
             if self.eventrange[1] > 0:
                 nev = self.eventrange[1] - self.eventrange[0] + 1
@@ -236,10 +232,12 @@ class FakeFactorProducer(object):
 
                 # Evaluating weights
                 for branch in branches:
-                    output_buffer[branch] = self.getQuantity(
+                    output_buffer[branch][0] = self.getQuantity(
                         branch,
                         self.config[self.channel]["arguments"], event, self.variable_mapping[self.channel])
-
+                # add met_var_w and met_var_qcd quantities
+                output_buffer["met_var_w"][0] = calculate_met_var_w(event)
+                output_buffer["met_var_qcd"][0] = calculate_met_var_qcd(event)
                 output_tree.Fill()
             # Save
             output_tree.Write()
