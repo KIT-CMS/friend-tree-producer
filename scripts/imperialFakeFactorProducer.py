@@ -86,44 +86,32 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def calc_delta_phi(phi1, phi2):
-    dPhi = phi1 - phi2
-    if(dPhi > np.pi):
-        return dPhi - 2 * np.pi
-    if(dPhi < -np.pi):
-        return dPhi + 2 * np.pi
-    return dPhi
-
-
 def calculate_met_var_qcd(event):
-    met_phi = event.puppimetphi
-    met_et = event.puppimetsumet
-    hadron_pt = event.pt_2
-    hadron_phi = event.phi_2
-    delta_phi = calc_delta_phi(met_phi, hadron_phi)
-    return met_et / hadron_pt * np.cos(delta_phi)
+    hadron_vec = ROOT.Math.PtEtaPhiEVector(event.pt_2, event.eta_2, event.phi_2, event.mt_2)
+    met_vec = ROOT.Math.PtEtaPhiEVector(event.puppimet, 0, event.puppimetphi, event.puppimet)
+    delta_phi = ROOT.Math.VectorUtil.DeltaPhi(met_vec, hadron_vec)
+    return met_vec.Et() / event.pt_2 * np.cos(delta_phi)
 
 
 def calculate_met_var_w(event):
-    lepton_pt = event.pt_1
-    lepton_eta = event.eta_1
-    lepton_phi = event.phi_1
-    lepton_mt = event.mt_1_puppi
-    met = event.puppimet
-    met_phi = event.puppimetphi
-    met_eta = 0.0
-    met_et = event.puppimetsumet
-    hadron_pt = event.pt_2
-    hadron_phi = event.phi_2
-    # construct met and lepton 4 vectors
+    # construct met and lepton, tau 4 vectors
     lepton_vec = ROOT.Math.PtEtaPhiMVector(
-        lepton_pt, lepton_eta, lepton_phi, lepton_mt)
-    met_vec = ROOT.Math.PtEtaPhiEVector(met, met_eta, met_phi, met_et)
+        event.pt_1, event.eta_1, event.phi_1, event.mt_1_puppi)
+    hadron_vec = ROOT.Math.PtEtaPhiEVector(event.pt_2, event.eta_2, event.phi_2, event.mt_2)
+    met_vec = ROOT.Math.PtEtaPhiEVector(event.puppimet, 0, event.puppimetphi, event.puppimet)
     # make the vectorial sum of the two, and use the resulting vector instead
     # the pure met vector
     comb = lepton_vec + met_vec
-    delta_phi = calc_delta_phi(comb.phi(), hadron_phi)
-    return comb.Et() / hadron_pt * np.cos(delta_phi)
+    delta_phi = ROOT.Math.VectorUtil.DeltaPhi(comb, hadron_vec)
+    return comb.Et() / event.pt_2 * np.cos(delta_phi)
+
+
+def calculate_os(event):
+    # same sign = 0 / opposite sign = 1
+    if event.q_1 == event.q_2:
+        return 0.0
+    else:
+        return 1.0
 
 
 class FakeFactorProducer(object):
@@ -142,16 +130,6 @@ class FakeFactorProducer(object):
         self.channel = channel
         self.pipelines = pipelines
 
-        if self.pipelines == "all":
-            self.pipelines = []
-            for key in self.inputfile.GetListOfKeys():
-                if key.GetName().startswith(self.channel[0]):
-                    pipelines.append(
-                        key.GetName().split(
-                            "/")[0].replace(self.channel[0] + "_", "")
-                    )
-            print("process pipelines: %s" % pipelines)
-
     def make_outputfile(self, outputfile):
         outputfile = os.path.abspath(outputfile)
         if not os.path.exists(os.path.dirname(outputfile)):
@@ -168,11 +146,7 @@ class FakeFactorProducer(object):
             elif para == 'met_var_w':
                 value = calculate_met_var_w(event)
             elif para == 'os':
-                # same sign = 0 / opposite sign = 1
-                if event.q_1 == event.q_2:
-                    value = 0.0
-                else:
-                    value = 1.0
+                value = calculate_os(event)
             else:
                 value = getattr(event, variable_mapping[para])
             logger.debug("Parameter: {} - Value: {}".format(para, value))
