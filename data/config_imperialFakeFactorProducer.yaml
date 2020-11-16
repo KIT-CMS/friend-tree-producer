@@ -2,28 +2,29 @@
 map_arguments:
   et:
     pt: pt_2
+    jetpt: taujet_pt_2
     njets: njetspt20eta2p4
     nbjets: nbtag
     l_pt: pt_1
-    mt: mt_1
+    mt: mt_1_puppi
     iso: iso_1
-    dR: DiTauDeltaR
   mt:
     pt: pt_2
+    jetpt: taujet_pt_2
     njets: njetspt20eta2p4
     nbjets: nbtag
     l_pt: pt_1
-    mt: mt_1
+    mt: mt_1_puppi
     iso: iso_1
-    dR: DiTauDeltaR
   tt:
     pt: pt_1
+    jetpt: taujet_pt_1
     njets: njetspt20eta2p4
     nbjets: nbtag
     dR: DiTauDeltaR
 rooworkspace:
   et:
-    arguments: [pt, njets, nbjets, os, l_pt, met_var_qcd, met_var_w, mt, iso]
+    arguments: [pt, jetpt, njets, nbjets, os, l_pt, met_var_qcd, met_var_w, mt, iso]
     functions:
       main:
         # main ffs total and split
@@ -113,7 +114,7 @@ rooworkspace:
         ff_total_low_pt: ff_total_low_pt
 
   mt:
-    arguments: [pt, njets, nbjets, os, l_pt, met_var_qcd, met_var_w, mt, iso]
+    arguments: [pt, jetpt, njets, nbjets, os, l_pt, met_var_qcd, met_var_w, mt, iso]
     functions:
       main:
         # main ffs total and split
@@ -202,7 +203,7 @@ rooworkspace:
         ff_total_ttbar_frac: ff_total_ttbar_frac
         ff_total_low_pt: ff_total_low_pt
   tt:
-    arguments: [pt, njets, nbjets, os, dR]
+    arguments: [pt, jetpt, njets, nbjets, os, dR]
     functions:
       main:
         ff_total: ff_total
