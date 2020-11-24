@@ -22,6 +22,7 @@ map_arguments:
     njets: njetspt20eta2p4
     nbjets: nbtag
     dR: DiTauDeltaR
+
 rooworkspace:
   et:
     arguments: [pt, jetpt, njets, nbjets, os, l_pt, met_var_qcd, met_var_w, mt, iso]
@@ -227,9 +228,9 @@ rooworkspace:
         ff_total_qcd_stat_njet1_jet_pt_high_unc1: ff_total_qcd_stat_njet1_jet_pt_high_unc1
         ff_total_qcd_stat_njet1_jet_pt_high_unc2: ff_total_qcd_stat_njet1_jet_pt_high_unc2
         ff_total_qcd_stat_njet1_jet_pt_high_unc3: ff_total_qcd_stat_njet1_jet_pt_high_unc3
-        qcd_stat_dR_unc1: qcd_stat_dR_unc1
-        qcd_stat_dR_unc2: qcd_stat_dR_unc2
-        qcd_stat_pt_unc1: qcd_stat_pt_unc1
-        qcd_stat_pt_unc2: qcd_stat_pt_unc2
+        ff_total_qcd_stat_dR_unc1: ff_total_qcd_stat_dR_unc1
+        ff_total_qcd_stat_dR_unc2: ff_total_qcd_stat_dR_unc2
+        ff_total_qcd_stat_pt_unc1: ff_total_qcd_stat_pt_unc1
+        ff_total_qcd_stat_pt_unc2: ff_total_qcd_stat_pt_unc2
         ff_total_qcd_syst: ff_total_qcd_syst
         ff_total_ttbar_syst: ff_total_ttbar_syst
