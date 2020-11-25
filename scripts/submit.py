@@ -79,11 +79,18 @@ def get_entries(*args):
         )
 
     elif "Tau_Run" in nick or "TauTauFinalState" in nick:
-        restrict_to_channels_file = (
-            list(set(["tt"]).intersection(restrict_to_channels_file))
-            if len(restrict_to_channels_file) > 0
-            else ["tt"]
-        )
+        if "TauTauFinalState" in nick:
+            restrict_to_channels_file = (
+                list(set(["tt"]).intersection(restrict_to_channels_file))
+                if len(restrict_to_channels_file) > 0
+                else ["tt"]
+            )
+        else:
+            restrict_to_channels_file = (
+                list(set(["tt", "et", "mt"]).intersection(restrict_to_channels_file))
+                if len(restrict_to_channels_file) > 0
+                else ["tt", "et", "mt"]
+            )
         warnings.append(
             "\tWarning: restrict %s to '%s' channel(s)"
             % (nick, restrict_to_channels_file)
