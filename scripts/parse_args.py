@@ -22,6 +22,8 @@ def setup_parser():
             "emQCDWeightsProducer.py",
             "electronScaleFactorProducer.py",
             "extraWeightsProducer.py",
+            "singletauTriggerWeightsProducer.py",
+            "SingleTauTriggers",
         ],
         help="Executable to be used for friend tree creation ob the batch system.",
     )

@@ -1,0 +1,403 @@
+{
+    "map_arguments": {
+        "pt_1": "t_pt",
+        "pt_2": "t_pt",
+        "eta_1": "t_eta",
+        "eta_2": "t_eta",
+        "decayMode_1": "t_dm",
+        "decayMode_2": "t_dm"
+    },
+
+    "rooworkspace": {
+      "t_trg_singleANDdouble_t_mc_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1", "decayMode_1"]},
+      "t_trg_singleANDdouble_t_mc_1pr_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_singleANDdouble_t_mc_1pr1pi0_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_singleANDdouble_t_mc_3pr_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_3pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_singleANDdouble_t_mc_1pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_singleANDdouble_t_mc_1pr1pi0_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_singleANDdouble_t_mc_3pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_singleANDdouble_t_mc_1pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_singleANDdouble_t_mc_1pr1pi0_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_singleANDdouble_t_mc_3pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+
+      "t_trg_single_t_mc_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1", "decayMode_1"]},
+      "t_trg_single_t_mc_1pr_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_single_t_mc_1pr1pi0_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_single_t_mc_3pr_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_3pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_single_t_mc_1pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_mc_1pr1pi0_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_mc_3pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_mc_1pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_mc_1pr1pi0_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_mc_3pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+
+      "t_trg_double_t_mc_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1", "decayMode_1"]},
+      "t_trg_double_t_mc_1pr_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_double_t_mc_1pr1pi0_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_double_t_mc_3pr_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_3pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_double_t_mc_1pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_double_t_mc_1pr1pi0_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_double_t_mc_3pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_double_t_mc_1pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_double_t_mc_1pr1pi0_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_double_t_mc_3pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+
+      "t_trg_singleANDdouble_t_mc_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2", "decayMode_2"]},
+      "t_trg_singleANDdouble_t_mc_1pr_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_singleANDdouble_t_mc_1pr1pi0_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_singleANDdouble_t_mc_3pr_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_3pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_singleANDdouble_t_mc_1pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_singleANDdouble_t_mc_1pr1pi0_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_singleANDdouble_t_mc_3pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_singleANDdouble_t_mc_1pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_singleANDdouble_t_mc_1pr1pi0_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_singleANDdouble_t_mc_3pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_mc_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+
+      "t_trg_single_t_mc_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2", "decayMode_2"]},
+      "t_trg_single_t_mc_1pr_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_single_t_mc_1pr1pi0_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_single_t_mc_3pr_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_3pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_single_t_mc_1pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_mc_1pr1pi0_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_mc_3pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_mc_1pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_mc_1pr1pi0_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_mc_3pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_mc_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+
+      "t_trg_double_t_mc_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2", "decayMode_2"]},
+      "t_trg_double_t_mc_1pr_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_double_t_mc_1pr1pi0_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_double_t_mc_3pr_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_3pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_double_t_mc_1pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_double_t_mc_1pr1pi0_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_double_t_mc_3pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_double_t_mc_1pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_double_t_mc_1pr1pi0_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_double_t_mc_3pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_mc_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+
+      "t_trg_singleANDdouble_t_emb_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1", "decayMode_1"]},
+      "t_trg_singleANDdouble_t_emb_1pr_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_singleANDdouble_t_emb_1pr1pi0_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_singleANDdouble_t_emb_3pr_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_3pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_singleANDdouble_t_emb_1pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_singleANDdouble_t_emb_1pr1pi0_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_singleANDdouble_t_emb_3pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_singleANDdouble_t_emb_1pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_singleANDdouble_t_emb_1pr1pi0_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_singleANDdouble_t_emb_3pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+
+      "t_trg_single_t_emb_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1", "decayMode_1"]},
+      "t_trg_single_t_emb_1pr_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_single_t_emb_1pr1pi0_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_single_t_emb_3pr_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_3pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_single_t_emb_1pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_emb_1pr1pi0_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_emb_3pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_emb_1pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_emb_1pr1pi0_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_emb_3pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+
+      "t_trg_double_t_emb_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1", "decayMode_1"]},
+      "t_trg_double_t_emb_1pr_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_double_t_emb_1pr1pi0_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_double_t_emb_3pr_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_3pr",
+          "WorkspaceObjectArguments": ["pt_1", "eta_1"]},
+      "t_trg_double_t_emb_1pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_double_t_emb_1pr1pi0_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_double_t_emb_3pr_barrel_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_double_t_emb_1pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_double_t_emb_1pr1pi0_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_double_t_emb_3pr_endcap_1": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_1"]},
+
+      "t_trg_singleANDdouble_t_emb_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2", "decayMode_2"]},
+      "t_trg_singleANDdouble_t_emb_1pr_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_singleANDdouble_t_emb_1pr1pi0_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_singleANDdouble_t_emb_3pr_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_3pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_singleANDdouble_t_emb_1pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_singleANDdouble_t_emb_1pr1pi0_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_singleANDdouble_t_emb_3pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_singleANDdouble_t_emb_1pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_singleANDdouble_t_emb_1pr1pi0_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_singleANDdouble_t_emb_3pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_singleANDdouble_t_emb_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+
+      "t_trg_single_t_emb_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2", "decayMode_2"]},
+      "t_trg_single_t_emb_1pr_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_single_t_emb_1pr1pi0_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_single_t_emb_3pr_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_3pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_single_t_emb_1pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_emb_1pr1pi0_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_emb_3pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_emb_1pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_emb_1pr1pi0_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_emb_3pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_emb_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+
+      "t_trg_double_t_emb_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2", "decayMode_2"]},
+      "t_trg_double_t_emb_1pr_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_double_t_emb_1pr1pi0_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr1pi0",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_double_t_emb_3pr_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_3pr",
+          "WorkspaceObjectArguments": ["pt_2", "eta_2"]},
+      "t_trg_double_t_emb_1pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_double_t_emb_1pr1pi0_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr1pi0_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_double_t_emb_3pr_barrel_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_3pr_barrel",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_double_t_emb_1pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_double_t_emb_1pr1pi0_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_1pr1pi0_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_double_t_emb_3pr_endcap_2": {
+          "WorkspaceWeightNames": "t_trg_double_t_emb_3pr_endcap",
+          "WorkspaceObjectArguments": ["pt_2"]},
+          
+      "t_trg_single_t_wstar_mc_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_wstar_mc",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_wstar_mc_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_wstar_mc",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_wstar_data_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_wstar_data",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_wstar_data_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_wstar_data",
+          "WorkspaceObjectArguments": ["pt_2"]},
+      "t_trg_single_t_wstar_sf_1": {
+          "WorkspaceWeightNames": "t_trg_single_t_wstar_ratio",
+          "WorkspaceObjectArguments": ["pt_1"]},
+      "t_trg_single_t_wstar_sf_2": {
+          "WorkspaceWeightNames": "t_trg_single_t_wstar_ratio",
+          "WorkspaceObjectArguments": ["pt_2"]}
+    }
+}
