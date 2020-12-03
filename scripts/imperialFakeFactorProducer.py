@@ -87,23 +87,25 @@ def parse_arguments():
 
 
 def calculate_met_var_qcd(event):
-    hadron_vec = ROOT.Math.PtEtaPhiEVector(event.pt_2, event.eta_2, event.phi_2, event.mt_2)
+    hadron_vec = ROOT.Math.PtEtaPhiMVector(event.pt_2, event.eta_2, event.phi_2, event.mt_2_puppi)
     met_vec = ROOT.Math.PtEtaPhiEVector(event.puppimet, 0, event.puppimetphi, event.puppimet)
     delta_phi = ROOT.Math.VectorUtil.DeltaPhi(met_vec, hadron_vec)
-    return met_vec.Et() / event.pt_2 * np.cos(delta_phi)
+    met_pt = np.sqrt(met_vec.px()*met_vec.px()+met_vec.py()*met_vec.py())
+    return met_pt / event.pt_2 * np.cos(delta_phi)
 
 
 def calculate_met_var_w(event):
     # construct met and lepton, tau 4 vectors
     lepton_vec = ROOT.Math.PtEtaPhiMVector(
         event.pt_1, event.eta_1, event.phi_1, event.mt_1_puppi)
-    hadron_vec = ROOT.Math.PtEtaPhiEVector(event.pt_2, event.eta_2, event.phi_2, event.mt_2)
+    hadron_vec = ROOT.Math.PtEtaPhiMVector(event.pt_2, event.eta_2, event.phi_2, event.mt_2)
     met_vec = ROOT.Math.PtEtaPhiEVector(event.puppimet, 0, event.puppimetphi, event.puppimet)
     # make the vectorial sum of the two, and use the resulting vector instead
     # the pure met vector
     comb = lepton_vec + met_vec
+    met_pt = np.sqrt(comb.px()*comb.px()+comb.py()*comb.py())
     delta_phi = ROOT.Math.VectorUtil.DeltaPhi(comb, hadron_vec)
-    return comb.Et() / event.pt_2 * np.cos(delta_phi)
+    return met_pt / event.pt_2 * np.cos(delta_phi)
 
 
 def calculate_os(event):
