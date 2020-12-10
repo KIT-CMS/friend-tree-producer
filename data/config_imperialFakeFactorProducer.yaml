@@ -1,0 +1,236 @@
+# taken from https://twiki.cern.ch/twiki/bin/viewauth/CMS/FakeFactorsMSSMRun2
+map_arguments:
+  et:
+    pt: pt_2
+    jetpt: taujet_pt_2
+    njets: njetspt20eta2p4
+    nbjets: nbtag
+    l_pt: pt_1
+    mt: mt_1_puppi
+    iso: iso_1
+  mt:
+    pt: pt_2
+    jetpt: taujet_pt_2
+    njets: njetspt20eta2p4
+    nbjets: nbtag
+    l_pt: pt_1
+    mt: mt_1_puppi
+    iso: iso_1
+  tt:
+    pt: pt_1
+    jetpt: taujet_pt_1
+    njets: njetspt20eta2p4
+    nbjets: nbtag
+    dR: DiTauDeltaR
+
+rooworkspace:
+  et:
+    arguments: [pt, jetpt, njets, nbjets, os, l_pt, met_var_qcd, met_var_w, mt, iso]
+    functions:
+      main:
+        # main ffs total and split
+        ff_total: ff_total
+        ff_lt_wjets: ff_lt_wjets
+        ff_lt_qcd: ff_lt_qcd
+        ff_lt_ttbar: ff_lt_ttbar
+      uncertainties:
+        # uncertainties
+        ff_total_qcd_stat_njet0_jet_pt_low_unc1: ff_total_qcd_stat_njet0_jet_pt_low_unc1
+        ff_total_qcd_stat_njet0_jet_pt_low_unc2: ff_total_qcd_stat_njet0_jet_pt_low_unc2
+        ff_total_qcd_stat_njet0_jet_pt_low_unc3: ff_total_qcd_stat_njet0_jet_pt_low_unc3
+        ff_total_qcd_stat_njet0_jet_pt_med_unc1: ff_total_qcd_stat_njet0_jet_pt_med_unc1
+        ff_total_qcd_stat_njet0_jet_pt_med_unc2: ff_total_qcd_stat_njet0_jet_pt_med_unc2
+        ff_total_qcd_stat_njet0_jet_pt_med_unc3: ff_total_qcd_stat_njet0_jet_pt_med_unc3
+        ff_total_qcd_stat_njet0_jet_pt_high_unc1: ff_total_qcd_stat_njet0_jet_pt_high_unc1
+        ff_total_qcd_stat_njet0_jet_pt_high_unc2: ff_total_qcd_stat_njet0_jet_pt_high_unc2
+        ff_total_qcd_stat_njet0_jet_pt_high_unc3: ff_total_qcd_stat_njet0_jet_pt_high_unc3
+        ff_total_qcd_stat_njet1_jet_pt_low_unc1: ff_total_qcd_stat_njet1_jet_pt_low_unc1
+        ff_total_qcd_stat_njet1_jet_pt_low_unc2: ff_total_qcd_stat_njet1_jet_pt_low_unc2
+        ff_total_qcd_stat_njet1_jet_pt_low_unc3: ff_total_qcd_stat_njet1_jet_pt_low_unc3
+        ff_total_qcd_stat_njet1_jet_pt_med_unc1: ff_total_qcd_stat_njet1_jet_pt_med_unc1
+        ff_total_qcd_stat_njet1_jet_pt_med_unc2: ff_total_qcd_stat_njet1_jet_pt_med_unc2
+        ff_total_qcd_stat_njet1_jet_pt_med_unc3: ff_total_qcd_stat_njet1_jet_pt_med_unc3
+        ff_total_qcd_stat_njet1_jet_pt_high_unc1: ff_total_qcd_stat_njet1_jet_pt_high_unc1
+        ff_total_qcd_stat_njet1_jet_pt_high_unc2: ff_total_qcd_stat_njet1_jet_pt_high_unc2
+        ff_total_qcd_stat_njet1_jet_pt_high_unc3: ff_total_qcd_stat_njet1_jet_pt_high_unc3
+        ff_total_qcd_stat_ss_njets0_unc1: ff_total_qcd_stat_ss_njets0_unc1
+        ff_total_qcd_stat_ss_njets0_unc2: ff_total_qcd_stat_ss_njets0_unc2
+        ff_total_qcd_stat_ss_njets1_unc1: ff_total_qcd_stat_ss_njets1_unc1
+        ff_total_qcd_stat_ss_njets1_unc2: ff_total_qcd_stat_ss_njets1_unc2
+        ff_total_qcd_stat_l_pt_unc1: ff_total_qcd_stat_l_pt_unc1
+        ff_total_qcd_stat_l_pt_unc2: ff_total_qcd_stat_l_pt_unc2
+        ff_total_qcd_stat_iso_unc1: ff_total_qcd_stat_iso_unc1
+        ff_total_qcd_stat_iso_unc2: ff_total_qcd_stat_iso_unc2
+        ff_total_qcd_syst: ff_total_qcd_syst
+        ff_total_qcd_syst_iso: ff_total_qcd_syst_iso
+        ff_total_wjets_stat_njet0_jet_pt_low_unc1: ff_total_wjets_stat_njet0_jet_pt_low_unc1
+        ff_total_wjets_stat_njet0_jet_pt_low_unc2: ff_total_wjets_stat_njet0_jet_pt_low_unc2
+        ff_total_wjets_stat_njet0_jet_pt_low_unc3: ff_total_wjets_stat_njet0_jet_pt_low_unc3
+        ff_total_wjets_stat_njet0_jet_pt_low_unc4: ff_total_wjets_stat_njet0_jet_pt_low_unc4
+        ff_total_wjets_stat_njet0_jet_pt_med_unc1: ff_total_wjets_stat_njet0_jet_pt_med_unc1
+        ff_total_wjets_stat_njet0_jet_pt_med_unc2: ff_total_wjets_stat_njet0_jet_pt_med_unc2
+        ff_total_wjets_stat_njet0_jet_pt_med_unc3: ff_total_wjets_stat_njet0_jet_pt_med_unc3
+        ff_total_wjets_stat_njet0_jet_pt_med_unc4: ff_total_wjets_stat_njet0_jet_pt_med_unc4
+        ff_total_wjets_stat_njet0_jet_pt_high_unc1: ff_total_wjets_stat_njet0_jet_pt_high_unc1
+        ff_total_wjets_stat_njet0_jet_pt_high_unc2: ff_total_wjets_stat_njet0_jet_pt_high_unc2
+        ff_total_wjets_stat_njet0_jet_pt_high_unc3: ff_total_wjets_stat_njet0_jet_pt_high_unc3
+        ff_total_wjets_stat_njet0_jet_pt_high_unc4: ff_total_wjets_stat_njet0_jet_pt_high_unc4
+        ff_total_wjets_stat_njet1_jet_pt_low_unc1: ff_total_wjets_stat_njet1_jet_pt_low_unc1
+        ff_total_wjets_stat_njet1_jet_pt_low_unc2: ff_total_wjets_stat_njet1_jet_pt_low_unc2
+        ff_total_wjets_stat_njet1_jet_pt_low_unc3: ff_total_wjets_stat_njet1_jet_pt_low_unc3
+        ff_total_wjets_stat_njet1_jet_pt_low_unc4: ff_total_wjets_stat_njet1_jet_pt_low_unc4
+        ff_total_wjets_stat_njet1_jet_pt_med_unc1: ff_total_wjets_stat_njet1_jet_pt_med_unc1
+        ff_total_wjets_stat_njet1_jet_pt_med_unc2: ff_total_wjets_stat_njet1_jet_pt_med_unc2
+        ff_total_wjets_stat_njet1_jet_pt_med_unc3: ff_total_wjets_stat_njet1_jet_pt_med_unc3
+        ff_total_wjets_stat_njet1_jet_pt_med_unc4: ff_total_wjets_stat_njet1_jet_pt_med_unc4
+        ff_total_wjets_stat_njet1_jet_pt_high_unc1: ff_total_wjets_stat_njet1_jet_pt_high_unc1
+        ff_total_wjets_stat_njet1_jet_pt_high_unc2: ff_total_wjets_stat_njet1_jet_pt_high_unc2
+        ff_total_wjets_stat_njet1_jet_pt_high_unc3: ff_total_wjets_stat_njet1_jet_pt_high_unc3
+        ff_total_wjets_stat_njet1_jet_pt_high_unc4: ff_total_wjets_stat_njet1_jet_pt_high_unc4
+        ff_total_wjets_stat_met_njets0_unc1: ff_total_wjets_stat_met_njets0_unc1
+        ff_total_wjets_stat_met_njets0_unc2: ff_total_wjets_stat_met_njets0_unc2
+        ff_total_wjets_stat_met_njets1_unc1: ff_total_wjets_stat_met_njets1_unc1
+        ff_total_wjets_stat_met_njets1_unc2: ff_total_wjets_stat_met_njets1_unc2
+        ff_total_wjets_stat_l_pt_njets0_unc1: ff_total_wjets_stat_l_pt_njets0_unc1
+        ff_total_wjets_stat_l_pt_njets0_unc2: ff_total_wjets_stat_l_pt_njets0_unc2
+        ff_total_wjets_stat_l_pt_njets1_unc1: ff_total_wjets_stat_l_pt_njets1_unc1
+        ff_total_wjets_stat_l_pt_njets1_unc2: ff_total_wjets_stat_l_pt_njets1_unc2
+        ff_total_wjets_stat_extrap_unc1: ff_total_wjets_stat_extrap_unc1
+        ff_total_wjets_stat_extrap_unc2: ff_total_wjets_stat_extrap_unc2
+        ff_total_wjets_syst: ff_total_wjets_syst
+        ff_total_wjets_frac: ff_total_wjets_frac
+        ff_total_ttbar_stat_jet_pt_low_unc1: ff_total_ttbar_stat_jet_pt_low_unc1
+        ff_total_ttbar_stat_jet_pt_low_unc2: ff_total_ttbar_stat_jet_pt_low_unc2
+        ff_total_ttbar_stat_jet_pt_low_unc3: ff_total_ttbar_stat_jet_pt_low_unc3
+        ff_total_ttbar_stat_jet_pt_med_unc1: ff_total_ttbar_stat_jet_pt_med_unc1
+        ff_total_ttbar_stat_jet_pt_med_unc2: ff_total_ttbar_stat_jet_pt_med_unc2
+        ff_total_ttbar_stat_jet_pt_med_unc3: ff_total_ttbar_stat_jet_pt_med_unc3
+        ff_total_ttbar_stat_jet_pt_high_unc1: ff_total_ttbar_stat_jet_pt_high_unc1
+        ff_total_ttbar_stat_jet_pt_high_unc2: ff_total_ttbar_stat_jet_pt_high_unc2
+        ff_total_ttbar_stat_jet_pt_high_unc3: ff_total_ttbar_stat_jet_pt_high_unc3
+        ff_total_ttbar_stat_met_unc1: ff_total_ttbar_stat_met_unc1
+        ff_total_ttbar_stat_met_unc2: ff_total_ttbar_stat_met_unc2
+        ff_total_ttbar_syst: ff_total_ttbar_syst
+        ff_total_ttbar_frac: ff_total_ttbar_frac
+        ff_total_low_pt: ff_total_low_pt
+
+  mt:
+    arguments: [pt, jetpt, njets, nbjets, os, l_pt, met_var_qcd, met_var_w, mt, iso]
+    functions:
+      main:
+        # main ffs total and split
+        ff_total: ff_total
+        ff_lt_wjets: ff_lt_wjets
+        ff_lt_qcd: ff_lt_qcd
+        ff_lt_ttbar: ff_lt_ttbar
+      uncertainties:
+        # uncertainties
+        ff_total_qcd_stat_njet0_jet_pt_low_unc1: ff_total_qcd_stat_njet0_jet_pt_low_unc1
+        ff_total_qcd_stat_njet0_jet_pt_low_unc2: ff_total_qcd_stat_njet0_jet_pt_low_unc2
+        ff_total_qcd_stat_njet0_jet_pt_low_unc3: ff_total_qcd_stat_njet0_jet_pt_low_unc3
+        ff_total_qcd_stat_njet0_jet_pt_med_unc1: ff_total_qcd_stat_njet0_jet_pt_med_unc1
+        ff_total_qcd_stat_njet0_jet_pt_med_unc2: ff_total_qcd_stat_njet0_jet_pt_med_unc2
+        ff_total_qcd_stat_njet0_jet_pt_med_unc3: ff_total_qcd_stat_njet0_jet_pt_med_unc3
+        ff_total_qcd_stat_njet0_jet_pt_high_unc1: ff_total_qcd_stat_njet0_jet_pt_high_unc1
+        ff_total_qcd_stat_njet0_jet_pt_high_unc2: ff_total_qcd_stat_njet0_jet_pt_high_unc2
+        ff_total_qcd_stat_njet0_jet_pt_high_unc3: ff_total_qcd_stat_njet0_jet_pt_high_unc3
+        ff_total_qcd_stat_njet1_jet_pt_low_unc1: ff_total_qcd_stat_njet1_jet_pt_low_unc1
+        ff_total_qcd_stat_njet1_jet_pt_low_unc2: ff_total_qcd_stat_njet1_jet_pt_low_unc2
+        ff_total_qcd_stat_njet1_jet_pt_low_unc3: ff_total_qcd_stat_njet1_jet_pt_low_unc3
+        ff_total_qcd_stat_njet1_jet_pt_med_unc1: ff_total_qcd_stat_njet1_jet_pt_med_unc1
+        ff_total_qcd_stat_njet1_jet_pt_med_unc2: ff_total_qcd_stat_njet1_jet_pt_med_unc2
+        ff_total_qcd_stat_njet1_jet_pt_med_unc3: ff_total_qcd_stat_njet1_jet_pt_med_unc3
+        ff_total_qcd_stat_njet1_jet_pt_high_unc1: ff_total_qcd_stat_njet1_jet_pt_high_unc1
+        ff_total_qcd_stat_njet1_jet_pt_high_unc2: ff_total_qcd_stat_njet1_jet_pt_high_unc2
+        ff_total_qcd_stat_njet1_jet_pt_high_unc3: ff_total_qcd_stat_njet1_jet_pt_high_unc3
+        ff_total_qcd_stat_ss_njets0_unc1: ff_total_qcd_stat_ss_njets0_unc1
+        ff_total_qcd_stat_ss_njets0_unc2: ff_total_qcd_stat_ss_njets0_unc2
+        ff_total_qcd_stat_ss_njets1_unc1: ff_total_qcd_stat_ss_njets1_unc1
+        ff_total_qcd_stat_ss_njets1_unc2: ff_total_qcd_stat_ss_njets1_unc2
+        ff_total_qcd_stat_l_pt_unc1: ff_total_qcd_stat_l_pt_unc1
+        ff_total_qcd_stat_l_pt_unc2: ff_total_qcd_stat_l_pt_unc2
+        ff_total_qcd_stat_iso_unc1: ff_total_qcd_stat_iso_unc1
+        ff_total_qcd_stat_iso_unc2: ff_total_qcd_stat_iso_unc2
+        ff_total_qcd_syst: ff_total_qcd_syst
+        ff_total_qcd_syst_iso: ff_total_qcd_syst_iso
+        ff_total_wjets_stat_njet0_jet_pt_low_unc1: ff_total_wjets_stat_njet0_jet_pt_low_unc1
+        ff_total_wjets_stat_njet0_jet_pt_low_unc2: ff_total_wjets_stat_njet0_jet_pt_low_unc2
+        ff_total_wjets_stat_njet0_jet_pt_low_unc3: ff_total_wjets_stat_njet0_jet_pt_low_unc3
+        ff_total_wjets_stat_njet0_jet_pt_low_unc4: ff_total_wjets_stat_njet0_jet_pt_low_unc4
+        ff_total_wjets_stat_njet0_jet_pt_med_unc1: ff_total_wjets_stat_njet0_jet_pt_med_unc1
+        ff_total_wjets_stat_njet0_jet_pt_med_unc2: ff_total_wjets_stat_njet0_jet_pt_med_unc2
+        ff_total_wjets_stat_njet0_jet_pt_med_unc3: ff_total_wjets_stat_njet0_jet_pt_med_unc3
+        ff_total_wjets_stat_njet0_jet_pt_med_unc4: ff_total_wjets_stat_njet0_jet_pt_med_unc4
+        ff_total_wjets_stat_njet0_jet_pt_high_unc1: ff_total_wjets_stat_njet0_jet_pt_high_unc1
+        ff_total_wjets_stat_njet0_jet_pt_high_unc2: ff_total_wjets_stat_njet0_jet_pt_high_unc2
+        ff_total_wjets_stat_njet0_jet_pt_high_unc3: ff_total_wjets_stat_njet0_jet_pt_high_unc3
+        ff_total_wjets_stat_njet0_jet_pt_high_unc4: ff_total_wjets_stat_njet0_jet_pt_high_unc4
+        ff_total_wjets_stat_njet1_jet_pt_low_unc1: ff_total_wjets_stat_njet1_jet_pt_low_unc1
+        ff_total_wjets_stat_njet1_jet_pt_low_unc2: ff_total_wjets_stat_njet1_jet_pt_low_unc2
+        ff_total_wjets_stat_njet1_jet_pt_low_unc3: ff_total_wjets_stat_njet1_jet_pt_low_unc3
+        ff_total_wjets_stat_njet1_jet_pt_low_unc4: ff_total_wjets_stat_njet1_jet_pt_low_unc4
+        ff_total_wjets_stat_njet1_jet_pt_med_unc1: ff_total_wjets_stat_njet1_jet_pt_med_unc1
+        ff_total_wjets_stat_njet1_jet_pt_med_unc2: ff_total_wjets_stat_njet1_jet_pt_med_unc2
+        ff_total_wjets_stat_njet1_jet_pt_med_unc3: ff_total_wjets_stat_njet1_jet_pt_med_unc3
+        ff_total_wjets_stat_njet1_jet_pt_med_unc4: ff_total_wjets_stat_njet1_jet_pt_med_unc4
+        ff_total_wjets_stat_njet1_jet_pt_high_unc1: ff_total_wjets_stat_njet1_jet_pt_high_unc1
+        ff_total_wjets_stat_njet1_jet_pt_high_unc2: ff_total_wjets_stat_njet1_jet_pt_high_unc2
+        ff_total_wjets_stat_njet1_jet_pt_high_unc3: ff_total_wjets_stat_njet1_jet_pt_high_unc3
+        ff_total_wjets_stat_njet1_jet_pt_high_unc4: ff_total_wjets_stat_njet1_jet_pt_high_unc4
+        ff_total_wjets_stat_met_njets0_unc1: ff_total_wjets_stat_met_njets0_unc1
+        ff_total_wjets_stat_met_njets0_unc2: ff_total_wjets_stat_met_njets0_unc2
+        ff_total_wjets_stat_met_njets1_unc1: ff_total_wjets_stat_met_njets1_unc1
+        ff_total_wjets_stat_met_njets1_unc2: ff_total_wjets_stat_met_njets1_unc2
+        ff_total_wjets_stat_l_pt_njets0_unc1: ff_total_wjets_stat_l_pt_njets0_unc1
+        ff_total_wjets_stat_l_pt_njets0_unc2: ff_total_wjets_stat_l_pt_njets0_unc2
+        ff_total_wjets_stat_l_pt_njets1_unc1: ff_total_wjets_stat_l_pt_njets1_unc1
+        ff_total_wjets_stat_l_pt_njets1_unc2: ff_total_wjets_stat_l_pt_njets1_unc2
+        ff_total_wjets_stat_extrap_unc1: ff_total_wjets_stat_extrap_unc1
+        ff_total_wjets_stat_extrap_unc2: ff_total_wjets_stat_extrap_unc2
+        ff_total_wjets_syst: ff_total_wjets_syst
+        ff_total_wjets_frac: ff_total_wjets_frac
+        ff_total_ttbar_stat_jet_pt_low_unc1: ff_total_ttbar_stat_jet_pt_low_unc1
+        ff_total_ttbar_stat_jet_pt_low_unc2: ff_total_ttbar_stat_jet_pt_low_unc2
+        ff_total_ttbar_stat_jet_pt_low_unc3: ff_total_ttbar_stat_jet_pt_low_unc3
+        ff_total_ttbar_stat_jet_pt_med_unc1: ff_total_ttbar_stat_jet_pt_med_unc1
+        ff_total_ttbar_stat_jet_pt_med_unc2: ff_total_ttbar_stat_jet_pt_med_unc2
+        ff_total_ttbar_stat_jet_pt_med_unc3: ff_total_ttbar_stat_jet_pt_med_unc3
+        ff_total_ttbar_stat_jet_pt_high_unc1: ff_total_ttbar_stat_jet_pt_high_unc1
+        ff_total_ttbar_stat_jet_pt_high_unc2: ff_total_ttbar_stat_jet_pt_high_unc2
+        ff_total_ttbar_stat_jet_pt_high_unc3: ff_total_ttbar_stat_jet_pt_high_unc3
+        ff_total_ttbar_stat_met_unc1: ff_total_ttbar_stat_met_unc1
+        ff_total_ttbar_stat_met_unc2: ff_total_ttbar_stat_met_unc2
+        ff_total_ttbar_syst: ff_total_ttbar_syst
+        ff_total_ttbar_frac: ff_total_ttbar_frac
+        ff_total_low_pt: ff_total_low_pt
+  tt:
+    arguments: [pt, jetpt, njets, nbjets, os, dR]
+    functions:
+      main:
+        ff_total: ff_total
+      uncertainties:
+        # uncertainties
+        ff_total_qcd_stat_njet0_jet_pt_low_unc1: ff_total_qcd_stat_njet0_jet_pt_low_unc1
+        ff_total_qcd_stat_njet0_jet_pt_low_unc2: ff_total_qcd_stat_njet0_jet_pt_low_unc2
+        ff_total_qcd_stat_njet0_jet_pt_low_unc3: ff_total_qcd_stat_njet0_jet_pt_low_unc3
+        ff_total_qcd_stat_njet0_jet_pt_med_unc1: ff_total_qcd_stat_njet0_jet_pt_med_unc1
+        ff_total_qcd_stat_njet0_jet_pt_med_unc2: ff_total_qcd_stat_njet0_jet_pt_med_unc2
+        ff_total_qcd_stat_njet0_jet_pt_med_unc3: ff_total_qcd_stat_njet0_jet_pt_med_unc3
+        ff_total_qcd_stat_njet0_jet_pt_high_unc1: ff_total_qcd_stat_njet0_jet_pt_high_unc1
+        ff_total_qcd_stat_njet0_jet_pt_high_unc2: ff_total_qcd_stat_njet0_jet_pt_high_unc2
+        ff_total_qcd_stat_njet0_jet_pt_high_unc3: ff_total_qcd_stat_njet0_jet_pt_high_unc3
+        ff_total_qcd_stat_njet1_jet_pt_low_unc1: ff_total_qcd_stat_njet1_jet_pt_low_unc1
+        ff_total_qcd_stat_njet1_jet_pt_low_unc2: ff_total_qcd_stat_njet1_jet_pt_low_unc2
+        ff_total_qcd_stat_njet1_jet_pt_low_unc3: ff_total_qcd_stat_njet1_jet_pt_low_unc3
+        ff_total_qcd_stat_njet1_jet_pt_med_unc1: ff_total_qcd_stat_njet1_jet_pt_med_unc1
+        ff_total_qcd_stat_njet1_jet_pt_med_unc2: ff_total_qcd_stat_njet1_jet_pt_med_unc2
+        ff_total_qcd_stat_njet1_jet_pt_med_unc3: ff_total_qcd_stat_njet1_jet_pt_med_unc3
+        ff_total_qcd_stat_njet1_jet_pt_high_unc1: ff_total_qcd_stat_njet1_jet_pt_high_unc1
+        ff_total_qcd_stat_njet1_jet_pt_high_unc2: ff_total_qcd_stat_njet1_jet_pt_high_unc2
+        ff_total_qcd_stat_njet1_jet_pt_high_unc3: ff_total_qcd_stat_njet1_jet_pt_high_unc3
+        ff_total_qcd_stat_dR_unc1: ff_total_qcd_stat_dR_unc1
+        ff_total_qcd_stat_dR_unc2: ff_total_qcd_stat_dR_unc2
+        ff_total_qcd_stat_pt_unc1: ff_total_qcd_stat_pt_unc1
+        ff_total_qcd_stat_pt_unc2: ff_total_qcd_stat_pt_unc2
+        ff_total_qcd_syst: ff_total_qcd_syst
+        ff_total_ttbar_syst: ff_total_ttbar_syst
