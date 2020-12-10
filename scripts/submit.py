@@ -237,7 +237,7 @@ def prepare_jobs(
                     job_database[job_number][-1]["input"] = ntuple_database[nick][
                         "path"
                     ]
-                    if "FakeFactor" in executable:
+                    if "FakeFactor" in executable and not "Imperial" in executable:
                         job_database[job_number][-1]["cmsswbase"] = cmsswbase
                     job_database[job_number][-1]["folder"] = p
                     job_database[job_number][-1]["tree"] = "ntuple"

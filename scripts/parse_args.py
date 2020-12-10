@@ -21,6 +21,7 @@ def setup_parser():
             "HHKinFit",
             "emQCDWeightsProducer.py",
             "imperialFakeFactorProducer.py",
+            "ImperialFakeFactors",
             "electronScaleFactorProducer.py",
             "extraWeightsProducer.py",
         ],
