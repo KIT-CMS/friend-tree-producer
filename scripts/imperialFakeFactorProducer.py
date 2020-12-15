@@ -154,7 +154,7 @@ class FakeFactorProducer(object):
             log.debug("Parameter: {} - Value: {}".format(para, value))
             argset.setRealValue(para, value)
         result = roofunction.getVal(argset)
-        logger.debug("Result: {} - Value: {}".format(function, result))
+        log.debug("Result: {} - Value: {}".format(function, result))
         return result
 
     def run(self):
