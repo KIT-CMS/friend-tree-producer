@@ -151,10 +151,10 @@ class FakeFactorProducer(object):
                 value = calculate_os(event)
             else:
                 value = getattr(event, variable_mapping[para])
-            log.debug("Parameter: {} - Value: {}".format(para, value))
+            logger.debug("Parameter: {} - Value: {}".format(para, value))
             argset.setRealValue(para, value)
         result = roofunction.getVal(argset)
-        log.debug("Result: {} - Value: {}".format(function, result))
+        logger.debug("Result: {} - Value: {}".format(function, result))
         return result
 
     def run(self):
