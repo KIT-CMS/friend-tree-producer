@@ -121,7 +121,7 @@ Float_t ImperialFakeFactorsProducer::get_quantity(const std::shared_ptr<RooFunct
     auto argvalues = std::vector<double>{};
     for (auto par : arguments)
     {
-        std::cout << "Setting  " << variables_map[par] << " for " << par << std::endl;
+        // std::cout << "Setting  " << variables_map[par] << " for " << par << std::endl;
         if (par == "met_var_qcd")
         {
             argvalues.push_back(ImperialFakeFactorsProducer::calculate_met_var_qcd(_float_inputs));
@@ -143,8 +143,8 @@ Float_t ImperialFakeFactorsProducer::get_quantity(const std::shared_ptr<RooFunct
             argvalues.push_back(_float_inputs[variables_map[par]]);
         }
     }
-    for (size_t index = 0; index < arguments.size(); ++index)
-        std::cout << arguments[index] << " --> " << argvalues[index] << std::endl;
+    // for (size_t index = 0; index < arguments.size(); ++index)
+    //     std::cout << arguments[index] << " --> " << argvalues[index] << std::endl;
     Float_t result = function->eval(argvalues.data());
     return result;
 }
