@@ -87,7 +87,8 @@ private:
         {"os", 0.}};
     std::map<std::string, Int_t> _int_inputs = {
         {"nbtag", 0},
-        {"njetspt20eta2p4", 0}};
+        {"njetspt20eta2p4", 0},
+        {"njetspt20eta2p5", 0}};
 };
 
 ImperialFakeFactorsProducer::ImperialFakeFactorsProducer(std::string inputfile,
@@ -120,7 +121,7 @@ Float_t ImperialFakeFactorsProducer::get_quantity(const std::shared_ptr<RooFunct
     auto argvalues = std::vector<double>{};
     for (auto par : arguments)
     {
-        // std::cout << "Setting  " << variables_map[par] << " for " << par << std::endl;
+        std::cout << "Setting  " << variables_map[par] << " for " << par << std::endl;
         if (par == "met_var_qcd")
         {
             argvalues.push_back(ImperialFakeFactorsProducer::calculate_met_var_qcd(_float_inputs));
@@ -142,8 +143,8 @@ Float_t ImperialFakeFactorsProducer::get_quantity(const std::shared_ptr<RooFunct
             argvalues.push_back(_float_inputs[variables_map[par]]);
         }
     }
-    // for (size_t index = 0; index < arguments.size(); ++index)
-    //     std::cout << arguments[index] << " --> " << argvalues[index] << std::endl;
+    for (size_t index = 0; index < arguments.size(); ++index)
+        std::cout << arguments[index] << " --> " << argvalues[index] << std::endl;
     Float_t result = function->eval(argvalues.data());
     return result;
 }
@@ -165,7 +166,7 @@ void ImperialFakeFactorsProducer::run()
     // Create map from variables to workspace object names
     std::map<std::string, std::string> var_map;
     BOOST_FOREACH (const boost::property_tree::ptree::value_type &child,
-                   _config.get_child("map_arguments." + _channel))
+                   _config.get_child("map_arguments." + std::to_string(_era) + "." + _channel))
     {
         var_map[child.first] = child.second.get_value<std::string>();
     }
