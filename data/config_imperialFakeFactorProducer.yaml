@@ -1,28 +1,74 @@
 # taken from https://twiki.cern.ch/twiki/bin/viewauth/CMS/FakeFactorsMSSMRun2
 map_arguments:
-  et:
-    pt: pt_2
-    jetpt: taujet_pt_2
-    njets: njetspt20eta2p4
-    nbjets: nbtag
-    l_pt: pt_1
-    mt: mt_1_puppi
-    iso: iso_1
-  mt:
-    pt: pt_2
-    jetpt: taujet_pt_2
-    njets: njetspt20eta2p4
-    nbjets: nbtag
-    l_pt: pt_1
-    mt: mt_1_puppi
-    iso: iso_1
-  tt:
-    pt: pt_1
-    jetpt: taujet_pt_1
-    njets: njetspt20eta2p4
-    nbjets: nbtag
-    dR: DiTauDeltaR
-
+  "2016":
+    et:
+      pt: pt_2
+      jetpt: taujet_pt_2
+      njets: njetspt20eta2p4
+      nbjets: nbtag
+      l_pt: pt_1
+      mt: mt_1_puppi
+      iso: iso_1
+    mt:
+      pt: pt_2
+      jetpt: taujet_pt_2
+      njets: njetspt20eta2p4
+      nbjets: nbtag
+      l_pt: pt_1
+      mt: mt_1_puppi
+      iso: iso_1
+    tt:
+      pt: pt_1
+      jetpt: taujet_pt_1
+      njets: njetspt20eta2p4
+      nbjets: nbtag
+      dR: DiTauDeltaR
+  "2017":
+    et:
+      pt: pt_2
+      jetpt: taujet_pt_2
+      njets: njetspt20eta2p5
+      nbjets: nbtag
+      l_pt: pt_1
+      mt: mt_1_puppi
+      iso: iso_1
+    mt:
+      pt: pt_2
+      jetpt: taujet_pt_2
+      njets: njetspt20eta2p5
+      nbjets: nbtag
+      l_pt: pt_1
+      mt: mt_1_puppi
+      iso: iso_1
+    tt:
+      pt: pt_1
+      jetpt: taujet_pt_1
+      njets: njetspt20eta2p5
+      nbjets: nbtag
+      dR: DiTauDeltaR
+  "2018":
+    et:
+      pt: pt_2
+      jetpt: taujet_pt_2
+      njets: njetspt20eta2p5
+      nbjets: nbtag
+      l_pt: pt_1
+      mt: mt_1_puppi
+      iso: iso_1
+    mt:
+      pt: pt_2
+      jetpt: taujet_pt_2
+      njets: njetspt20eta2p5
+      nbjets: nbtag
+      l_pt: pt_1
+      mt: mt_1_puppi
+      iso: iso_1
+    tt:
+      pt: pt_1
+      jetpt: taujet_pt_1
+      njets: njetspt20eta2p5
+      nbjets: nbtag
+      dR: DiTauDeltaR
 rooworkspace:
   et:
     arguments: [pt, jetpt, njets, nbjets, os, l_pt, met_var_qcd, met_var_w, mt, iso]

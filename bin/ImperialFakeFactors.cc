@@ -87,7 +87,8 @@ private:
         {"os", 0.}};
     std::map<std::string, Int_t> _int_inputs = {
         {"nbtag", 0},
-        {"njetspt20eta2p4", 0}};
+        {"njetspt20eta2p4", 0},
+        {"njetspt20eta2p5", 0}};
 };
 
 ImperialFakeFactorsProducer::ImperialFakeFactorsProducer(std::string inputfile,
@@ -165,7 +166,7 @@ void ImperialFakeFactorsProducer::run()
     // Create map from variables to workspace object names
     std::map<std::string, std::string> var_map;
     BOOST_FOREACH (const boost::property_tree::ptree::value_type &child,
-                   _config.get_child("map_arguments." + _channel))
+                   _config.get_child("map_arguments." + std::to_string(_era) + "." + _channel))
     {
         var_map[child.first] = child.second.get_value<std::string>();
     }

@@ -127,7 +127,7 @@ class FakeFactorProducer(object):
         self.workspace = workspacefile.Get("w")
         self.outputfile = self.make_outputfile(outputfile)
         self.config = yaml.load(open(config))["rooworkspace"]
-        self.variable_mapping = yaml.load(open(config))["map_arguments"]
+        self.variable_mapping = yaml.load(open(config))["map_arguments"][era]
         self.treename = treename
         self.channel = channel
         self.pipelines = pipelines
@@ -176,7 +176,7 @@ class FakeFactorProducer(object):
                 branches.extend(["{}_up".format(uncertainty),
                                  "{}_down".format(uncertainty)])
             # also prepare branches for met_var_w and met_var_qcd
-            for branch in branches + ["met_var_w", "met_var_qcd"]:
+            for branch in branches + ["met_var_w", "met_var_qcd", "os"]:
                 output_buffer[branch] = array("d", [0])
                 output_tree.Branch(branch, output_buffer[branch],
                                    "%s/D" % branch)
@@ -214,6 +214,7 @@ class FakeFactorProducer(object):
                 # add met_var_w and met_var_qcd quantities
                 output_buffer["met_var_w"][0] = calculate_met_var_w(event)
                 output_buffer["met_var_qcd"][0] = calculate_met_var_qcd(event)
+                output_buffer["os"][0] = calculate_os(event)
                 output_tree.Fill()
             # Save
             output_tree.Write()
