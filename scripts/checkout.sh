@@ -52,7 +52,7 @@ cd ../..
 git clone git@github.com:KIT-CMS/fake-factor-application.git HiggsAnalysis/fake-factor-application
 
 # Imperial FF weights
-mkdir HiggsAnalysis/friend-tree-producer/data/imperial_ff
+mkdir -p HiggsAnalysis/friend-tree-producer/data/imperial_ff
 cd HiggsAnalysis/friend-tree-producer/data/imperial_ff
 scp -r ${USERNMLXP}@lxplus.cern.ch:/afs/cern.ch/user/g/guttley/public/fake_factors_mssm/* ./
 
