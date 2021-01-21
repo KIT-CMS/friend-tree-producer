@@ -51,11 +51,6 @@ scp -r ${USERNMLXP}@lxplus.cern.ch:/afs/cern.ch/user/j/jbechtel/public/fake-fact
 cd ../..
 git clone git@github.com:KIT-CMS/fake-factor-application.git HiggsAnalysis/fake-factor-application
 
-# Imperial FF weights
-mkdir -p HiggsAnalysis/friend-tree-producer/data/imperial_ff
-cd HiggsAnalysis/friend-tree-producer/data/imperial_ff
-scp -r ${USERNMLXP}@lxplus.cern.ch:/afs/cern.ch/user/g/guttley/public/fake_factors_mssm/* ./
-
 cd -
 # TODO NN MET
 
@@ -78,6 +73,11 @@ cd HiggsAnalysis/friend-tree-producer/data/input_params
 scp ${USERNMLXP}@lxplus.cern.ch:/eos/home-s/swozniew/friend-tree-producer-input-params/* ./
 wget https://raw.githubusercontent.com/KIT-CMS/datasets/master/datasets.json
 cd -
+# Imperial FF weights
+mkdir -p HiggsAnalysis/friend-tree-producer/data/imperial_ff
+cd HiggsAnalysis/friend-tree-producer/data/imperial_ff
+scp -r ${USERNMLXP}@lxplus.cern.ch:/afs/cern.ch/user/g/guttley/public/fake_factors_mssm/* ./
+
 
 ### Compiling under CMSSW
 USER_CXXFLAGS="-Wno-delete-non-virtual-dtor -Wno-error=unused-but-set-variable -Wno-error=unused-variable" scram b -j $NUM_CORES
