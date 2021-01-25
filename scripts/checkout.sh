@@ -76,7 +76,7 @@ cd -
 # Imperial FF weights
 mkdir -p HiggsAnalysis/friend-tree-producer/data/imperial_ff
 cd HiggsAnalysis/friend-tree-producer/data/imperial_ff
-scp -r ${USERNMLXP}@lxplus.cern.ch:/afs/cern.ch/user/g/guttley/public/fake_factors_mssm/* ./
+scp -r ${USERNMLXP}@lxplus.cern.ch:/afs/cern.ch/user/g/guttley/public/fake_factors_mssm/fakefactors_ws*_v2.root ./
 
 
 ### Compiling under CMSSW
