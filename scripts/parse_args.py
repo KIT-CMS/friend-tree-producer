@@ -26,6 +26,7 @@ def setup_parser():
             "extraWeightsProducer.py",
             "singletauTriggerWeightsProducer.py",
             "SingleTauTriggers",
+            "NLOReweighting",
         ],
         help="Executable to be used for friend tree creation ob the batch system.",
     )
