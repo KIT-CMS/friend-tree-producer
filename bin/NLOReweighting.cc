@@ -109,7 +109,7 @@ void NLOReweightingWeightsProducer::run()
     auto output_tree = new TTree(_treename.c_str(), _treename.c_str());
     
     // Set up branches to be read out.
-    std::vector<std::string> higgs_bosons = {"h", "H", "A"};
+    std::vector<std::string> higgs_bosons = {"h", "A"};
     std::vector<std::string> contributions = {"t", "b", "i"};
     std::vector<std::string> variations = {"", "_scale_up", "_scale_down", "_hdamp_up", "_hdamp_down"};
     std::map<std::string, std::string> branches;
