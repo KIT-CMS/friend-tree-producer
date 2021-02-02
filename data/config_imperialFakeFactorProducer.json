@@ -20,7 +20,8 @@
           "mt_1_puppi": "mt_1_puppi",
           "mt_2_puppi": "mt_2_puppi",
           "q_1": "q_1",
-          "q_2": "q_2"
+          "q_2": "q_2",
+          "mt_tot": "mt_tot_puppi"
         },
         "mt": {
           "pt": "pt_2",
@@ -41,7 +42,8 @@
           "mt_1_puppi": "mt_1_puppi",
           "mt_2_puppi": "mt_2_puppi",
           "q_1": "q_1",
-          "q_2": "q_2"
+          "q_2": "q_2",
+          "mt_tot": "mt_tot_puppi"
         },
         "tt": {
           "pt": "pt_1",
@@ -73,7 +75,8 @@
           "mt_1_puppi": "mt_1_puppi",
           "mt_2_puppi": "mt_2_puppi",
           "q_1": "q_1",
-          "q_2": "q_2"
+          "q_2": "q_2",
+          "mt_tot": "mt_tot_puppi"
         },
         "mt": {
           "pt": "pt_2",
@@ -94,7 +97,8 @@
           "mt_1_puppi": "mt_1_puppi",
           "mt_2_puppi": "mt_2_puppi",
           "q_1": "q_1",
-          "q_2": "q_2"
+          "q_2": "q_2",
+          "mt_tot": "mt_tot_puppi"
         },
         "tt": {
           "pt": "pt_1",
@@ -126,7 +130,8 @@
           "mt_1_puppi": "mt_1_puppi",
           "mt_2_puppi": "mt_2_puppi",
           "q_1": "q_1",
-          "q_2": "q_2"
+          "q_2": "q_2",
+          "mt_tot": "mt_tot_puppi"
         },
         "mt": {
           "pt": "pt_2",
@@ -147,7 +152,8 @@
           "mt_1_puppi": "mt_1_puppi",
           "mt_2_puppi": "mt_2_puppi",
           "q_1": "q_1",
-          "q_2": "q_2"
+          "q_2": "q_2",
+          "mt_tot": "mt_tot_puppi"
         },
         "tt": {
           "pt": "pt_1",
@@ -172,7 +178,8 @@
           "met_var_qcd",
           "met_var_w",
           "mt",
-          "iso"
+          "iso",
+          "mt_tot"
         ],
         "functions": {
           "main": {
@@ -274,7 +281,8 @@
           "met_var_qcd",
           "met_var_w",
           "mt",
-          "iso"
+          "iso",
+          "mt_tot"
         ],
         "functions": {
             "main": {

@@ -79,7 +79,8 @@ private:
         {"mt_2_puppi", 0.},
         {"DiTauDeltaR", 0.},
         {"q_1", 0.},
-        {"q_2", 0.}};
+        {"q_2", 0.},
+        {"mt_tot_puppi", 0.},};
 
     std::map<std::string, Double_t> _calc_inputs = {
         {"met_var_qcd", 0.},
@@ -189,7 +190,18 @@ void ImperialFakeFactorsProducer::run()
                    _config.get_child("rooworkspace." + _channel + ".functions.main"))
     {
         branches.push_back(child.first);
-        fns_[child.first.c_str()] = std::shared_ptr<RooFunctor>(_workspace->function(child.first.c_str())->functor(_workspace->argSet(ss.str().c_str())));
+        if (child.first != "ff_total"){
+            std::string toErase = ",mt_tot";
+            std::string argumentlist = ss.str();
+            size_t pos = argumentlist.find(toErase);
+            argumentlist.erase(pos, toErase.length());
+            fns_[child.first.c_str()] = std::shared_ptr<RooFunctor>(_workspace->function(child.first.c_str())->functor(_workspace->argSet(argumentlist.c_str())));
+        }
+        else{
+            fns_[child.first.c_str()] = std::shared_ptr<RooFunctor>(_workspace->function(child.first.c_str())->functor(_workspace->argSet(ss.str().c_str())));
+        }
+
+
     }
     BOOST_FOREACH (const boost::property_tree::ptree::value_type &child,
                    _config.get_child("rooworkspace." + _channel + ".functions.uncertainties"))
@@ -314,7 +326,7 @@ int main(int argc, char **argv)
     std::string configpath = cmsswbase +
                              "/src/HiggsAnalysis/friend-tree-producer/data/config_imperialFakeFactorProducer.json";
 
-    std::string workspacepath = cmsswbase + "/src/HiggsAnalysis/friend-tree-producer/data/imperial_ff/fakefactors_ws_" + channel + "_mssm_" +  std::to_string(year) + ".root";
+    std::string workspacepath = cmsswbase + "/src/HiggsAnalysis/friend-tree-producer/data/imperial_ff/fakefactors_ws_" + channel + "_mssm_" +  std::to_string(year) + "_v2.root";
     std::cout << "Using " << workspacepath << std::endl;
     auto outputname =
         outputname_from_settings(input, folder, first_entry, last_entry);
