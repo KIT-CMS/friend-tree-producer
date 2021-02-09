@@ -5,6 +5,7 @@ import os, json, logging
 
 logger = logging.getLogger("job_managment")
 from streampaths import *
+from XRootD import client
 import ROOT as r
 
 r.PyConfig.IgnoreCommandLineOptions = True
