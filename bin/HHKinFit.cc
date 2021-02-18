@@ -43,11 +43,26 @@ int main(int argc, char* argv[])
   out->mkdir(folder.c_str());
   out->cd(folder.c_str());
 
+  std::cout << outputname << std::endl;
+
   // Create output tree
-  auto mkinfitfriend = new TTree("ntuple", "Tau trigger friend tree");  
+  auto mkinfitfriend = new TTree("ntuple", "Tau trigger friend tree"); 
+
 
   Float_t kinfit_mH,kinfit_mh2,kinfit_chi2,kinfit_prob,kinfit_pull1,kinfit_pull2,kinfit_pullB;
   Int_t kinfit_convergence;
+
+  Float_t kinfit_mH_HsmTune,kinfit_mh2_HsmTune,kinfit_chi2_HsmTune,kinfit_prob_HsmTune,kinfit_pull1_HsmTune,kinfit_pull2_HsmTune,kinfit_pullB_HsmTune;
+  Int_t kinfit_convergence_HsmTune;
+
+  
+  //Float_t kinfit_res1, kinfit_res2; 
+
+  Float_t bpt1_bRegRes, bpt2_bRegRes;
+  //Float_t bReg1;
+  
+
+
   mkinfitfriend->Branch("kinfit_mH",&kinfit_mH,"kinfit_mH/F");
   mkinfitfriend->Branch("kinfit_mh2",&kinfit_mh2,"kinfit_mh2/F");
   mkinfitfriend->Branch("kinfit_chi2",&kinfit_chi2,"kinfit_chi2/F");
@@ -57,7 +72,26 @@ int main(int argc, char* argv[])
   mkinfitfriend->Branch("kinfit_pullB",&kinfit_pullB,"kinfit_pullB/F");
   mkinfitfriend->Branch("kinfit_convergence",&kinfit_convergence,"kinfit_convergence/I");
 
-  //Leaf types  
+  mkinfitfriend->Branch("kinfit_mH_HsmTune",&kinfit_mH_HsmTune,"kinfit_mH_HsmTune/F");  
+  mkinfitfriend->Branch("kinfit_mh2_HsmTune",&kinfit_mh2_HsmTune,"kinfit_mh2_HsmTune/F");
+  mkinfitfriend->Branch("kinfit_chi2_HsmTune",&kinfit_chi2_HsmTune,"kinfit_chi2_HsmTune/F");
+  mkinfitfriend->Branch("kinfit_prob_HsmTune",&kinfit_prob_HsmTune,"kinfit_prob_HsmTune/F");
+  mkinfitfriend->Branch("kinfit_pull1_HsmTune",&kinfit_pull1_HsmTune,"kinfit_pull1_HsmTune/F");
+  mkinfitfriend->Branch("kinfit_pull2_HsmTune",&kinfit_pull2_HsmTune,"kinfit_pull2_HsmTune/F");
+  mkinfitfriend->Branch("kinfit_pullB_HsmTune",&kinfit_pullB_HsmTune,"kinfit_pullB_HsmTune/F");
+  mkinfitfriend->Branch("kinfit_convergence_HsmTune",&kinfit_convergence_HsmTune,"kinfit_convergence_HsmTune/I");
+
+  /*
+
+  mkinfitfriend->Branch("kinfit_res1", &kinfit_res1, "kinfit_res1/F");
+  mkinfitfriend->Branch("kinfit_res2", &kinfit_res2, "kinfit_res2/F");
+  mkinfitfriend->Branch("bpt1_bRegRes", &bpt1_bRegRes, "bpt1_bRegRes/F");
+  mkinfitfriend->Branch("bpt2_bRegRes", &bpt2_bRegRes, "bpt2_bRegRes/F");
+
+  mkinfitfriend->Branch("bpt_bReg_1",&bReg1,"bReg1/F");
+  */
+
+   //Leaf types  
    Int_t           njets;
    Int_t           nbtag;
   //  Double_t        b1_dR;
@@ -93,8 +127,27 @@ int main(int argc, char* argv[])
    Float_t        puppimetcov11;
    Float_t        byTightDeepTau2017v2p1VSjet_2;
 
+  Float_t        bJet_bRegRes;
+  Float_t        bJet2_bRegRes;
 
-  // List of branches
+  Float_t       HsmTune_DiJetSystemJet1Pt_bReg;
+  Float_t       HsmTune_DiJetSystemJet1Eta_bReg;
+  Float_t       HsmTune_DiJetSystemJet1Phi_bReg;
+  Float_t       HsmTune_DiJetSystemJet1mass_bReg;
+  Float_t       HsmTune_DiJetSystemJet2Pt_bReg;
+  Float_t       HsmTune_DiJetSystemJet2Eta_bReg;
+  Float_t       HsmTune_DiJetSystemJet2Phi_bReg;
+  Float_t       HsmTune_DiJetSystemJet2mass_bReg;
+  Float_t       HsmTune_JetPlusBJetSystemBJetPt_bReg;
+  Float_t       HsmTune_JetPlusBJetSystemBJetEta_bReg;
+  Float_t       HsmTune_JetPlusBJetSystemBJetPhi_bReg;
+  Float_t       HsmTune_JetPlusBJetSystemBJetmass_bReg;
+  Float_t       HsmTune_JetPlusBJetSystemJetPt_bReg;
+  Float_t       HsmTune_JetPlusBJetSystemJetEta_bReg;
+  Float_t       HsmTune_JetPlusBJetSystemJetPhi_bReg;
+  Float_t       HsmTune_JetPlusBJetSystemJetmass_bReg;
+
+    // List of branches
    TBranch        *b_njets;
    TBranch        *b_nbtag;
   //  TBranch        *b_b1_dR;
@@ -132,6 +185,27 @@ int main(int argc, char* argv[])
    TBranch        *b_puppimetcov11;
    TBranch        *b_byTightDeepTau2017v2p1VSjet_2;
 
+  TBranch         *b_bJet_bRegRes;
+  TBranch         *b_bJet2_bRegRes;
+
+
+  TBranch       *b_HsmTune_DiJetSystemJet1Pt_bReg;
+  TBranch       *b_HsmTune_DiJetSystemJet1Eta_bReg;
+  TBranch       *b_HsmTune_DiJetSystemJet1Phi_bReg;
+  TBranch       *b_HsmTune_DiJetSystemJet1mass_bReg;
+  TBranch       *b_HsmTune_DiJetSystemJet2Pt_bReg;
+  TBranch       *b_HsmTune_DiJetSystemJet2Eta_bReg;
+  TBranch       *b_HsmTune_DiJetSystemJet2Phi_bReg;
+  TBranch       *b_HsmTune_DiJetSystemJet2mass_bReg;
+  TBranch       *b_HsmTune_JetPlusBJetSystemBJetPt_bReg;
+  TBranch       *b_HsmTune_JetPlusBJetSystemBJetEta_bReg;
+  TBranch       *b_HsmTune_JetPlusBJetSystemBJetPhi_bReg;
+  TBranch       *b_HsmTune_JetPlusBJetSystemBJetmass_bReg;
+  TBranch       *b_HsmTune_JetPlusBJetSystemJetPt_bReg;
+  TBranch       *b_HsmTune_JetPlusBJetSystemJetEta_bReg;
+  TBranch       *b_HsmTune_JetPlusBJetSystemJetPhi_bReg;
+  TBranch       *b_HsmTune_JetPlusBJetSystemJetmass_bReg;
+
    inputtree->SetBranchAddress("njets", &njets, &b_njets);
    inputtree->SetBranchAddress("nbtag", &nbtag, &b_nbtag);
    
@@ -164,17 +238,42 @@ int main(int argc, char* argv[])
    inputtree->SetBranchAddress("puppimetcov01", &puppimetcov01, &b_puppimetcov01);
    inputtree->SetBranchAddress("puppimetcov11", &puppimetcov11, &b_puppimetcov11);
    inputtree->SetBranchAddress("byTightDeepTau2017v2p1VSjet_2", &byTightDeepTau2017v2p1VSjet_2, &b_byTightDeepTau2017v2p1VSjet_2);
+   inputtree->SetBranchAddress("bJet_bRegRes", &bJet_bRegRes, &b_bJet_bRegRes);
+   inputtree->SetBranchAddress("bJet2_bRegRes", &bJet2_bRegRes, &b_bJet2_bRegRes);
 
-  //define the testd hypotheses
-  std::vector<Int_t> hypo_mh1;
-  hypo_mh1.push_back(125);
+   inputtree->SetBranchAddress("HsmTune_DiJetSystemJet1Pt_bReg", &HsmTune_DiJetSystemJet1Pt_bReg, &b_HsmTune_DiJetSystemJet1Pt_bReg);
+   inputtree->SetBranchAddress("HsmTune_DiJetSystemJet1Eta_bReg", &HsmTune_DiJetSystemJet1Eta_bReg, &b_HsmTune_DiJetSystemJet1Eta_bReg);
+   inputtree->SetBranchAddress("HsmTune_DiJetSystemJet1Phi_bReg", &HsmTune_DiJetSystemJet1Phi_bReg, &b_HsmTune_DiJetSystemJet1Phi_bReg);
+   inputtree->SetBranchAddress("HsmTune_DiJetSystemJet1mass_bReg", &HsmTune_DiJetSystemJet1mass_bReg, &b_HsmTune_DiJetSystemJet1mass_bReg);
+   inputtree->SetBranchAddress("HsmTune_DiJetSystemJet2Pt_bReg", &HsmTune_DiJetSystemJet2Pt_bReg, &b_HsmTune_DiJetSystemJet2Pt_bReg);
+   inputtree->SetBranchAddress("HsmTune_DiJetSystemJet2Eta_bReg", &HsmTune_DiJetSystemJet2Eta_bReg, &b_HsmTune_DiJetSystemJet2Eta_bReg);
+   inputtree->SetBranchAddress("HsmTune_DiJetSystemJet2Phi_bReg", &HsmTune_DiJetSystemJet2Phi_bReg, &b_HsmTune_DiJetSystemJet2Phi_bReg);
+   inputtree->SetBranchAddress("HsmTune_DiJetSystemJet2mass_bReg", &HsmTune_DiJetSystemJet2mass_bReg, &b_HsmTune_DiJetSystemJet2mass_bReg);
+
+   inputtree->SetBranchAddress("HsmTune_JetPlusBJetSystemBJetPt_bReg", &HsmTune_JetPlusBJetSystemBJetPt_bReg, &b_HsmTune_JetPlusBJetSystemBJetPt_bReg);
+   inputtree->SetBranchAddress("HsmTune_JetPlusBJetSystemBJetEta_bReg", &HsmTune_JetPlusBJetSystemBJetEta_bReg, &b_HsmTune_JetPlusBJetSystemBJetEta_bReg);
+   inputtree->SetBranchAddress("HsmTune_JetPlusBJetSystemBJetPhi_bReg", &HsmTune_JetPlusBJetSystemBJetPhi_bReg, &b_HsmTune_JetPlusBJetSystemBJetPhi_bReg);
+   inputtree->SetBranchAddress("HsmTune_JetPlusBJetSystemBJetmass_bReg", &HsmTune_JetPlusBJetSystemBJetmass_bReg, &b_HsmTune_JetPlusBJetSystemBJetmass_bReg);
+   inputtree->SetBranchAddress("HsmTune_JetPlusBJetSystemJetPt_bReg", &HsmTune_JetPlusBJetSystemJetPt_bReg, &b_HsmTune_JetPlusBJetSystemJetPt_bReg);
+   inputtree->SetBranchAddress("HsmTune_JetPlusBJetSystemJetEta_bReg", &HsmTune_JetPlusBJetSystemJetEta_bReg, &b_HsmTune_JetPlusBJetSystemJetEta_bReg);
+   inputtree->SetBranchAddress("HsmTune_JetPlusBJetSystemJetPhi_bReg", &HsmTune_JetPlusBJetSystemJetPhi_bReg, &b_HsmTune_JetPlusBJetSystemJetPhi_bReg);
+   inputtree->SetBranchAddress("HsmTune_JetPlusBJetSystemJetmass_bReg", &HsmTune_JetPlusBJetSystemJetmass_bReg, &b_HsmTune_JetPlusBJetSystemJetmass_bReg);
+
+   //define the testd hypotheses
+   std::vector<Int_t> hypo_mh1;
+   hypo_mh1.push_back(125);
+
   
-  std::vector<Int_t> hypo_mh2 = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,130,140,150,180,210,240,270,300,330,360,390,420,450,480,510,540,570,600,630,660,690,720,750,780,810,840,870,900,950,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2500,3000};
+   std::vector<Int_t> hypo_mh2 = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,130,140,150,180,210,240,270,300,330,360,390,420,450,480,510,540,570,600,630,660,690,720,750,780,810,840,870,900,950,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2500,3000};
   
-  // event loop
-  for (unsigned int i = first_entry; i <= last_entry; i++) {
+   last_entry = inputtree->GetEntries(); //ALERT - CHANGE THIS LATER FOR BATCH SYSTEM
+   //last_entry = 4;
+
+
+   // event loop
+  for (unsigned int i = first_entry; i < last_entry; i++) {
     inputtree->GetEntry(i);
-    std::cout << "Event " << i-first_entry << " (" << round(100*float(i-first_entry)/float(last_entry-first_entry)) << "%)" << "\t\r" << std::flush;
+    std::cout << "Event " << i-first_entry << " (" << round(100*float(i-first_entry)/float(last_entry-first_entry)) << "%)" << std::endl;
     if (nbtag < 1) {
       kinfit_mH = -10;
       kinfit_mh2 = -10;
@@ -184,6 +283,16 @@ int main(int argc, char* argv[])
       kinfit_pull2 = -10;
       kinfit_pullB = -10;
       kinfit_convergence = -10;
+
+      kinfit_mH_HsmTune = -10;
+      kinfit_mh2_HsmTune = -10;
+      kinfit_chi2_HsmTune = -10;
+      kinfit_prob_HsmTune = -10;
+      kinfit_pull1_HsmTune = -10;
+      kinfit_pull2_HsmTune = -10;
+      kinfit_pullB_HsmTune = -10;
+      kinfit_convergence_HsmTune = -10;
+
       mkinfitfriend->Fill();      
       continue;
     }   
@@ -196,6 +305,23 @@ int main(int argc, char* argv[])
       kinfit_pull2 = -10;
       kinfit_pullB = -10;
       kinfit_convergence = -10;
+
+      kinfit_mH_HsmTune = -10;
+      kinfit_mh2_HsmTune = -10;
+      kinfit_chi2_HsmTune = -10;
+      kinfit_prob_HsmTune = -10;
+      kinfit_pull1_HsmTune = -10;
+      kinfit_pull2_HsmTune = -10;
+      kinfit_pullB_HsmTune = -10;
+      kinfit_convergence_HsmTune = -10;
+
+
+      /*
+      kinfit_res1 = -10;
+      bpt1_bRegRes = -10;   
+      kinfit_res2 = -10; 
+      bpt2_bRegRes = -10;
+      */
       mkinfitfriend->Fill();      
       continue;
     }
@@ -203,8 +329,19 @@ int main(int argc, char* argv[])
     //define input vectors
     TLorentzVector b1      = TLorentzVector(); b1.SetPtEtaPhiM(bpt_1,beta_1,bphi_1,bm_1);
     TLorentzVector b2      = TLorentzVector(); 
-    if (nbtag==1) b2.SetPtEtaPhiM(jpt,jeta,jphi,jm);
-    else b2.SetPtEtaPhiM(bpt_2,beta_2,bphi_2,bm_2);
+    TLorentzVector b1_HsmTune = TLorentzVector(); 
+    TLorentzVector b2_HsmTune = TLorentzVector(); 
+    if (nbtag==1)
+    { 
+      b2.SetPtEtaPhiM(jpt,jeta,jphi,jm);
+      b1_HsmTune.SetPtEtaPhiM(HsmTune_JetPlusBJetSystemBJetPt_bReg, HsmTune_JetPlusBJetSystemBJetEta_bReg, HsmTune_JetPlusBJetSystemBJetPhi_bReg, HsmTune_JetPlusBJetSystemBJetmass_bReg);
+      b2_HsmTune.SetPtEtaPhiM(HsmTune_JetPlusBJetSystemJetPt_bReg, HsmTune_JetPlusBJetSystemJetEta_bReg, HsmTune_JetPlusBJetSystemJetPhi_bReg, HsmTune_JetPlusBJetSystemJetmass_bReg);
+    }
+    else {
+      b2.SetPtEtaPhiM(bpt_2,beta_2,bphi_2,bm_2);
+      b1_HsmTune.SetPtEtaPhiM(HsmTune_DiJetSystemJet1Pt_bReg,HsmTune_DiJetSystemJet1Eta_bReg,HsmTune_DiJetSystemJet1Phi_bReg, HsmTune_DiJetSystemJet1mass_bReg);
+      b2_HsmTune.SetPtEtaPhiM(HsmTune_DiJetSystemJet2Pt_bReg,HsmTune_DiJetSystemJet2Eta_bReg,HsmTune_DiJetSystemJet2Phi_bReg, HsmTune_DiJetSystemJet2mass_bReg);
+    }
     TLorentzVector tau1vis = TLorentzVector(); tau1vis.SetPtEtaPhiM(pt_1,eta_1,phi_1,m_1);
     TLorentzVector tau2vis = TLorentzVector(); tau2vis.SetPtEtaPhiM(pt_2,eta_2,phi_2,m_2);
 
@@ -215,19 +352,57 @@ int main(int argc, char* argv[])
     puppimetcov(0,1)=puppimetcov01;    
     puppimetcov(1,1)=puppimetcov11;
     
+
+    bool ifbReg = false;
+
+    
+    bpt1_bRegRes = bpt_1*bJet_bRegRes;
+    bpt2_bRegRes = bpt_2*bJet2_bRegRes;
+
+  
+    
+    
     //intance of fitter master class
-    HHKinFitMaster kinFits = HHKinFitMaster(&b1,&b2,&tau1vis,&tau2vis);
+
+    ifbReg = true; // IMPORTANT!! 
+    
+    HHKinFitMaster kinFits = HHKinFitMaster(&b1,&b2,&tau1vis,&tau2vis,ifbReg,bpt1_bRegRes,bpt2_bRegRes);
     kinFits.setAdvancedBalance(&ptmiss,puppimetcov);
-    // kinFits.setSimpleBalance(puppimet,10); //alternative which uses only the absolute value of ptmiss in the fit
-    kinFits.addMh1Hypothesis(hypo_mh1);
-    kinFits.addMh2Hypothesis(hypo_mh2);
-    kinFits.doFullFit();       
-    //obtain results from different hypotheses
-    // Double_t chi2_best = kinFits.getBestChi2FullFit();
-    // Double_t mh_best = kinFits.getBestMHFullFit();
+    kinFits.addMh1Hypothesis(hypo_mh2);
+    kinFits.addMh2Hypothesis(hypo_mh1);
+    kinFits.doFullFit(ifbReg, bpt1_bRegRes,bpt2_bRegRes);       
     std::pair<Int_t, Int_t> bestHypo = kinFits.getBestHypoFullFit();
 
-    if(bestHypo.first>0) {
+    
+
+    HHKinFitMaster kinFits_HsmTune = HHKinFitMaster(&b1_HsmTune,&b2_HsmTune,&tau1vis,&tau2vis,ifbReg,bpt1_bRegRes,bpt2_bRegRes);
+    kinFits_HsmTune.setAdvancedBalance(&ptmiss,puppimetcov);
+    kinFits_HsmTune.addMh1Hypothesis(hypo_mh2);
+    kinFits_HsmTune.addMh2Hypothesis(hypo_mh1);
+    kinFits_HsmTune.doFullFit(ifbReg, bpt1_bRegRes,bpt2_bRegRes);       
+    std::pair<Int_t, Int_t> bestHypo_HsmTune = kinFits_HsmTune.getBestHypoFullFit();
+
+    
+
+    /* 
+
+    kinfit_res1 = kinFits.GetBjetResolution(b1.Eta(), b1.Et(), false, 0);
+    kinfit_res2 = kinFits.GetBjetResolution(b2.Eta(), b2.Et(), false, 0);
+
+    
+    if (bpt_1 == -10 && bJet_bRegRes == -10){
+      bpt1_bRegRes = -10;
+      kinfit_res1  = -10;
+    }
+
+    if (bpt_2 == -10 && bJet2_bRegRes == -10){
+      bpt2_bRegRes = -10;
+      kinfit_res2 = -10; 
+    }
+    */
+  
+    
+    if(bestHypo.second>0) {
         std::map< std::pair<Int_t, Int_t>, Double_t> fit_results_chi2 = kinFits.getChi2FullFit();
         std::map< std::pair<Int_t, Int_t>, Double_t> fit_results_fitprob = kinFits.getFitProbFullFit();
         std::map< std::pair<Int_t, Int_t>, Double_t> fit_results_mH = kinFits.getMHFullFit();
@@ -238,7 +413,7 @@ int main(int argc, char* argv[])
 
         kinfit_convergence = fit_convergence.at(bestHypo);
         kinfit_mH = fit_results_mH.at(bestHypo);
-        kinfit_mh2 = bestHypo.second;
+        kinfit_mh2 = bestHypo.first;
         kinfit_chi2 = fit_results_chi2.at(bestHypo);
         kinfit_prob = fit_results_fitprob.at(bestHypo);
         kinfit_pull1 = fit_results_pull_b1.at(bestHypo);
@@ -255,12 +430,43 @@ int main(int argc, char* argv[])
       kinfit_pullB = -10;
       kinfit_convergence = -1;
     }
-    mkinfitfriend->Fill();
     
-  }
+    if(bestHypo_HsmTune.second>0) {
+        std::map< std::pair<Int_t, Int_t>, Double_t> fit_results_chi2_HsmTune = kinFits_HsmTune.getChi2FullFit();
+        std::map< std::pair<Int_t, Int_t>, Double_t> fit_results_fitprob_HsmTune = kinFits_HsmTune.getFitProbFullFit();
+        std::map< std::pair<Int_t, Int_t>, Double_t> fit_results_mH_HsmTune = kinFits_HsmTune.getMHFullFit();
+        std::map< std::pair<Int_t, Int_t>, Double_t> fit_results_pull_b1_HsmTune = kinFits_HsmTune.getPullB1FullFit();
+        std::map< std::pair<Int_t, Int_t>, Double_t> fit_results_pull_b2_HsmTune = kinFits_HsmTune.getPullB2FullFit();
+        std::map< std::pair<Int_t, Int_t>, Double_t> fit_results_pull_balance_HsmTune = kinFits_HsmTune.getPullBalanceFullFit();
+        std::map< std::pair<Int_t, Int_t>, Int_t> fit_convergence_HsmTune = kinFits_HsmTune.getConvergenceFullFit();
 
+        kinfit_convergence_HsmTune = fit_convergence_HsmTune.at(bestHypo_HsmTune);
+        kinfit_mH_HsmTune = fit_results_mH_HsmTune.at(bestHypo_HsmTune);
+        kinfit_mh2_HsmTune = bestHypo_HsmTune.first;
+        kinfit_chi2_HsmTune = fit_results_chi2_HsmTune.at(bestHypo_HsmTune);
+        kinfit_prob_HsmTune = fit_results_fitprob_HsmTune.at(bestHypo_HsmTune);
+        kinfit_pull1_HsmTune = fit_results_pull_b1_HsmTune.at(bestHypo_HsmTune);
+        kinfit_pull2_HsmTune = fit_results_pull_b2_HsmTune.at(bestHypo_HsmTune);
+        kinfit_pullB_HsmTune = fit_results_pull_balance_HsmTune.at(bestHypo_HsmTune);
+    }
+    else {
+      kinfit_mH_HsmTune = -10;
+      kinfit_mh2_HsmTune = -10;
+      kinfit_chi2_HsmTune = 999.;
+      kinfit_prob_HsmTune = 0.0;
+      kinfit_pull1_HsmTune = -10;
+      kinfit_pull2_HsmTune = -10;
+      kinfit_pullB_HsmTune = -10;
+      kinfit_convergence_HsmTune = -1;
+    }    
+    
+    mkinfitfriend->Fill();
+  }
   mkinfitfriend->Write();
   out->Close();
   in->Close();
   return (0);
 }
+
+
+// checklist for ttbb <-> bbtt : second <-> first, mh1<->mh2
