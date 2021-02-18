@@ -364,7 +364,7 @@ int main(int argc, char* argv[])
     
     //intance of fitter master class
 
-    ifbReg = true; // IMPORTANT!! 
+    ifbReg = false; // IMPORTANT!! 
     
     HHKinFitMaster kinFits = HHKinFitMaster(&b1,&b2,&tau1vis,&tau2vis,ifbReg,bpt1_bRegRes,bpt2_bRegRes);
     kinFits.setAdvancedBalance(&ptmiss,puppimetcov);
