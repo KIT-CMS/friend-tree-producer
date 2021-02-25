@@ -95,8 +95,7 @@ def main():
             if len(args.restrict_to_samples_wildcards) == 0:
                 args.restrict_to_samples_wildcards.append("*")
             for wildcard in args.restrict_to_samples_wildcards:
-                input_ntuples_list += fnmatch.filter(all_files, wildcard)
-
+                input_ntuples_list.extend([x for x in all_files if wildcard in x])
         logger.debug(input_ntuples_list)
 
         submit.prepare_jobs(
