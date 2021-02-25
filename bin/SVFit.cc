@@ -11,6 +11,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
 
+#include <stdexcept>
+
 #include "HiggsAnalysis/friend-tree-producer/interface/HelperFunctions.h"
 
 using namespace classic_svFit;
@@ -188,7 +190,11 @@ int main(int argc, char** argv)
 
         if ((i - first_entry) % 1000 == 0)
           std::cout << " processing event " << i  << ", last event: " << last_entry + include_last_ev << " [" << float(i - first_entry) / (last_entry + include_last_ev - first_entry) << " %]" << std::endl;
-        inputtree->GetEntry(i);
+        int bytes_read = inputtree->GetEntry(i);
+        if (bytes_read == -1) {
+            std::string message = "I/O error while reading event " + std::to_string(i) + ".";
+            throw std::runtime_error(message);
+        }
 
         // define MET;
         TVector2 metVec;
