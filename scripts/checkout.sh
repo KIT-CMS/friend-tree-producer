@@ -29,8 +29,10 @@ git clone git@github.com:SVfit/ClassicSVfit TauAnalysis/ClassicSVfit -b fastMTT_
 git clone git@github.com:SVfit/SVfitTF TauAnalysis/SVfitTF
 
 # FF weights
-
-cp -r /work/jbechtel/nmssm_friends/CMSSW_10_2_14/src/HTTutilities/Jet2TauFakes/data_201* HTTutilities/Jet2TauFakes/. 
+git clone ssh://git@github.com/CMS-HTT/Jet2TauFakes.git HTTutilities/Jet2TauFakes
+cd HTTutilities/Jet2TauFakes
+git checkout v0.2.2
+cp -r /ceph/htautau/fakefactor_files/nmssm/data_201* . 
 
 git clone git@github.com:KIT-CMS/fake-factor-application.git -b nmssm_analysis HiggsAnalysis/fake-factor-application
 

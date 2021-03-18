@@ -161,19 +161,19 @@ def main(args):
         }
         default_fractionsfile = {
             "2016": {
-                "mt": "/work/jbechtel/postprocessing/fraction_nmssm/output/shapes/2016_mt_nbtag3bins_mt_1_puppi/2016-2016_mt_nbtag3bins_mt_1_puppi-mt-shapes.root",
-                "et": "/work/jbechtel/postprocessing/fraction_nmssm/output/shapes/2016_et_nbtag3bins_mt_1_puppi/2016-2016_et_nbtag3bins_mt_1_puppi-et-shapes.root",
-                "tt": "/work/jbechtel/postprocessing/fraction_nmssm/output/shapes/2016_tt_njets3bins_m_vis/2016-2016_tt_njets3bins_m_vis-tt-shapes.root"
+                "mt": "/ceph/htautau/fakefactor_fractions/nmssm/2016_mt_nbtag3bins_mt_1_puppi/2016-2016_mt_nbtag3bins_mt_1_puppi-mt-shapes.root",
+                "et": "/ceph/htautau/fakefactor_fractions/nmssm/2016_et_nbtag3bins_mt_1_puppi/2016-2016_et_nbtag3bins_mt_1_puppi-et-shapes.root",
+                "tt": "/ceph/htautau/fakefactor_fractions/nmssm/2016_tt_njets3bins_m_vis/2016-2016_tt_njets3bins_m_vis-tt-shapes.root"
             },
             "2017": {
-                "mt": "/work/jbechtel/postprocessing/fraction_nmssm/output/shapes/2017_mt_nbtag3bins_mt_1_puppi/2017-2017_mt_nbtag3bins_mt_1_puppi-mt-shapes.root",
-                "et": "/work/jbechtel/postprocessing/fraction_nmssm/output/shapes/2017_et_nbtag3bins_mt_1_puppi/2017-2017_et_nbtag3bins_mt_1_puppi-et-shapes.root",
-                "tt": "/work/jbechtel/postprocessing/fraction_nmssm/output/shapes/2017_tt_njets3bins_m_vis/2017-2017_tt_njets3bins_m_vis-tt-shapes.root"
+                "mt": "/ceph/htautau/fakefactor_fractions/nmssm/2017_mt_nbtag3bins_mt_1_puppi/2017-2017_mt_nbtag3bins_mt_1_puppi-mt-shapes.root",
+                "et": "/ceph/htautau/fakefactor_fractions/nmssm/2017_et_nbtag3bins_mt_1_puppi/2017-2017_et_nbtag3bins_mt_1_puppi-et-shapes.root",
+                "tt": "/ceph/htautau/fakefactor_fractions/nmssm/2017_tt_njets3bins_m_vis/2017-2017_tt_njets3bins_m_vis-tt-shapes.root"
             },
             "2018": {
-                "mt": "/work/jbechtel/postprocessing/fraction_nmssm/output/shapes/2018_mt_nbtag3bins_mt_1_puppi/2018-2018_mt_nbtag3bins_mt_1_puppi-mt-shapes.root",
-                "et": "/work/jbechtel/postprocessing/fraction_nmssm/output/shapes/2018_et_nbtag3bins_mt_1_puppi/2018-2018_et_nbtag3bins_mt_1_puppi-et-shapes.root",
-                "tt": "/work/jbechtel/postprocessing/fraction_nmssm/output/shapes/2018_tt_njets3bins_m_vis/2018-2018_tt_njets3bins_m_vis-tt-shapes.root"
+                "mt": "/ceph/htautau/fakefactor_fractions/nmssm/2018_mt_nbtag3bins_mt_1_puppi/2018-2018_mt_nbtag3bins_mt_1_puppi-mt-shapes.root",
+                "et": "/ceph/htautau/fakefactor_fractions/nmssm/2018_et_nbtag3bins_mt_1_puppi/2018-2018_et_nbtag3bins_mt_1_puppi-et-shapes.root",
+                "tt": "/ceph/htautau/fakefactor_fractions/nmssm/2018_tt_njets3bins_m_vis/2018-2018_tt_njets3bins_m_vis-tt-shapes.root"
             }
         }
         default_configkey = "nbtag3bins_mt_1_puppi" if args.folder[:2] in ["mt", "et"] else "njets3bins_m_vis"
