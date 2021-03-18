@@ -46,7 +46,7 @@ git checkout v0.2.2
 
 read -p "lxplus-username: " USERNMLXP
 
-scp -r ${USERNMLXP}@lxplus.cern.ch:/afs/cern.ch/user/j/jbechtel/public/fake-factor-files/* ./
+rsync -vhrP /ceph/htautau/fakefactor_files/sm/* .
 
 cd ../..
 git clone git@github.com:KIT-CMS/fake-factor-application.git HiggsAnalysis/fake-factor-application
