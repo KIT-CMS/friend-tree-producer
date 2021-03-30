@@ -27,6 +27,7 @@ def setup_parser():
             "singletauTriggerWeightsProducer.py",
             "SingleTauTriggers",
             "NLOReweighting",
+            "add_DNN_model_prediction_in_root_file.py",
         ],
         help="Executable to be used for friend tree creation ob the batch system.",
     )
