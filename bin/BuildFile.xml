@@ -7,6 +7,16 @@
   <use name="boost_python"/>
   <use name="boost_regex"/>
 </bin>
+<!--
+  <bin   file="MELA.cc" name="MELA">
+  <use name="ZZMatrixElement/MELA"/>
+  <use name="root"/>
+  <use name="boost_program_options"/>
+  <use name="boost_filesystem"/>
+  <use name="boost_python"/>
+  <use name="boost_regex"/>
+</bin> 
+-->
 <bin   file="NNMass.cc" name="NNMass">
   <use name="root"/>
   <use name="rootmath"/>
