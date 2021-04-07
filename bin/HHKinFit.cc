@@ -265,10 +265,8 @@ int main(int argc, char* argv[])
 
   
    std::vector<Int_t> hypo_mh2 = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,110,120,130,140,150,180,210,240,270,300,330,360,390,420,450,480,510,540,570,600,630,660,690,720,750,780,810,840,870,900,950,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2500,3000};
-  
-   last_entry = inputtree->GetEntries(); //ALERT - CHANGE THIS LATER FOR BATCH SYSTEM
-   //last_entry = 4;
-
+   
+   std::cout << "first: " << first_entry << " last: " << last_entry << std::endl;
 
    // event loop
   for (unsigned int i = first_entry; i < last_entry; i++) {
