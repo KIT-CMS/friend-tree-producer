@@ -21,6 +21,7 @@ def setup_parser():
             "HHKinFit",
             "emQCDWeightsProducer.py",
             "extraWeightsProducer.py",
+
         ],
         help="Executable to be used for friend tree creation ob the batch system.",
     )
@@ -137,9 +138,9 @@ def setup_parser():
     )
     parser.add_argument(
         "--conditional",
-        type=bool,
         default=False,
         help="Use conditional network for all eras or single era networks.",
+        action='store_true'
     )
     parser.add_argument("--dry", action="store_true", default=False, help="dry run")
     parser.add_argument("--debug", action="store_true", default=False, help="debug")
