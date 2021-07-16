@@ -284,7 +284,8 @@
             "ff_total_ttbar_syst_l_pt_closure": "ff_total_ttbar_syst_l_pt_closure",
             "ff_total_syst_alt_func": "ff_total_syst_alt_func",
             "ff_total_qcd_syst_bkg": "ff_total_qcd_syst_bkg",
-            "ff_total_wjets_syst_bkg": "ff_total_wjets_syst_bkg"
+            "ff_total_wjets_syst_bkg": "ff_total_wjets_syst_bkg",
+            "ff_total_wjets_syst_extrap": "ff_total_wjets_syst_extrap"
           }
         }
       },
@@ -399,7 +400,8 @@
               "ff_total_ttbar_syst_l_pt_closure": "ff_total_ttbar_syst_l_pt_closure",
               "ff_total_syst_alt_func": "ff_total_syst_alt_func",
               "ff_total_qcd_syst_bkg": "ff_total_qcd_syst_bkg",
-              "ff_total_wjets_syst_bkg": "ff_total_wjets_syst_bkg"
+              "ff_total_wjets_syst_bkg": "ff_total_wjets_syst_bkg",
+              "ff_total_wjets_syst_extrap": "ff_total_wjets_syst_extrap"
             }
         }
       },
