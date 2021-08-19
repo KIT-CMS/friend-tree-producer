@@ -326,7 +326,11 @@ int main(int argc, char **argv)
     std::string configpath = cmsswbase +
                              "/src/HiggsAnalysis/friend-tree-producer/data/config_imperialFakeFactorProducer.json";
 
-    std::string workspacepath = cmsswbase + "/src/HiggsAnalysis/friend-tree-producer/data/imperial_ff/fakefactors_ws_" + channel + "_mssm_" +  std::to_string(year) + "_v5.root";
+    std::string ws_version("v6");
+    if (channel == "tt") {
+        ws_version = std::string("v3");
+    }
+    std::string workspacepath = cmsswbase + "/src/HiggsAnalysis/friend-tree-producer/data/imperial_ff/fakefactors_ws_" + channel + "_mssm_" +  std::to_string(year) + "_" + ws_version + ".root";
     std::cout << "Using " << workspacepath << std::endl;
     auto outputname =
         outputname_from_settings(input, folder, first_entry, last_entry);
