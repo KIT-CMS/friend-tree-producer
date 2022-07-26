@@ -84,14 +84,14 @@
   <use name="boost_python"/>
   <use name="boost_regex"/>
 </bin>
-<bin   file="HHKinFit.cc" name="HHKinFit">
+<!-- <bin   file="HHKinFit.cc" name="HHKinFit">
   <use name="HHKinFit/HHKinFit"/>
   <use name="root"/>
   <use name="boost_program_options"/>
   <use name="boost_filesystem"/>
   <use name="boost_python"/>
   <use name="boost_regex"/>
-</bin>
+</bin> -->
 <bin   file="ImperialFakeFactors.cc" name="ImperialFakeFactors">
   <use name="root"/>
   <use name="rootmath"/>

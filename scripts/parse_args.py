@@ -149,6 +149,7 @@ def setup_parser():
         help="Use conditional network for all eras or single era networks.",
     )
     parser.add_argument("--dry", action="store_true", default=False, help="dry run")
+    parser.add_argument("--crown", action="store_true", default=True, help="if set, use crown ntuples")
     parser.add_argument("--debug", action="store_true", default=False, help="debug")
     parser.add_argument(
         "--extra-parameters",

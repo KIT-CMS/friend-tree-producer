@@ -44,6 +44,8 @@ def extract_friend_paths(packed_paths):
 
 def get_entries(*args):
     f = args[0]["f"]
+    channel = f.split("/")[-2]
+    era = f.split("/")[-4]
     restrict_to_channels = args[0]["restrict_to_channels"]
     restrict_to_shifts = args[0]["restrict_to_shifts"]
     Global = args[0]["Global"]
@@ -108,17 +110,31 @@ def get_entries(*args):
         )
 
     F = uproot.open(f)
-    pipelines = [x.strip(";1") for x in F.keys() ]
+    # pipelines = [x.strip(";1") for x in F.keys() ]
+    pipelines = [x.replace("__","") for x in F["variations"].keys()]
+    pipelines.append("nominal")
+    # print(shifts_tree.keys())
+    # # now get the shifts
+    # pipelines = [x.name for x in shifts_tree.branches]
+    # print("restrict_to_channels_file: {}".format(restrict_to_channels_file))
+    # print("pipelines: {}".format(pipelines))
+    # print("restrict_to_shifts: {}".format(restrict_to_shifts))
+    # print("Channel: {}".format(channel))
     if len(restrict_to_channels_file) > 0 or len(restrict_to_channels) > 0:
-        pipelines = [
-            p for p in pipelines if p.split("_")[0] in restrict_to_channels_file
-        ]
+        if channel not in restrict_to_channels_file:
+            pipelines = []
     if len(restrict_to_shifts) > 0:
-        pipelines = [p for p in pipelines if p.split("_")[1] in restrict_to_shifts]
+        # temp = []
+        # for p in pipelines:
+        #     if p in restrict_to_shifts:
+        #         temp.append(p)
+        pipelines = [p for p in pipelines if p in restrict_to_shifts]
+    # print("pipelines: {}".format(temp))
+    # print("Pipelines after selecting: {}".format(pipelines))
     pipelieness = {}
     for p in pipelines:
         try:
-            pipelieness[p] = F[p+"/ntuple"].numentries
+            pipelieness[p] = F["ntuple"].numentries
         except:
             import sys
 
@@ -135,7 +151,7 @@ def get_entries(*args):
         logger.debug("\t pipelines: \n\t\t%s" % "\n\t\t".join(pipelines))
         for w in warnings:
             logger.warning(w)
-    return [nick, {"path": f, "pipelines": pipelieness,}]
+    return [nick, {"path": f, "pipelines": pipelieness, "era": era, "channel": channel}]
 
 
 def prepare_jobs(
@@ -243,6 +259,12 @@ def prepare_jobs(
                     )
                     job_database[job_number][-1]["input"] = ntuple_database[nick][
                         "path"
+                    ]
+                    job_database[job_number][-1]["era"] = ntuple_database[nick][
+                        "era"
+                    ]
+                    job_database[job_number][-1]["channel"] = ntuple_database[nick][
+                        "channel"
                     ]
                     if "FakeFactor" in executable and not "Imperial" in executable:
                         job_database[job_number][-1]["cmsswbase"] = cmsswbase

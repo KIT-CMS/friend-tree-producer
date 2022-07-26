@@ -59,7 +59,14 @@ def main():
             exit()
 
     if args.command == "submit":
-
+        if args.mode == "local" and args.crown:
+            if len(args.restrict_to_samples_wildcards) == 0:
+                args.restrict_to_samples_wildcards.append("*")
+            for wildcard in args.restrict_to_samples_wildcards:
+                logger.debug("Checking for ntuples in {}".format(os.path.join(args.input_ntuples_directory, wildcard, "*", "*.root")))
+                input_ntuples_list += glob.glob(
+                        os.path.join(args.input_ntuples_directory, wildcard, "*", "*.root")
+                    )
         if args.mode == "local" or args.shadow_input_ntuples_directory is not None:
             if len(args.restrict_to_samples_wildcards) == 0:
                 args.restrict_to_samples_wildcards.append("*")

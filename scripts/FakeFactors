@@ -90,6 +90,8 @@ def parse_arguments():
     parser.add_argument("--fractionsfile", default="", type=str, help="fractionsfile")
     parser.add_argument("--configkey", type=str, default="", help="configkey")
     parser.add_argument("--tag", type=str, default='smhtt', help="Tag of output files.")
+    parser.add_argument("--era", type=str, required=True, help="The era to use.")
+    parser.add_argument("--channel", type=str, required=True, help="The channel to use.")
     parser.add_argument("--output-dir", type=str, default='.', help="Tag of output files.")
 
     return parser.parse_args()
@@ -138,11 +140,8 @@ def main(args):
             }
         }
 
-    # Determine era
-    with open(cmsswbase + "/src/HiggsAnalysis/friend-tree-producer/data/input_params/datasets.json") as json_file:
-        datasets = json.load(json_file)
-    era = str(datasets[nickname]["year"])
-
+    era = args.era
+    channel = args.channel
     # Load fractions
     if args.determine_fractions:
         conf_default = {
@@ -152,11 +151,12 @@ def main(args):
                 'tt': ['inclusive'],
             }
         }
+        print(args.folder)
         if args.use_mva_tauid:
             conf_default['categories']['tt'] = ['tt1_inclusive', 'tt2_inclusive']  # for last available mva ff
         conf = {
             'categories': {
-                args.folder[:2]: conf_default['categories'][args.folder[:2]]
+                channel: conf_default['categories'][channel]
             }
         }
         default_fractionsfile = {
@@ -176,10 +176,10 @@ def main(args):
                 "tt": "/ceph/htautau/fakefactor_fractions/sm/2018_tt_njets3bins_m_vis/2018-2018_tt_njets3bins_m_vis-tt-shapes.root"
             }
         }
-        default_configkey = "njets3bins_mt_1_puppi" if args.folder[:2] in ["mt", "et"] else "njets3bins_m_vis"
+        default_configkey = "njets3bins_mt_1_puppi" if channel in ["mt", "et"] else "njets3bins_m_vis"
         fractionsfile = args.fractionsfile
         if fractionsfile == "":
-            fractionsfile = default_fractionsfile[era][args.folder[:2]]
+            fractionsfile = default_fractionsfile[era][channel]
         configkey = args.configkey
         if configkey == "":
             configkey = default_configkey
