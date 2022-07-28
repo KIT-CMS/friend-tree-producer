@@ -4,7 +4,7 @@ import copy
 import numpy as np
 import time
 import os, json, logging
-
+import sys
 logger = logging.getLogger("job_managment")
 from streampaths import *
 import uproot
@@ -54,7 +54,7 @@ def get_entries(*args):
     nick = f.split("/")[-1].replace(".root", "")
 
     warnings = []
-    if "SingleMuon_Run" in nick or "MuTauFinalState" in nick:
+    if "SingleMuon_Run" in nick or "MuTauFinalState" in nick or "MuonEmbedding" in nick:
         restrict_to_channels_file = (
             list(set(["mt", "mm"]).intersection(restrict_to_channels_file))
             if len(restrict_to_channels_file) > 0
@@ -69,6 +69,7 @@ def get_entries(*args):
         "SingleElectron_Run" in nick
         or "EGamma_Run" in nick
         or "ElTauFinalState" in nick
+        or "ElectronEmbedding" in nick
     ):
         restrict_to_channels_file = (
             list(set(["et"]).intersection(restrict_to_channels_file))
@@ -110,7 +111,6 @@ def get_entries(*args):
         )
 
     F = uproot.open(f)
-    # pipelines = [x.strip(";1") for x in F.keys() ]
     pipelines = [x.replace("__","") for x in F["variations"].keys()]
     pipelines.append("nominal")
     # print(shifts_tree.keys())
@@ -122,27 +122,23 @@ def get_entries(*args):
     # print("Channel: {}".format(channel))
     if len(restrict_to_channels_file) > 0 or len(restrict_to_channels) > 0:
         if channel not in restrict_to_channels_file:
-            pipelines = []
+            Global.counter += 1
+            return None
     if len(restrict_to_shifts) > 0:
-        # temp = []
-        # for p in pipelines:
-        #     if p in restrict_to_shifts:
-        #         temp.append(p)
         pipelines = [p for p in pipelines if p in restrict_to_shifts]
-    # print("pipelines: {}".format(temp))
     # print("Pipelines after selecting: {}".format(pipelines))
     pipelieness = {}
-    for p in pipelines:
-        try:
-            pipelieness[p] = F["ntuple"].numentries
-        except:
-            import sys
-
-            with s_print_lock:
-                print "Unexpected error:", sys.exc_info()[0]
-                logger.critical("problem in file: %s pipeline: %s" % (f, p))
-            raise
+    try:
+        nentries = F["ntuple"].numentries
+    except:
+        with s_print_lock:
+            print("Unexpected error: {}".format(sys.exc_info()[0]))
+            print("No Tree in file: %s" % (f))
+            Global.counter += 1
+            return None
     del F
+    for p in pipelines:
+        pipelieness[p] = nentries
     with s_print_lock:
         Global.counter += 1
         logger.info(
@@ -203,7 +199,8 @@ def prepare_jobs(
         for e in toDo:
             res.append(get_entries(e))
     for r in res:
-        ntuple_database[r[0]] = r[1]
+        if r is not None and r[1] is not None:
+            ntuple_database[r[0]] = r[1]
 
     job_database = {0: []}
     job_number = 0
