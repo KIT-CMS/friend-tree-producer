@@ -205,7 +205,7 @@ def main(args):
         )
 
     # Create friend tree
-    output_path = os.path.join(args.output_dir, nickname)
+    output_path = os.path.join(args.output_dir, "{}_{}_{}".format(era, channel, nickname))
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
