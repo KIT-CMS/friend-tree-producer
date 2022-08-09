@@ -20,7 +20,8 @@ def write_trees_to_files(info):
     # from the nick, remove the last _#number
     foldername = nick.replace("_{}".format(nick.split("_")[-1]), "")
     # the outputpath follows the pattern era/channel/nick/files.root
-    nick_path = os.path.join(collection_path, era, channel, foldername)
+    nick_path = os.path.join(collection_path, era, foldername, channel)
+    print("Writing {} to {}".format(nick, nick_path))
     if not os.path.exists(nick_path):
         os.makedirs(nick_path)
     outputfile = os.path.join(nick_path, nick + ".root")
