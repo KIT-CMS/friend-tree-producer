@@ -217,7 +217,7 @@ def main(args):
             "mt": args.input_friends,
             "tt": args.input_friends
         },
-        outputfile=os.path.join(output_path, "%s_%s_%s_%s.root" % (nickname, args.folder, args.first_entry, args.last_entry)),
+        outputfile=os.path.join(output_path, "%s_%s_%s_%s_%s_%s.root" % (nickname, args.folder, args.era, args.channel, args.first_entry, args.last_entry)),
         category_mode="inclusive",
         fakefactordirectories=fakefactordatabase[era],
         fractions=fractions,
