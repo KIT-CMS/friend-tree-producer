@@ -13,6 +13,7 @@ def setup_parser():
             "MELA",
             "NNScore",
             "NNMass",
+            "FastMTT",
             "NNrecoil",
             "FakeFactors",
             "ZPtMReweighting",
