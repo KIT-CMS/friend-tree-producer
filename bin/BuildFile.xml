@@ -7,6 +7,15 @@
   <use name="boost_python"/>
   <use name="boost_regex"/>
 </bin>
+<bin   file="FastMTT.cc" name="FastMTT">
+  <use name="TauAnalysis/ClassicSVfit"/>
+  <use name="TauAnalysis/SVfitTF"/>
+  <use name="root"/>
+  <use name="boost_program_options"/>
+  <use name="boost_filesystem"/>
+  <use name="boost_python"/>
+  <use name="boost_regex"/>
+</bin>
 <!--
   <bin   file="MELA.cc" name="MELA">
   <use name="ZZMatrixElement/MELA"/>
