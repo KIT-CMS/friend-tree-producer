@@ -75,7 +75,6 @@ int main(int argc, char **argv) {
   po::notify(vm);
   std::cout << "Setting up FastMTT for channel " << channel << " and era "
             << era << " pipeline " << folder << std::endl;
-
   // Access input file and tree
   TFile *in = TFile::Open(input.c_str(), "read");
   // TDirectoryFile *dir = (TDirectoryFile *)in->Get(folder.c_str());
@@ -182,12 +181,15 @@ int main(int argc, char **argv) {
             << organize_outputs << std::endl;
   std::string outputname = outputname_from_settings_crown(
       input, folder, first_entry, last_entry, output_dir, era, channel, organize_outputs);
-  if (organize_outputs)
-    boost::filesystem::create_directories(filename_from_inputpath(input));
+  if (organize_outputs){
+    std::cout << "Output file: " << outputname << std::endl;
+    std::cout << "Creating folder: " << filename_from_inputpath(input) << std::endl;
+    boost::filesystem::create_directories(era + "_" + channel + "_" + filename_from_inputpath(input));
+  }
   TFile *out = TFile::Open(outputname.c_str(), "recreate");
   std::cout << "Output file: " << outputname << std::endl;
   std::cout << "input file: " << input << std::endl;
-  std::cout << "filename_from_inputpath" << filename_from_inputpath(input)
+  std::cout << "filename_from_inputpath " << filename_from_inputpath(input)
             << std::endl;
   // out->mkdir(folder.c_str());
   // out->cd(folder.c_str());
