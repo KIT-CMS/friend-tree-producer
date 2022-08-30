@@ -280,22 +280,8 @@ int main(int argc, char **argv) {
 
     // FastMTT outputs
     Float_t pt_fastmtt, eta_fastmtt, phi_fastmtt, m_fastmtt;
-    std::string branch_name_pt =
-        "pt_fastmtt" + std::string("__") + folder.c_str();
-    std::string branch_name_eta =
-        "eta_fastmtt" + std::string("__") + folder.c_str();
-    std::string branch_name_phi =
-        "phi_fastmtt" + std::string("__") + folder.c_str();
-    std::string branch_name_m =
-        "m_fastmtt" + std::string("__") + folder.c_str();
-    std::string branch_name_pt_datatype =
-        "pt_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
-    std::string branch_name_eta_datatype =
-        "eta_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
-    std::string branch_name_phi_datatype =
-        "phi_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
-    std::string branch_name_m_datatype =
-        "m_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
+    std::string branch_name_pt, branch_name_eta, branch_name_phi, branch_name_m, branch_name_pt_datatype, branch_name_eta_datatype, branch_name_phi_datatype, branch_name_m_datatype;
+
     if (folder == "nominal") {
       std::string branch_name_pt = "pt_fastmtt";
       std::string branch_name_eta = "eta_fastmtt";
@@ -305,16 +291,43 @@ int main(int argc, char **argv) {
       std::string branch_name_eta_datatype = "eta_fastmtt/F";
       std::string branch_name_phi_datatype = "phi_fastmtt/F";
       std::string branch_name_m_datatype = "m_fastmtt/F";
+      svfitfriend->Branch(branch_name_pt.c_str(), &pt_fastmtt,
+                        branch_name_pt_datatype.c_str());
+      svfitfriend->Branch(branch_name_eta.c_str(), &eta_fastmtt,
+                          branch_name_eta_datatype.c_str());
+      svfitfriend->Branch(branch_name_phi.c_str(), &phi_fastmtt,
+                          branch_name_phi_datatype.c_str());
+      svfitfriend->Branch(branch_name_m.c_str(), &m_fastmtt,
+                          branch_name_m_datatype.c_str());
+    }
+    else{
+      std::string branch_name_pt =
+          "pt_fastmtt" + std::string("__") + folder.c_str();
+      std::string branch_name_eta =
+          "eta_fastmtt" + std::string("__") + folder.c_str();
+      std::string branch_name_phi =
+          "phi_fastmtt" + std::string("__") + folder.c_str();
+      std::string branch_name_m =
+          "m_fastmtt" + std::string("__") + folder.c_str();
+      std::string branch_name_pt_datatype =
+          "pt_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
+      std::string branch_name_eta_datatype =
+          "eta_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
+      std::string branch_name_phi_datatype =
+          "phi_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
+      std::string branch_name_m_datatype =
+          "m_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
+      svfitfriend->Branch(branch_name_pt.c_str(), &pt_fastmtt,
+                        branch_name_pt_datatype.c_str());
+      svfitfriend->Branch(branch_name_eta.c_str(), &eta_fastmtt,
+                          branch_name_eta_datatype.c_str());
+      svfitfriend->Branch(branch_name_phi.c_str(), &phi_fastmtt,
+                          branch_name_phi_datatype.c_str());
+      svfitfriend->Branch(branch_name_m.c_str(), &m_fastmtt,
+                          branch_name_m_datatype.c_str());
     }
 
-    svfitfriend->Branch(branch_name_pt.c_str(), &pt_fastmtt,
-                        branch_name_pt_datatype.c_str());
-    svfitfriend->Branch(branch_name_eta.c_str(), &eta_fastmtt,
-                        branch_name_eta_datatype.c_str());
-    svfitfriend->Branch(branch_name_eta.c_str(), &phi_fastmtt,
-                        branch_name_phi_datatype.c_str());
-    svfitfriend->Branch(branch_name_eta.c_str(), &m_fastmtt,
-                        branch_name_m_datatype.c_str());
+
     // Float_t
     // pt_fastmtt_puppi,eta_fastmtt_puppi,phi_fastmtt_puppi,m_fastmtt_puppi;
     // svfitfriend->Branch("pt_fastmtt_puppi",&pt_fastmtt_puppi,"pt_fastmtt_puppi/F");
@@ -405,6 +418,9 @@ int main(int argc, char **argv) {
       eta_fastmtt = P4.Eta();
       phi_fastmtt = P4.Phi();
       m_fastmtt = P4.M();
+
+      std::cout << "pt: " << pt_fastmtt << " eta: " << eta_fastmtt << " phi: "
+                << phi_fastmtt << " m: " << m_fastmtt << std::endl;
 
       // // Run FastMTT with puppi
       // aFastMTTAlgo.run(measuredTauLeptons,  puppimetVec.X(), puppimetVec.Y(),
