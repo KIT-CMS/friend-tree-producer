@@ -192,9 +192,16 @@ def main():
                 )
 
     elif args.command == "collect":
-        collect.collect_outputs(
-            args.executable, args.cores, args.custom_workdir_path, args.mode
-        )
+        import subprocess
+        # run a bash script with a new ROOT version to collect the output files
+        # and copy them to the output directory
+        if args.executable == "FakeFactors":
+            collect.collect_outputs(
+                args.executable, args.cores, args.custom_workdir_path, args.mode
+            )
+        else:
+            val = subprocess.check_call([os.path.dirname(os.path.abspath(__file__)) + "/collect_with_RDF.sh", str(args.executable), str(args.cores), str(args.custom_workdir_path), str(args.mode)])
+
     elif args.command == "check":
         check.check_and_resubmit(
             args.executable, args.custom_workdir_path, args.mode, args.all, args.cores
