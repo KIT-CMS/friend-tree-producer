@@ -36,26 +36,6 @@ def write_trees_to_files(info):
         os.makedirs(nick_path)
     outputfilepath = os.path.join(nick_path, nick + ".root")
     ##################
-    # hadd version does normally not work :-(
-    # hadd_cmd = ["hadd -f", outputfile]
-    # # unpack the filenames to total paths
-    # for filepath in db["files"]:
-    #     full_filepath = os.path.join(collection_path, filepath)
-    #     hadd_cmd.append(full_filepath)
-    # try:
-    #     print(" ".join(hadd_cmd))
-    #     # dump the hadd_cmd to a file
-    #     with open("hadd_cmd.txt", "w") as hadd_file:
-    #         hadd_file.write(" ".join(hadd_cmd))
-    #     # run the hadd command
-    #     exit()
-    #     output = subprocess.check_output(" ".join(hadd_cmd), shell=True)
-    #     # use decode function to convert to string
-    #     # print('###############')
-    #     # print('Output:', output.decode("utf-8"))
-    # except subprocess.CalledProcessError as error:
-    #     print('Error code:', error.returncode, '. Output:', error.output.decode("utf-8"))
-    ##################
     # dump one db to a json file
     with open("jsondump.json", "w") as configdump:
         json.dump(db, configdump)
@@ -81,24 +61,6 @@ def write_trees_to_files(info):
                 else:
                     pass
                 rfile.Close()
-                # rfile = r.TFile.Open(rootfile_path)
-                # columns.extend([b.GetName() for b in rfile.Get("ntuple").GetListOfLeaves()])
-    # for first_last in db["first_last"]:
-    #     print(first_last)
-    #     nominal_file = "_".join([nick, "nominal", era, channel, str(first_last[0]), str(first_last[1])]) + ".root"
-    #     nominal_file_path = os.path.join(db["workdir"], "{}_{}_{}".format(era, channel, nick), nominal_file)
-    #     chain.AddFile(nominal_file_path)
-    #     # open the file to gat all the branches
-    #     rootfile = r.TFile.Open(nominal_file_path)
-    #     columns.add(set([b.GetName() for b in rootfile.Get("ntuple").GetListOfLeaves()]))
-    #     # now add all the friends to the friend chains
-    #     for friend in db["folders"]:
-    #         if friend != "nominal":
-    #             friend_file = "_".join([nick, friend, era, channel, str(first_last[0]), str(first_last[1])]) + ".root"
-    #             friend_file_path = os.path.join(db["workdir"], "{}_{}_{}".format(era, channel, nick), friend_file)
-    #             friendchains[friend].AddFile(friend_file_path)
-    #             rootfile = r.TFile.Open(friend_file_path)
-    #             columns.add(set([b.GetName() for b in rootfile.Get("ntuple").GetListOfLeaves()]))
     # add the friend chains to the base tree
     for friend in friendchains.keys():
         chain.AddFriend(friendchains[friend], friend)
@@ -143,7 +105,6 @@ def collect_outputs(executable, cores, custom_workdir_path, mode):
             first_last_combination = (first, last)
             filename = "_".join([nick, folder, era, channel, str(first), str(last)]) + ".root"
             filepath = os.path.join(workdir_path, "{}_{}_{}".format(era, channel, nick), filename)
-            # print("Adding nick: {}, channel: {}, folder: {}, era: {}, first: {}, last: {}".format(nick, channel, folder, era, first, last))
             if nick not in datasetdb:
                 datasetdb[nick] = {}
             if era not in datasetdb[nick]:
@@ -151,29 +112,13 @@ def collect_outputs(executable, cores, custom_workdir_path, mode):
             if channel not in datasetdb[nick][era]:
                 datasetdb[nick][era][channel] = {}
             if folder not in datasetdb[nick][era][channel].keys():
-                # print("{} not in {}".format(folder, datasetdb[nick][era][channel].keys()))
                 datasetdb[nick][era][channel][folder] = {}
                 datasetdb[nick][era][channel][folder]["files"] = []
                 datasetdb[nick][era][channel][folder]["first_last"] = []
-                # print("{} is now in {}".format(folder, datasetdb[nick][era][channel].keys()))
-
-            # elif mode == "xrootd":
-            #     with open(gc_path, "r") as gc_file:
-            #         for line in gc_file.readlines():
-            #             if "se path" in line:
-            #                 filepath = (
-            #                     server_xrootd["GridKA"]
-            #                     + "/store/"
-            #                     + line.split("/store/")[1].strip("\n")
-            #                     + "/"
-            #                     + filename
-            #                 )
-            #                 break
 
             datasetdb[nick][era][channel][folder]["first_last"].append(first_last_combination)
             datasetdb[nick][era][channel][folder]["files"].append(filepath)
             datasetdb[nick][era][channel][folder]["workdir"] = workdir_path
-            # print("Added nick: {}, channel: {}, folder: {}, era: {}, first: {}, last: {}".format(nick, channel, folder, era, first, last))
 
 
     if mode == "local":
@@ -186,11 +131,9 @@ def collect_outputs(executable, cores, custom_workdir_path, mode):
                     # from the nick, remove the last _#number
                     foldername = "_".join(nick.split("_")[:-1])
                     nick_path = os.path.join(collection_path, era, foldername, channel)
-                    # print("Writing {} to {}".format(nick, nick_path))
                     if not os.path.exists(nick_path):
                         os.makedirs(nick_path)
                     commands.append([nick, collection_path, datasetdb[nick][era][channel], era, channel, ])
-                    # write_trees_to_files([nick, collection_path, datasetdb[nick][era][channel], era, channel])
         print("Using {} cores to collect outputs".format(cores))
         pool = Pool(cores)
         pool.map(write_trees_to_files, commands)
@@ -198,15 +141,6 @@ def collect_outputs(executable, cores, custom_workdir_path, mode):
         #     write_trees_to_files(command)
     else:
         raise NotImplementedError("Mode {} is not implemented".format(mode))
-        # pool.map(
-        #     write_trees_to_files,
-        #     zip(nicks, [collection_path] * len(nicks), [datasetdb] * len(nicks)),
-        # )
-
-    # elif mode == "xrootd":  # it did not complete when using Pool in xrootd mode
-    #     for nick in nicks:
-    #         write_trees_to_files([nick, collection_path, datasetdb])
-
 
 # main function
 if __name__ == "__main__":
