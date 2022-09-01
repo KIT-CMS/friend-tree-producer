@@ -200,7 +200,8 @@ def main():
                 args.executable, args.cores, args.custom_workdir_path, args.mode
             )
         else:
-            val = subprocess.check_call([os.path.dirname(os.path.abspath(__file__)) + "/collect_with_RDF.sh", str(args.executable), str(args.cores), str(args.custom_workdir_path), str(args.mode)])
+            scriptpath = os.path.join(os.environ["CMSSW_BASE"], "src/HiggsAnalysis/friend-tree-producer/scripts/collect_with_RDF.py")
+            val = subprocess.check_call([os.path.join(os.environ["CMSSW_BASE"], "src/HiggsAnalysis/friend-tree-producer/scripts/collect_with_RDF.sh"), str(args.executable), str(args.cores), str(args.custom_workdir_path), str(args.mode), scriptpath])
 
     elif args.command == "check":
         check.check_and_resubmit(
