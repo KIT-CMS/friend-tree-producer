@@ -5,12 +5,13 @@ import numpy as np
 import time
 import os, json, logging
 import sys
-logger = logging.getLogger("job_managment")
-from streampaths import *
 import uproot
-
 from threading import Lock
+from streampaths import *
+
+logger = logging.getLogger("job_managment")
 s_print_lock = Lock()
+
 
 def extract_friend_paths(packed_paths):
     extracted_paths = {"em": [], "et": [], "mt": [], "tt": []}
@@ -111,29 +112,26 @@ def get_entries(*args):
         )
 
     F = uproot.open(f)
-    pipelines = [x.replace("__","") for x in F["variations"].keys()]
+    pipelines = [x.replace("__", "") for x in F["variations"].keys()]
     pipelines.append("nominal")
-    # print(shifts_tree.keys())
-    # # now get the shifts
-    # pipelines = [x.name for x in shifts_tree.branches]
-    # print("restrict_to_channels_file: {}".format(restrict_to_channels_file))
-    # print("pipelines: {}".format(pipelines))
-    # print("restrict_to_shifts: {}".format(restrict_to_shifts))
-    # print("Channel: {}".format(channel))
+    logger.debug("restrict_to_channels_file: {}".format(restrict_to_channels_file))
+    logger.debug("pipelines: {}".format(pipelines))
+    logger.debug("restrict_to_shifts: {}".format(restrict_to_shifts))
+    logger.debug("Channel: {}".format(channel))
     if len(restrict_to_channels_file) > 0 or len(restrict_to_channels) > 0:
         if channel not in restrict_to_channels_file:
             Global.counter += 1
             return None
     if len(restrict_to_shifts) > 0:
         pipelines = [p for p in pipelines if p in restrict_to_shifts]
-    # print("Pipelines after selecting: {}".format(pipelines))
+    logger.debug("Pipelines after selecting: {}".format(pipelines))
     pipelieness = {}
     try:
         nentries = F["ntuple"].numentries
     except:
         with s_print_lock:
-            print("Unexpected error: {}".format(sys.exc_info()[0]))
-            print("No Tree in file: %s" % (f))
+            logger.warning("Unexpected error: {}".format(sys.exc_info()[0]))
+            logger.warning("No Tree in file: %s" % (f))
             Global.counter += 1
             return None
     del F
@@ -200,8 +198,11 @@ def prepare_jobs(
             res.append(get_entries(e))
     for r in res:
         if r is not None and r[1] is not None:
-            ntuple_database[r[0]] = r[1]
-
+            nick = r[0]
+            data = r[1]
+            if nick not in ntuple_database.keys():
+                ntuple_database[nick] = []
+            ntuple_database[nick] += [data]
     job_database = {0: []}
     job_number = 0
     ### var for check if last file was completly processed
@@ -213,92 +214,105 @@ def prepare_jobs(
     sorted_nicks = ntuple_database.keys()
     sorted_nicks.sort()
     for nick in sorted_nicks:
-        sorted_pipelines = ntuple_database[nick]["pipelines"].keys()
-        sorted_pipelines.sort()
-        for p in sorted_pipelines:
-            n_entries = ntuple_database[nick]["pipelines"][p]
-            if n_entries > 0:
-                ####variable for checking if there are still some event of this pipeline that need distributing
-                logger.debug(
-                    str(
-                        "Processing:"
-                        + nick.split("_")[1]
-                        + "with "
-                        + str(n_entries)
-                        + " events"
-                    )
-                )
-                entriesRemainingCurPipe = n_entries
-                while entriesRemainingCurPipe > 0:
-                    ### check if we need to move on the the next job
-                    if curNofEventsInJob == events_per_job:
-                        curNofEventsInJob = 0
-                        job_number += 1
-                        job_database[job_number] = []
-                    else:
-                        pass
-                    job_database[job_number].append({})
-
-                    if lastTouchedEntry == -99:
-                        first = 0
-                    else:
-                        first = lastTouchedEntry + 1
-                    ## check if the events of this pipeline can be packed in this job
-                    if entriesRemainingCurPipe <= events_per_job - curNofEventsInJob:
-                        last = first + entriesRemainingCurPipe - 1
-                        lastTouchedEntry = -99
-                    else:
-                        last = first + (events_per_job - curNofEventsInJob) - 1
-                        lastTouchedEntry = last
-                    curNofEventsInJob += last - first + 1
-                    entriesRemainingCurPipe = entriesRemainingCurPipe - (
-                        last - first + 1
-                    )
-                    job_database[job_number][-1]["input"] = ntuple_database[nick][
-                        "path"
-                    ]
-                    job_database[job_number][-1]["era"] = ntuple_database[nick][
-                        "era"
-                    ]
-                    job_database[job_number][-1]["channel"] = ntuple_database[nick][
-                        "channel"
-                    ]
-                    if "FakeFactor" in executable and not "Imperial" in executable:
-                        job_database[job_number][-1]["cmsswbase"] = cmsswbase
-                    job_database[job_number][-1]["folder"] = p
-                    job_database[job_number][-1]["tree"] = "ntuple"
-                    job_database[job_number][-1]["first_entry"] = first
-                    job_database[job_number][-1]["last_entry"] = last
-                    job_database[job_number][-1]["status"] = "submitted"
-                    if "NNScore" in executable:
-                        job_database[job_number][-1]["conditional"] = int(conditional)
-                    channel = p.split("_")[0]
-                    if (
-                        channel in inputs_friends_folders.keys()
-                        and len(inputs_friends_folders[channel]) > 0
-                    ):
-                        job_database[job_number][-1]["input_friends"] = " ".join(
-                            [
-                                job_database[job_number][-1]["input"].replace(
-                                    inputs_base_folder, friend_folder
-                                )
-                                for friend_folder in inputs_friends_folders[channel]
-                            ]
-                        )
+        logger.info(
+            "Available channels: {} for Nick {}".format(
+                [x["channel"] for x in ntuple_database[nick]], nick
+            )
+        )
+        for i, data in enumerate(ntuple_database[nick]):
+            sorted_pipelines = ntuple_database[nick][i]["pipelines"].keys()
+            sorted_pipelines.sort()
+            for p in sorted_pipelines:
+                n_entries = ntuple_database[nick][i]["pipelines"][p]
+                if n_entries > 0:
+                    ####variable for checking if there are still some event of this pipeline that need distributing
                     logger.debug(
                         str(
-                            {
-                                "nick": nick,
-                                "job_number": job_number,
-                                "l/f": (first, last),
-                                "lastTouchedEntry": lastTouchedEntry,
-                                "curNofEventsInJob": curNofEventsInJob,
-                                "entriesRemCurPipe": entriesRemainingCurPipe,
-                            }
+                            "Processing:"
+                            + nick.split("_")[1]
+                            + "with "
+                            + str(n_entries)
+                            + " events"
                         )
                     )
-            else:
-                print "Warning: %s has no entries in pipeline %s" % (nick, p)
+                    entriesRemainingCurPipe = n_entries
+                    while entriesRemainingCurPipe > 0:
+                        ### check if we need to move on the the next job
+                        if curNofEventsInJob == events_per_job:
+                            curNofEventsInJob = 0
+                            job_number += 1
+                            job_database[job_number] = []
+                        else:
+                            pass
+                        job_database[job_number].append({})
+
+                        if lastTouchedEntry == -99:
+                            first = 0
+                        else:
+                            first = lastTouchedEntry + 1
+                        ## check if the events of this pipeline can be packed in this job
+                        if (
+                            entriesRemainingCurPipe
+                            <= events_per_job - curNofEventsInJob
+                        ):
+                            last = first + entriesRemainingCurPipe - 1
+                            lastTouchedEntry = -99
+                        else:
+                            last = first + (events_per_job - curNofEventsInJob) - 1
+                            lastTouchedEntry = last
+                        curNofEventsInJob += last - first + 1
+                        entriesRemainingCurPipe = entriesRemainingCurPipe - (
+                            last - first + 1
+                        )
+                        job_database[job_number][-1]["input"] = ntuple_database[nick][
+                            i
+                        ]["path"]
+                        job_database[job_number][-1]["era"] = ntuple_database[nick][i][
+                            "era"
+                        ]
+                        job_database[job_number][-1]["channel"] = ntuple_database[nick][
+                            i
+                        ]["channel"]
+                        if "FakeFactor" in executable and not "Imperial" in executable:
+                            job_database[job_number][-1]["cmsswbase"] = cmsswbase
+                        job_database[job_number][-1]["folder"] = p
+                        job_database[job_number][-1]["tree"] = "ntuple"
+                        job_database[job_number][-1]["first_entry"] = first
+                        job_database[job_number][-1]["last_entry"] = last
+                        job_database[job_number][-1]["status"] = "submitted"
+                        if "NNScore" in executable:
+                            job_database[job_number][-1]["conditional"] = int(
+                                conditional
+                            )
+                        channel = p.split("_")[0]
+                        if (
+                            channel in inputs_friends_folders.keys()
+                            and len(inputs_friends_folders[channel]) > 0
+                        ):
+                            job_database[job_number][-1]["input_friends"] = " ".join(
+                                [
+                                    job_database[job_number][-1]["input"].replace(
+                                        inputs_base_folder, friend_folder
+                                    )
+                                    for friend_folder in inputs_friends_folders[channel]
+                                ]
+                            )
+                        logger.debug(
+                            str(
+                                {
+                                    "nick": nick,
+                                    "job_number": job_number,
+                                    "l/f": (first, last),
+                                    "lastTouchedEntry": lastTouchedEntry,
+                                    "curNofEventsInJob": curNofEventsInJob,
+                                    "entriesRemCurPipe": entriesRemainingCurPipe,
+                                }
+                            )
+                        )
+                else:
+                    logger.warning(
+                        "Warning: %s has no entries in pipeline %s" % (nick, p)
+                    )
     logger.debug(str("Done creating the job_database"))
     for j in job_database.keys():
         logger.debug("Job {}:".format(j))
@@ -313,10 +327,12 @@ def prepare_jobs(
     if custom_workdir_path:
         if not os.path.exists(custom_workdir_path):
             os.makedirs(custom_workdir_path)
-        workdir_path = os.path.join(custom_workdir_path, executable.replace('.py', '') + "_workdir")
+        workdir_path = os.path.join(
+            custom_workdir_path, executable.replace(".py", "") + "_workdir"
+        )
     else:
         workdir_path = os.path.join(
-            os.environ["CMSSW_BASE"], "src", executable.replace('.py', '') + "_workdir"
+            os.environ["CMSSW_BASE"], "src", executable.replace(".py", "") + "_workdir"
         )
     if not os.path.exists(workdir_path):
         os.makedirs(workdir_path)
@@ -362,11 +378,15 @@ def prepare_jobs(
     shellscript_content = shellscript_template.format(
         COMMANDS=commands, TASKDIR=os.path.abspath(workdir_path)
     )
-    executable_path = os.path.join(workdir_path, "condor_" + executable.replace('.py', '') + ".sh")
-    gc_executable_path = os.path.join(
-        workdir_path, "condor_" + executable.replace('.py', '') + "_forGC.sh"
+    executable_path = os.path.join(
+        workdir_path, "condor_" + executable.replace(".py", "") + ".sh"
     )
-    jobdb_path = os.path.join(workdir_path, "condor_" + executable.replace('.py', '') + ".json")
+    gc_executable_path = os.path.join(
+        workdir_path, "condor_" + executable.replace(".py", "") + "_forGC.sh"
+    )
+    jobdb_path = os.path.join(
+        workdir_path, "condor_" + executable.replace(".py", "") + ".json"
+    )
     datasetdb_path = os.path.join(workdir_path, "dataset.json")
     with open(executable_path, "w") as shellscript:
         shellscript.write(shellscript_content)
@@ -378,7 +398,9 @@ def prepare_jobs(
         shellscript.close()
     if mode == "xrootd":
         global gc_date_tag
-        gc_date_tag = "{}_{}".format(executable.replace('.py', ''), time.strftime("%Y-%m-%d_%H-%M-%S"))
+        gc_date_tag = "{}_{}".format(
+            executable.replace(".py", ""), time.strftime("%Y-%m-%d_%H-%M-%S")
+        )
 
         os.makedirs(os.path.join(os.environ["CMSSW_BASE"], "src", gc_date_tag))
         with open(
@@ -386,7 +408,7 @@ def prepare_jobs(
                 os.environ["CMSSW_BASE"],
                 "src",
                 gc_date_tag,
-                "condor_{}_forGC.sh".format(executable.replace('.py', '')),
+                "condor_{}_forGC.sh".format(executable.replace(".py", "")),
             ),
             "w",
         ) as shellscript:
@@ -398,7 +420,7 @@ def prepare_jobs(
             os.chmod(executable_path, os.stat(executable_path).st_mode | stat.S_IEXEC)
             shellscript.close()
         gc_executable_path = "$CMSSW_BASE/src/{}/condor_{}_forGC.sh".format(
-            gc_date_tag, executable.replace('.py', '')
+            gc_date_tag, executable.replace(".py", "")
         )
     condorjdl_template_path = os.path.join(
         os.environ["CMSSW_BASE"],
@@ -418,6 +440,8 @@ def prepare_jobs(
             else se_path
         )
         extra_se_info = "se output files = *.root\nse output pattern = @XBASE@.@XEXT@"
+    else:
+        raise Exception("Mode {} not supported".format(mode))
     gc_template_path = os.path.join(
         os.environ["CMSSW_BASE"],
         "src/HiggsAnalysis/friend-tree-producer/data/grid-control_%s.conf"
@@ -430,34 +454,41 @@ def prepare_jobs(
             gc_content = gc_template.format(
                 STORAGE_DIR=gc_storage_dir,
                 EXTRA_SE_INFO=extra_se_info,
-                TASKDIR=workdir_path+"/gc_workdir",
+                TASKDIR=workdir_path + "/gc_workdir",
                 EXECUTABLE=gc_executable_path,
                 WALLTIME=time.strftime("%H:%M:%S", time.gmtime(walltime)),
                 NJOBS=job_number,
             )
         else:
-            print "Warning: Please set walltimes greater than 24 hours manually in gc config."
+            logger.warning(
+                "Warning: Please set walltimes greater than 24 hours manually in gc config."
+            )
             gc_content = gc_template.format(
                 STORAGE_DIR=gc_storage_dir,
                 EXTRA_SE_INFO=extra_se_info,
-                TASKDIR=workdir_path+"/gc_workdir",
+                TASKDIR=workdir_path + "/gc_workdir",
                 EXECUTABLE=gc_executable_path,
                 WALLTIME="24:00:00",
                 NJOBS=job_number,
             )
     else:
-        print "Warning: walltime for %s cluster not set. Setting it to 1h." % batch_cluster
+        logger.warning(
+            "Warning: walltime for %s cluster not set. Setting it to 1h."
+            % batch_cluster
+        )
         gc_content = gc_template.format(
             STORAGE_DIR=gc_storage_dir,
             EXTRA_SE_INFO=extra_se_info,
-            TASKDIR=workdir_path+"/gc_workdir",
+            TASKDIR=workdir_path + "/gc_workdir",
             EXECUTABLE=gc_executable_path,
             WALLTIME="1:00:00",
             NJOBS=job_number,
         )
     if mode == "xrootd":
         gc_content = gc_content.replace("&&(TARGET.ProvidesEKPResources==True)", "")
-    gc_path = os.path.join(workdir_path, "grid_control_{}.conf".format(executable.replace('.py', '')))
+    gc_path = os.path.join(
+        workdir_path, "grid_control_{}.conf".format(executable.replace(".py", ""))
+    )
     with open(gc_path, "w") as gc:
         gc.write(gc_content)
         gc.close()
@@ -470,7 +501,7 @@ def prepare_jobs(
     printout_list = []
     for index, (first, last) in enumerate(zip(first_borders, last_borders)):
         condorjdl_path = os.path.join(
-            workdir_path, "condor_" + executable.replace('.py', '') + "_%d.jdl" % index
+            workdir_path, "condor_" + executable.replace(".py", "") + "_%d.jdl" % index
         )
         argument_list = np.arange(first, last + 1)
         if not os.path.exists(os.path.join(workdir_path, "logging", str(index))):
@@ -479,20 +510,26 @@ def prepare_jobs(
         with open(arguments_path, "w") as arguments_file:
             arguments_file.write("\n".join([str(arg) for arg in argument_list]))
             arguments_file.close()
-        njobs = "arguments from %s/arguments_%d.txt" % (os.path.abspath(workdir_path), index)
+        njobs = "arguments from %s/arguments_%d.txt" % (
+            os.path.abspath(workdir_path),
+            index,
+        )
         if batch_cluster in ["etp6", "etp7", "lxplus6", "lxplus7", "rwth"]:
             if walltime > 0:
                 condorjdl_content = condorjdl_template.format(
-                    TASKDIR=workdir_path+"/gc_workdir",
+                    TASKDIR=workdir_path + "/gc_workdir",
                     TASKNUMBER=str(index),
                     EXECUTABLE=executable_path,
                     NJOBS=njobs,
                     WALLTIME=str(walltime),
                 )
             else:
-                print "Warning: walltime for %s cluster not set. Setting it to 1h." % batch_cluster
+                logger.warning(
+                    "Warning: walltime for %s cluster not set. Setting it to 1h."
+                    % batch_cluster
+                )
                 condorjdl_content = condorjdl_template.format(
-                    TASKDIR=workdir_path+"/gc_workdir",
+                    TASKDIR=workdir_path + "/gc_workdir",
                     TASKNUMBER=str(index),
                     EXECUTABLE=executable_path,
                     NJOBS=njobs,
@@ -510,17 +547,14 @@ def prepare_jobs(
             condorjdl.close()
         printout_list.append(
             "condor_submit {CONDORJDL}".format(
-                TASKDIR=os.path.abspath(workdir_path), CONDORJDL=os.path.abspath(condorjdl_path)
+                TASKDIR=os.path.abspath(workdir_path),
+                CONDORJDL=os.path.abspath(condorjdl_path),
             )
         )
-    print
-    print "To run the condor submission, execute the following:"
-    print
-    print "\n".join(printout_list)
-    print
-    print "Or with grid-control:"
-    print "go.py {} -Gc".format(gc_path)
-    print
+    print("\n To run the condor submission for the {} jobs, execute the following: \n".format(job_number))
+    print("\n".join(printout_list))
+    print("\n Or with grid-control: \n")
+    print("go.py {} -Gc".format(gc_path))
     with open(jobdb_path, "w") as db:
         db.write(json.dumps(job_database_copy, sort_keys=True, indent=2))
         db.close()
