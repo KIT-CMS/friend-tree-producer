@@ -13,34 +13,35 @@ logger = logging.getLogger("job_managment")
 s_print_lock = Lock()
 
 
-def extract_friend_paths(packed_paths):
-    extracted_paths = {"em": [], "et": [], "mt": [], "tt": []}
-    for pathname in packed_paths:
-        splitpath = pathname.split("{")
-        et_path, mt_path, tt_path = splitpath[0], splitpath[0], splitpath[0]
-        path_per_ch = {}
-        for channel in extracted_paths.keys():
-            path_per_ch[channel] = splitpath[0]
-        first = True
-        for split in splitpath:
-            if first:
-                first = False
-            else:
-                subsplit = split.split("}")
-                chdict = json.loads(
-                    '{"' + subsplit[0].replace(":", '":"').replace(",", '", "') + '"}'
-                )
-                for channel in extracted_paths.keys():
-                    if channel in chdict.keys() and path_per_ch[channel]:
-                        path_per_ch[channel] += chdict[channel] + subsplit[1]
-                    elif (
-                        len(chdict.keys()) > 0
-                    ):  # don't take channels into account if not provided by user unless there is no channel dependence at all
-                        path_per_ch[channel] = None
-        for channel in extracted_paths.keys():
-            if path_per_ch[channel]:
-                extracted_paths[channel].append(path_per_ch[channel])
-    return extracted_paths
+# def extract_friend_paths(packed_paths):
+#     print(packed_paths)
+#     extracted_paths = {"em": [], "et": [], "mt": [], "tt": []}
+#     for pathname in packed_paths:
+#         splitpath = pathname.split("{")
+#         et_path, mt_path, tt_path = splitpath[0], splitpath[0], splitpath[0]
+#         path_per_ch = {}
+#         for channel in extracted_paths.keys():
+#             path_per_ch[channel] = splitpath[0]
+#         first = True
+#         for split in splitpath:
+#             if first:
+#                 first = False
+#             else:
+#                 subsplit = split.split("}")
+#                 chdict = json.loads(
+#                     '{"' + subsplit[0].replace(":", '":"').replace(",", '", "') + '"}'
+#                 )
+#                 for channel in extracted_paths.keys():
+#                     if channel in chdict.keys() and path_per_ch[channel]:
+#                         path_per_ch[channel] += chdict[channel] + subsplit[1]
+#                     elif (
+#                         len(chdict.keys()) > 0
+#                     ):  # don't take channels into account if not provided by user unless there is no channel dependence at all
+#                         path_per_ch[channel] = None
+#         for channel in extracted_paths.keys():
+#             if path_per_ch[channel]:
+#                 extracted_paths[channel].append(path_per_ch[channel])
+#     return extracted_paths
 
 
 def get_entries(*args):
@@ -50,6 +51,7 @@ def get_entries(*args):
     restrict_to_channels = args[0]["restrict_to_channels"]
     restrict_to_shifts = args[0]["restrict_to_shifts"]
     Global = args[0]["Global"]
+    friend_paths = args[0]["friend_paths"]
 
     restrict_to_channels_file = copy.deepcopy(restrict_to_channels)
     nick = f.split("/")[-1].replace(".root", "")
@@ -145,7 +147,17 @@ def get_entries(*args):
         logger.debug("\t pipelines: \n\t\t%s" % "\n\t\t".join(pipelines))
         for w in warnings:
             logger.warning(w)
-    return [nick, {"path": f, "pipelines": pipelieness, "era": era, "channel": channel}]
+    friendlist = []
+    # check all friend files and add them to the friendlist
+    for friend_path in friend_paths:
+        # check if the file exists
+        # get the samplename
+        fileext_len = len(nick.split("_")[-1]) + 1
+        friend_file = os.path.join(friend_path, nick[:-fileext_len], channel, nick + ".root")
+        logger.info("Checking friend file: %s" % friend_file)
+        if os.path.isfile(friend_file):
+            friendlist.append(friend_file)
+    return [nick, {"path": f, "pipelines": pipelieness, "era": era, "channel": channel, "friends": friendlist}]
 
 
 def prepare_jobs(
@@ -168,11 +180,12 @@ def prepare_jobs(
     shadow_input_ntuples_directory=None,
     input_server=None,
     conditional=False,
+    trainings_folder=None,
     extra_parameters="",
 ):
     logger.debug("starting prepare_jobs")
     cmsswbase = os.environ["CMSSW_BASE"]
-    inputs_friends_folders = extract_friend_paths(inputs_friends_folders)
+    # inputs_friends_folders = extract_friend_paths(inputs_friends_folders)
     manager = Manager()
     ntuple_database = manager.dict()
     Global = manager.Namespace()
@@ -183,6 +196,7 @@ def prepare_jobs(
             "f": e,
             "restrict_to_channels": restrict_to_channels,
             "restrict_to_shifts": restrict_to_shifts,
+            "friend_paths": inputs_friends_folders,
             "Global": Global,
         },
         input_ntuples_list,
@@ -221,6 +235,7 @@ def prepare_jobs(
         )
         for i, data in enumerate(ntuple_database[nick]):
             sorted_pipelines = ntuple_database[nick][i]["pipelines"].keys()
+            friends = ntuple_database[nick][i]["friends"]
             sorted_pipelines.sort()
             for p in sorted_pipelines:
                 n_entries = ntuple_database[nick][i]["pipelines"][p]
@@ -281,21 +296,14 @@ def prepare_jobs(
                         job_database[job_number][-1]["last_entry"] = last
                         job_database[job_number][-1]["status"] = "submitted"
                         if "NNScore" in executable:
-                            job_database[job_number][-1]["conditional"] = int(
-                                conditional
-                            )
-                        channel = p.split("_")[0]
-                        if (
-                            channel in inputs_friends_folders.keys()
-                            and len(inputs_friends_folders[channel]) > 0
-                        ):
+                            if trainings_folder is None:
+                                raise Exception(
+                                    "You need to specify a training folder for NNScore"
+                                )
+                            job_database[job_number][-1]["trainings_folder"] = trainings_folder
+                        if len(friends) > 0:
                             job_database[job_number][-1]["input_friends"] = " ".join(
-                                [
-                                    job_database[job_number][-1]["input"].replace(
-                                        inputs_base_folder, friend_folder
-                                    )
-                                    for friend_folder in inputs_friends_folders[channel]
-                                ]
+                                friends
                             )
                         logger.debug(
                             str(

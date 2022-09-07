@@ -125,6 +125,7 @@ def main():
             args.shadow_input_ntuples_directory,
             args.input_server,
             conditional=args.conditional,
+            trainings_folder=args.trainings_folder,
             extra_parameters=args.extra_parameters,
         )
 

@@ -33,7 +33,7 @@ def setup_parser():
         help="Executable to be used for friend tree creation ob the batch system.",
     )
     parser.add_argument(
-        "--batch_cluster",
+        "--batch-cluster",
         required=True,
         choices=["naf", "naf7", "etp6", "etp7", "lxplus6", "lxplus7", "rwth"],
         help="Batch system cluster to be used.",
@@ -45,28 +45,28 @@ def setup_parser():
         help="Command to be done by the job manager.",
     )
     parser.add_argument(
-        "--input_ntuples_directory",
+        "--input-ntuples-directory",
         required=True,
         help="Directory where the input files can be found. The file structure in the directory should match */*.root wildcard.",
     )
     parser.add_argument(
-        "--shadow_input_ntuples_directory",
+        "--shadow-input-ntuples-directory",
         type=str,
         help="Directory where the input files can be found. The file structure in the directory should match */*.root wildcard.",
     )
     parser.add_argument(
-        "--events_per_job",
+        "--events-per-job",
         required=True,
         type=int,
         help="Event to be processed by each job",
     )
     parser.add_argument(
-        "--cmssw_tarball",
+        "--cmssw-tarball",
         required=False,
         help="Path to the tarball of this CMSSW working setup.",
     )
     parser.add_argument(
-        "--friend_ntuples_directories",
+        "--friend-ntuples-directories",
         nargs="+",
         default=[],
         help="Directory where the friend files can be found. The file structure in the directory should match the one of the base ntuples. Channel dependent parts of the path can be inserted like /commonpath/{et:et_folder, mt:mt_folder,tt:tt_folder}/commonpath.",
@@ -84,7 +84,7 @@ def setup_parser():
         help="Number of cores to be used for the collect command. [Default: %(default)s]",
     )
     parser.add_argument(
-        "--max_jobs_per_batch",
+        "--max-jobs-per-batch",
         default=10000,
         type=int,
         help="Maximal number of job per batch. [Default: %(default)s]",
@@ -97,14 +97,14 @@ def setup_parser():
         help="Definition of file access",
     )
     parser.add_argument(
-        "--input_server",
+        "--input-server",
         default="GridKA",
         choices=["GridKA", "DESY", "EOS", "RWTH"],
         type=str,
         help="Definition of server for inputs",
     )
     parser.add_argument(
-        "--output_server_xrootd",
+        "--output-server-xrootd",
         default="GridKA",
         choices=["GridKA", "DESY", "RWTH"],
         type=str,
@@ -114,31 +114,37 @@ def setup_parser():
         "--se-path", dest="se_path", default=None, type=str, help="se path for outputs"
     )
     parser.add_argument(
-        "--extended_file_access",
+        "--extended-file-access",
         default=None,
         type=str,
         help="Additional prefix for the file access, e.g. via xrootd.",
     )
     parser.add_argument(
-        "--custom_workdir_path",
+        "--custom-workdir-path",
         default=None,
         type=str,
         help="Absolute path to a workdir directory different from $CMSSW_BASE/src.",
     )
     parser.add_argument(
-        "--restrict_to_channels",
+        "--restrict-to-channels",
         nargs="+",
         default=["em","mt","et","tt"],
         help="Produce friends only for certain channels",
     )
     parser.add_argument(
-        "--restrict_to_shifts",
+        "--restrict-to-shifts",
         nargs="+",
         default=[],
         help="Produce friends only for certain shifts",
     )
     parser.add_argument(
-        "--restrict_to_samples_wildcards",
+        "--trainings-folder",
+        type=str,
+        default=None,
+        help="Folder with the training files",
+    )
+    parser.add_argument(
+        "--restrict-to-samples-wildcards",
         nargs="+",
         default=[],
         help="Produce friends only for samples matching the path wildcard",
