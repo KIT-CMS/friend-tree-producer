@@ -94,85 +94,11 @@ int main(int argc, char **argv) {
     last_entry = inputtree->GetEntries();
     include_last_ev = 0;
   }
-  // determine the correct quantities to be used
-  std::cout << "Checking required quantities" << std::endl;
-  std::vector<std::string> quantities;
-  // loop trough the leaves
-  TObjArray *leavescopy = inputtree->GetListOfLeaves();
-  int nLeaves = leavescopy->GetEntries();
-  for (int i = 0; i < nLeaves; i++) {
-    for (auto quantity : required_quantities) {
-      std::string leaf_name = leavescopy->At(i)->GetName();
-      if (leaf_name.find(quantity) != std::string::npos) {
-        quantities.push_back(leaf_name);
-        break;
-      }
-    }
-  }
-  // now print the quantities that are found
 
-  std::map<std::string, std::string> quantity_names;
-  // if we are not doing nominal, we have to potentially modify variable names
-  if (folder != "nominal") {
-    std::map<std::string, std::vector<std::string>> pipeline_mapping =
-        build_quantities_map(quantities);
-
-    // now loop thought the required quantities
-    for (size_t i = 0; i < required_quantities.size(); i++) {
-      // check if the quantity is in the pipeline mapping map
-      if (pipeline_mapping.find(required_quantities[i]) !=
-          pipeline_mapping.end()) {
-        // now if the folder is found in the vector of the mapping, add the
-        // quantity to the list of quantity names
-        if (std::find(pipeline_mapping[required_quantities[i]].begin(),
-                      pipeline_mapping[required_quantities[i]].end(), folder) !=
-            pipeline_mapping[required_quantities[i]].end()) {
-          std::string shifted_name =
-              required_quantities[i] + std::string("__") + folder;
-          run_required = true;
-          quantity_names.insert(std::pair<std::string, std::string>(
-              required_quantities[i], shifted_name));
-
-          continue;
-        } else {
-          quantity_names.insert(std::pair<std::string, std::string>(
-              required_quantities[i], required_quantities[i]));
-        }
-      } else {
-        quantity_names.insert(std::pair<std::string, std::string>(
-            required_quantities[i], required_quantities[i]));
-      }
-    }
-  } else {
-    run_required = true;
-    for (size_t i = 0; i < required_quantities.size(); i++) {
-      quantity_names.insert(std::pair<std::string, std::string>(
-          required_quantities[i], required_quantities[i]));
-    }
-  }
-  // if the lengpph of quantites is not equal to the length of
-  // required_quantities, something went wrong
-  if (quantity_names.size() != required_quantities.size()) {
-    std::cout << "Something went wrong, the number of quantities to be used is "
-                 "not equal to the number of required quantities"
-              << std::endl;
-    // print the two vectors
-    std::cout << "The quantities to be used are:" << std::endl;
-    for (auto quantity : quantity_names) {
-      std::cout << quantity.first << std::endl;
-    }
-    std::cout << "The required quantities are:" << std::endl;
-    for (auto quantity : required_quantities) {
-      std::cout << quantity << std::endl;
-    }
-    return 1;
-  }
-
-  // now print the quantity_names map
-  std::cout << "Final set of variables to be used" << std::endl;
-  for (auto quantity : quantity_names) {
-    std::cout << quantity.first << " " << quantity.second << std::endl;
-  }
+  std::vector<std::string> quantities =
+      find_quantities(inputtree, required_quantities);
+  std::map<std::string, std::string> quantity_names = build_quantities_map(
+      folder, quantities, required_quantities, run_required, false);
 
   // Initialize output file
   std::cout << "Initializing output file" << std::endl;
@@ -180,11 +106,14 @@ int main(int argc, char **argv) {
             << channel << " " << first_entry << " " << last_entry << " "
             << organize_outputs << std::endl;
   std::string outputname = outputname_from_settings_crown(
-      input, folder, first_entry, last_entry, output_dir, era, channel, organize_outputs);
-  if (organize_outputs){
+      input, folder, first_entry, last_entry, output_dir, era, channel,
+      organize_outputs);
+  if (organize_outputs) {
     std::cout << "Output file: " << outputname << std::endl;
-    std::cout << "Creating folder: " << filename_from_inputpath(input) << std::endl;
-    boost::filesystem::create_directories(era + "_" + channel + "_" + filename_from_inputpath(input));
+    std::cout << "Creating folder: " << filename_from_inputpath(input)
+              << std::endl;
+    boost::filesystem::create_directories(era + "_" + channel + "_" +
+                                          filename_from_inputpath(input));
   }
   TFile *out = TFile::Open(outputname.c_str(), "recreate");
   std::cout << "Output file: " << outputname << std::endl;
@@ -197,7 +126,7 @@ int main(int argc, char **argv) {
   // Create output tree
   TTree *svfitfriend = new TTree("ntuple", "svfit friend tree");
 
-    // do not rerun everything for jes and jer
+  // do not rerun everything for jes and jer
   if (folder.find("jes") != std::string::npos ||
       folder.find("jer") != std::string::npos) {
     run_required = false;
@@ -239,7 +168,8 @@ int main(int argc, char **argv) {
     inputtree->SetBranchAddress(quantity_names["eta_2"].c_str(), &eta_2);
     inputtree->SetBranchAddress(quantity_names["phi_2"].c_str(), &phi_2);
     inputtree->SetBranchAddress(quantity_names["mass_2"].c_str(), &m_2);
-    inputtree->SetBranchAddress(quantity_names["decaymode_2"].c_str(), &decayMode_2);
+    inputtree->SetBranchAddress(quantity_names["decaymode_2"].c_str(),
+                                &decayMode_2);
 
     // Quantities of MET
     std::cout << "Setting branches for MET" << std::endl;
@@ -280,7 +210,9 @@ int main(int argc, char **argv) {
 
     // FastMTT outputs
     Float_t pt_fastmtt, eta_fastmtt, phi_fastmtt, m_fastmtt;
-    std::string branch_name_pt, branch_name_eta, branch_name_phi, branch_name_m, branch_name_pt_datatype, branch_name_eta_datatype, branch_name_phi_datatype, branch_name_m_datatype;
+    std::string branch_name_pt, branch_name_eta, branch_name_phi, branch_name_m,
+        branch_name_pt_datatype, branch_name_eta_datatype,
+        branch_name_phi_datatype, branch_name_m_datatype;
 
     if (folder == "nominal") {
       std::string branch_name_pt = "pt_fastmtt";
@@ -292,15 +224,14 @@ int main(int argc, char **argv) {
       std::string branch_name_phi_datatype = "phi_fastmtt/F";
       std::string branch_name_m_datatype = "m_fastmtt/F";
       svfitfriend->Branch(branch_name_pt.c_str(), &pt_fastmtt,
-                        branch_name_pt_datatype.c_str());
+                          branch_name_pt_datatype.c_str());
       svfitfriend->Branch(branch_name_eta.c_str(), &eta_fastmtt,
                           branch_name_eta_datatype.c_str());
       svfitfriend->Branch(branch_name_phi.c_str(), &phi_fastmtt,
                           branch_name_phi_datatype.c_str());
       svfitfriend->Branch(branch_name_m.c_str(), &m_fastmtt,
                           branch_name_m_datatype.c_str());
-    }
-    else{
+    } else {
       std::string branch_name_pt =
           "pt_fastmtt" + std::string("__") + folder.c_str();
       std::string branch_name_eta =
@@ -311,14 +242,14 @@ int main(int argc, char **argv) {
           "m_fastmtt" + std::string("__") + folder.c_str();
       std::string branch_name_pt_datatype =
           "pt_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
-      std::string branch_name_eta_datatype =
-          "eta_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
-      std::string branch_name_phi_datatype =
-          "phi_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
+      std::string branch_name_eta_datatype = "eta_fastmtt" + std::string("__") +
+                                             folder.c_str() + std::string("/F");
+      std::string branch_name_phi_datatype = "phi_fastmtt" + std::string("__") +
+                                             folder.c_str() + std::string("/F");
       std::string branch_name_m_datatype =
           "m_fastmtt" + std::string("__") + folder.c_str() + std::string("/F");
       svfitfriend->Branch(branch_name_pt.c_str(), &pt_fastmtt,
-                        branch_name_pt_datatype.c_str());
+                          branch_name_pt_datatype.c_str());
       svfitfriend->Branch(branch_name_eta.c_str(), &eta_fastmtt,
                           branch_name_eta_datatype.c_str());
       svfitfriend->Branch(branch_name_phi.c_str(), &phi_fastmtt,
@@ -326,7 +257,6 @@ int main(int argc, char **argv) {
       svfitfriend->Branch(branch_name_m.c_str(), &m_fastmtt,
                           branch_name_m_datatype.c_str());
     }
-
 
     // Float_t
     // pt_fastmtt_puppi,eta_fastmtt_puppi,phi_fastmtt_puppi,m_fastmtt_puppi;
@@ -419,8 +349,9 @@ int main(int argc, char **argv) {
       phi_fastmtt = P4.Phi();
       m_fastmtt = P4.M();
 
-      std::cout << "pt: " << pt_fastmtt << " eta: " << eta_fastmtt << " phi: "
-                << phi_fastmtt << " m: " << m_fastmtt << std::endl;
+      // std::cout << "pt: " << pt_fastmtt << " eta: " << eta_fastmtt << " phi:
+      // "
+      //           << phi_fastmtt << " m: " << m_fastmtt << std::endl;
 
       // // Run FastMTT with puppi
       // aFastMTTAlgo.run(measuredTauLeptons,  puppimetVec.X(), puppimetVec.Y(),

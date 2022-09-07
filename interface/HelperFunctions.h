@@ -65,17 +65,18 @@ std::string outputname_from_settings_crown(
 }
 
 std::map<std::string, std::vector<std::string>>
-build_quantities_map(std::vector<std::string> quantities) {
+build_pipeline_mapping(std::vector<std::string> quantities) {
+  // function used to build a map with the structure
+  // { "pipeline" : [ "quantity", "quantity_1", "quantity_2", ... ] }
+  // containing all the quantities available for a given pipeline
   // first, loop over all quantities and split the string by __ to get all
   // pipelines
   std::map<std::string, std::vector<std::string>> map;
   for (auto quantity : quantities) {
     std::vector<std::string> pipeline_split;
     boost::algorithm::split_regex(pipeline_split, quantity, boost::regex("__"));
-    // boost::split(pipeline_split,quantity, boost::is_any_of("__"));
+    // no match
     if (pipeline_split.size() < 2) {
-      std::cout << "Warning: quantity " << quantity
-                << " does not contain a pipeline, cont." << std::endl;
       continue;
     }
     std::string quantity_name = pipeline_split.at(0);
@@ -86,6 +87,135 @@ build_quantities_map(std::vector<std::string> quantities) {
     map[quantity_name].push_back(pipeline);
   }
   return map;
+}
+
+std::map<std::string, std::string>
+build_quantities_map(std::string pipeline, std::vector<std::string> quantities,
+                     std::vector<std::string> required_quantities,
+                     bool &run_required, bool verbose = false) {
+  // This function builds a map with the structure
+  // { "quantity" : "quantitiy_name_to_be_used" }
+  // depending on the pipeline, shifted quantities have to be used if available
+  std::map<std::string, std::string> quantity_names;
+  // if we are not doing nominal, we have to potentially modify variable names
+  if (pipeline != "nominal") {
+    std::map<std::string, std::vector<std::string>> pipeline_mapping =
+        build_pipeline_mapping(quantities);
+
+    // now loop thought the required quantities
+    for (size_t i = 0; i < required_quantities.size(); i++) {
+      // check if the quantity is in the pipeline mapping map
+      if (pipeline_mapping.find(required_quantities[i]) !=
+          pipeline_mapping.end()) {
+        // now if the pipeline is found in the vector of the mapping, add the
+        // quantity to the list of quantity names
+        if (std::find(pipeline_mapping[required_quantities[i]].begin(),
+                      pipeline_mapping[required_quantities[i]].end(),
+                      pipeline) !=
+            pipeline_mapping[required_quantities[i]].end()) {
+          std::string shifted_name =
+              required_quantities[i] + std::string("__") + pipeline;
+          run_required = true;
+          quantity_names.insert(std::pair<std::string, std::string>(
+              required_quantities[i], shifted_name));
+
+          continue;
+        } else {
+          quantity_names.insert(std::pair<std::string, std::string>(
+              required_quantities[i], required_quantities[i]));
+        }
+      } else {
+        quantity_names.insert(std::pair<std::string, std::string>(
+            required_quantities[i], required_quantities[i]));
+      }
+    }
+  } else {
+    run_required = true;
+    for (size_t i = 0; i < required_quantities.size(); i++) {
+      quantity_names.insert(std::pair<std::string, std::string>(
+          required_quantities[i], required_quantities[i]));
+    }
+  }
+  // if the lengpph of quantites is not equal to the length of
+  // required_quantities, something went wrong
+  if (quantity_names.size() != required_quantities.size()) {
+    std::cout << "Something went wrong, the number of quantities to be used is "
+                 "not equal to the number of required quantities"
+              << std::endl;
+    // print the two vectors
+    std::cout << "The quantities to be used are:" << std::endl;
+    for (auto quantity : quantity_names) {
+      std::cout << quantity.first << std::endl;
+    }
+    std::cout << "The required quantities are:" << std::endl;
+    for (auto quantity : required_quantities) {
+      std::cout << quantity << std::endl;
+    }
+    exit(1);
+  }
+  if (verbose) {
+    // now print the quantity_names map
+    std::cout << "Final set of variables to be used" << std::endl;
+    for (auto quantity : quantity_names) {
+      std::cout << quantity.first << " " << quantity.second << std::endl;
+    }
+  }
+  return quantity_names;
+}
+
+std::vector<std::string>
+find_quantities(TTree *inputtree,
+                std::vector<std::string> required_quantities) {
+  // determine the correct quantities to be used
+  std::cout << "Checking required quantities" << std::endl;
+  std::vector<std::string> quantities;
+  // loop trough the leaves
+  TObjArray *leavescopy = inputtree->GetListOfLeaves();
+  // print all leaves
+  for (int i = 0; i < leavescopy->GetEntries(); i++) {
+    std::cout << leavescopy->At(i)->GetName() << std::endl;
+  }
+  int nLeaves = leavescopy->GetEntries();
+  for (int i = 0; i < nLeaves; i++) {
+    for (auto quantity : required_quantities) {
+      std::string leaf_name = leavescopy->At(i)->GetName();
+      if (leaf_name.find(quantity) != std::string::npos) {
+        quantities.push_back(leaf_name);
+        break;
+      }
+    }
+  }
+  return quantities;
+}
+
+std::vector<std::string>
+find_quantities(TTree *inputtree, std::vector<std::string> required_quantities,
+                std::vector<std::string> friend_trees) {
+  // determine the correct quantities to be used
+  std::cout << "Checking required quantities" << std::endl;
+  std::vector<std::string> quantities;
+  // loop trough the leaves
+  TObjArray *leavescopy = inputtree->GetListOfLeaves();
+  // add all the fiend tree quantities
+  for (auto friend_tree_path : friend_trees) {
+    TFile *friend_file = TFile::Open(friend_tree_path.c_str());
+    TTree *friend_tree = (TTree *)friend_file->Get("ntuple");
+    TObjArray *friend_leaves = friend_tree->GetListOfLeaves();
+    for (int i = 0; i < friend_leaves->GetEntries(); i++) {
+      leavescopy->Add(friend_leaves->At(i));
+    }
+  }
+  int nLeaves = leavescopy->GetEntries();
+  for (int i = 0; i < nLeaves; i++) {
+    for (auto quantity : required_quantities) {
+      std::string leaf_name = leavescopy->At(i)->GetName();
+      if (leaf_name.find(quantity) != std::string::npos) {
+        quantities.push_back(leaf_name);
+        break;
+      }
+    }
+  }
+  return quantities;
 }
 
 const auto default_float = -10.f;
