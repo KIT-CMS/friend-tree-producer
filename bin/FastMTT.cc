@@ -101,27 +101,15 @@ int main(int argc, char **argv) {
       folder, quantities, required_quantities, run_required, false);
 
   // Initialize output file
-  std::cout << "Initializing output file" << std::endl;
-  std::cout << "Passing args: " << input << " " << folder << " " << era << " "
-            << channel << " " << first_entry << " " << last_entry << " "
-            << organize_outputs << std::endl;
   std::string outputname = outputname_from_settings_crown(
       input, folder, first_entry, last_entry, output_dir, era, channel,
       organize_outputs);
   if (organize_outputs) {
-    std::cout << "Output file: " << outputname << std::endl;
-    std::cout << "Creating folder: " << filename_from_inputpath(input)
-              << std::endl;
     boost::filesystem::create_directories(era + "_" + channel + "_" +
                                           filename_from_inputpath(input));
   }
   TFile *out = TFile::Open(outputname.c_str(), "recreate");
-  std::cout << "Output file: " << outputname << std::endl;
-  std::cout << "input file: " << input << std::endl;
-  std::cout << "filename_from_inputpath " << filename_from_inputpath(input)
-            << std::endl;
-  // out->mkdir(folder.c_str());
-  // out->cd(folder.c_str());
+  std::cout << "Initializing Output file: " << outputname << std::endl;
 
   // Create output tree
   TTree *svfitfriend = new TTree("ntuple", "svfit friend tree");

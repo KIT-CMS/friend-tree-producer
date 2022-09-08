@@ -159,10 +159,18 @@ int main(int argc, char **argv) {
   inputtree->SetBranchAddress("event", &event);
   std::cout << "Inputs intialized" << std::endl;
   // Initialize output file
-  auto outputname =
-      outputname_from_settings(input, folder, first_entry, last_entry);
-  boost::filesystem::create_directories(filename_from_inputpath(input));
-  auto out = TFile::Open(outputname.c_str(), "recreate");
+  std::cout << "Initializing output file" << std::endl;
+  std::cout << "Passing args: " << input << " " << folder << " " << era << " "
+            << channel << " " << first_entry << " " << last_entry << " " << std::endl;
+  std::string outputname = outputname_from_settings_crown(
+      input, folder, first_entry, last_entry, "", era, channel,
+      true);
+  std::cout << "Output file: " << outputname << std::endl;
+  std::cout << "Creating folder: " << filename_from_inputpath(input)
+            << std::endl;
+  boost::filesystem::create_directories(era + "_" + channel + "_" +
+                                        filename_from_inputpath(input));
+  TFile *out = TFile::Open(outputname.c_str(), "recreate");
 
   // Create output tree
   auto nnfriend = new TTree("ntuple", "NN score friend tree");
