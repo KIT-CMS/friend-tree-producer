@@ -1,10 +1,15 @@
-import os, json, logging, gc, copy
 import argparse
-from multiprocessing import Lock, Process, Queue, current_process
+import copy
+import gc
+import json
+import logging
+import os
 import queue
-import ROOT as r
 import shutil
 import subprocess
+from multiprocessing import Lock, Process, Queue, current_process
+
+import ROOT as r
 
 logger = logging.getLogger("job_managment")
 r.PyConfig.IgnoreCommandLineOptions = True
@@ -45,7 +50,11 @@ def write_trees_to_files(tasks_to_accomplish, tasks_that_are_done):
         outputfilepath = os.path.join(nick_path, nick + ".root")
         ##################
         # dump one db to a json file
-        print("For {} combining {} files".format(nick, len([db[friend]["files"] for friend in db.keys()])))
+        print(
+            "For {} combining {} files".format(
+                nick, len([db[friend]["files"] for friend in db.keys()])
+            )
+        )
         with open("jsondump.json", "w") as configdump:
             json.dump(db, configdump)
         chain = r.TChain("ntuple")
@@ -67,7 +76,9 @@ def write_trees_to_files(tasks_to_accomplish, tasks_that_are_done):
                     # if the file is not available, skip it
                     if os.path.exists(rootfile_path):
                         rfile = r.TFile.Open(rootfile_path)
-                        leavelist.append(copy.deepcopy(rfile.Get("ntuple").GetListOfLeaves()))
+                        leavelist.append(
+                            copy.deepcopy(rfile.Get("ntuple").GetListOfLeaves())
+                        )
                         rfile.Close()
                         r.SetOwnership(rfile, True)
                         if len(leavelist[-1]) != 0:
@@ -98,7 +109,11 @@ def write_trees_to_files(tasks_to_accomplish, tasks_that_are_done):
         del df
         del leavelist
         gc.collect()
-        print("Found {} events for {}, written to outputfile".format(chain_numentries, nick))
+        print(
+            "Found {} events for {}, written to outputfile".format(
+                chain_numentries, nick
+            )
+        )
         tasks_that_are_done.put(nick)
     return True
 
@@ -139,8 +154,8 @@ def collect_outputs(executable, cores, custom_workdir_path, mode):
             first = jobdb[str(jobnumber)][subjobnumber]["first_entry"]
             last = jobdb[str(jobnumber)][subjobnumber]["last_entry"]
             first_last_combination = (first, last)
-            filename = "_".join([nick, folder, str(first), str(last)]) + ".root"
-            filepath = os.path.join(workdir_path, "{}".format(nick), filename)
+            filename = "_".join([nick, folder, era, channel, str(first), str(last)]) + ".root"
+            filepath = os.path.join(workdir_path, "{}_{}_{}".format(era, channel, nick), filename)
             if nick not in datasetdb:
                 datasetdb[nick] = {}
             if era not in datasetdb[nick]:
@@ -199,7 +214,9 @@ def collect_outputs(executable, cores, custom_workdir_path, mode):
 
     # creating processes
     for w in range(number_of_processes):
-        p = Process(target=write_trees_to_files, args=(tasks_to_accomplish, tasks_that_are_done))
+        p = Process(
+            target=write_trees_to_files, args=(tasks_to_accomplish, tasks_that_are_done)
+        )
         processes.append(p)
         p.start()
 
