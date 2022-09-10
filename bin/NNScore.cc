@@ -161,10 +161,10 @@ int main(int argc, char **argv) {
   // Initialize output file
   std::cout << "Initializing output file" << std::endl;
   std::cout << "Passing args: " << input << " " << folder << " " << era << " "
-            << channel << " " << first_entry << " " << last_entry << " " << std::endl;
+            << channel << " " << first_entry << " " << last_entry << " "
+            << std::endl;
   std::string outputname = outputname_from_settings_crown(
-      input, folder, first_entry, last_entry, "", era, channel,
-      true);
+      input, folder, first_entry, last_entry, "", era, channel, true);
   std::cout << "Output file: " << outputname << std::endl;
   std::cout << "Creating folder: " << filename_from_inputpath(input)
             << std::endl;
@@ -179,9 +179,18 @@ int main(int argc, char **argv) {
   std::map<std::string, Float_t> outputs;
   for (size_t n = 0; n < nnconfig0.outputs.size(); n++) {
     outputs[nnconfig0.outputs.at(n)] = 0.0;
-    nnfriend->Branch((channel + "_" + nnconfig0.outputs.at(n)).c_str(),
-                     &(outputs.find(nnconfig0.outputs.at(n))->second),
-                     (channel + "_" + nnconfig0.outputs.at(n) + "/F").c_str());
+    if (folder == "nominal") {
+      std::string output_name = channel + "_" + nnconfig0.outputs.at(n);
+      nnfriend->Branch((output_name).c_str(),
+                       &(outputs.find(nnconfig0.outputs.at(n))->second),
+                       (output_name + "/F").c_str());
+    } else {
+      std::string output_name =
+          channel + "_" + nnconfig0.outputs.at(n) + "__" + folder;
+      nnfriend->Branch((output_name).c_str(),
+                       &(outputs.find(nnconfig0.outputs.at(n))->second),
+                       (output_name + "/F").c_str());
+    }
   }
   Float_t max_score = default_float;
   Float_t max_index = 0.0;
@@ -189,14 +198,19 @@ int main(int argc, char **argv) {
   if (folder == "nominal") {
     max_score_name = channel + "_max_score";
     max_index_name = channel + "_max_index";
+    nnfriend->Branch(max_score_name.c_str(), &max_score,
+                     (max_score_name + "/F").c_str());
+    nnfriend->Branch(max_index_name.c_str(), &max_index,
+                     (max_index_name + "/F").c_str());
   } else {
     max_score_name = channel + "_max_score__" + folder;
     max_index_name = channel + "_max_index__" + folder;
+    nnfriend->Branch(max_score_name.c_str(), &max_score,
+                     (max_score_name + "/F").c_str());
+    nnfriend->Branch(max_index_name.c_str(), &max_index,
+                     (max_index_name + "/F").c_str());
   }
-  nnfriend->Branch(max_score_name.c_str(), &max_score,
-                   (max_score_name + "/F").c_str());
-  nnfriend->Branch(max_index_name.c_str(), &max_index,
-                   (max_index_name + "/F").c_str());
+
   std::cout << "Setup done" << std::endl;
   // Loop over desired events of the input tree & compute outputs
   int total_events = last_entry - first_entry;
