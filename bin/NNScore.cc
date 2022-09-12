@@ -62,12 +62,28 @@ int main(int argc, char **argv) {
   // Access input file and tree
   std::cout << "Access input file and tree" << std::endl;
   TFile *in = TFile::Open(input.c_str(), "read");
-  // TDirectoryFile *dir = (TDirectoryFile *)in->Get(folder.c_str());
   TTree *inputtree = (TTree *)in->Get(tree.c_str());
-  for (std::vector<std::string>::const_iterator s = input_friends.begin();
-       s != input_friends.end(); ++s) {
-    inputtree->AddFriend(tree.c_str(), (&(*s))->c_str());
+  std::map<std::string, TTree *> input_friends_trees;
+  // now loop over all input friends and add them to the map
+  for (auto &input_friend : input_friends) {
+    std::cout << "Access input friend file and tree" << std::endl;
+    TFile *in_friend = TFile::Open(input_friend.c_str(), "read");
+    TTree *inputtree_friend = (TTree *)in_friend->Get(tree.c_str());
+    input_friends_trees[input_friend] = inputtree_friend;
+    inputtree->AddFriend(input_friends_trees[input_friend]);
   }
+
+  // for (std::vector<std::string>::const_iterator s = input_friends.begin();
+  //      s != input_friends.end(); ++s) {
+  //   auto f = std::unique_ptr<TFile>(TFile::Open((&(*s))->c_str()));
+  //   input_friends_trees[&(*s)] = f->Get<TTree>(tree.c_str());
+  //   std::cout << "Adding friend tree " << *s << " from tree " << tree
+  //             << std::endl;
+
+  //   inputtree->AddFriend(input_friends_trees[&(*s)]);
+  // }
+  // print all quantities in the tree
+  inputtree->GetListOfFriends()->Print();
   std::cout << "Systematic: " << folder << std::endl;
   // Set up lwtnn
   std::cout << "Set up lwtnn from " << trainings_folder << std::endl;
@@ -103,8 +119,21 @@ int main(int argc, char **argv) {
   std::map<std::string, Double_t> double_inputs;
   std::map<std::string, Int_t> int_inputs;
   size_t input_size = nnconfig0.inputs.size();
+  std::vector<std::string> available_qunatities;
+  TObjArray *leavescopy = inputtree->GetListOfLeaves();
+  for (int i = 0; i < leavescopy->GetEntries(); ++i) {
+    available_qunatities.push_back(leavescopy->At(i)->GetName());
+  }
+  // add all the quantites from the friends as well
+  for (auto &input_friend : input_friends) {
+    TObjArray *leavescopy_friend =
+        input_friends_trees[input_friend]->GetListOfLeaves();
+    for (int i = 0; i < leavescopy_friend->GetEntries(); ++i) {
+      available_qunatities.push_back(leavescopy_friend->At(i)->GetName());
+    }
+  }
   std::vector<std::string> quantities =
-      find_quantities(inputtree, required_quantities, input_friends);
+      find_quantities(available_qunatities, required_quantities);
   std::map<std::string, std::string> quantity_names = build_quantities_map(
       folder, quantities, required_quantities, run_required, false);
   // print the quantities map
@@ -130,25 +159,28 @@ int main(int argc, char **argv) {
     return 0;
   }
 
+  inputtree->SetBranchStatus("*",0);
   for (size_t n = 0; n < input_size; n++) {
-    std::string quantity_name = quantity_names[nnconfig0.inputs.at(n).name];
+    std::string unshifted_name = nnconfig0.inputs.at(n).name;
+    std::string quantity_name = quantity_names[unshifted_name];
     std::string input_type =
         inputtree->GetLeaf(quantity_name.c_str())->GetTypeName();
+    inputtree->SetBranchStatus(quantity_name.c_str(), 1);
+    std::cout << "Input " << n << ": " << quantity_name << " (" << input_type
+              << ")" << std::endl;
     if (input_type == "Float_t") {
-      float_inputs[nnconfig0.inputs.at(n).name] = 0.0;
-      inputtree->SetBranchAddress(
-          quantity_name.c_str(),
-          &(float_inputs.find(nnconfig0.inputs.at(n).name)->second));
+        float_inputs[unshifted_name] = -10.0;
+        inputtree->SetBranchAddress(
+            quantity_name.c_str(),
+            &(float_inputs.find(unshifted_name)->second));
     } else if (input_type == "Int_t") {
-      int_inputs[nnconfig0.inputs.at(n).name] = 0;
-      inputtree->SetBranchAddress(
-          quantity_name.c_str(),
-          &(int_inputs.find(nnconfig0.inputs.at(n).name)->second));
+      int_inputs[unshifted_name] = 0;
+      inputtree->SetBranchAddress(quantity_name.c_str(),
+                                  &(int_inputs.find(unshifted_name)->second));
     } else if (input_type == "Double_t") {
-      double_inputs[nnconfig0.inputs.at(n).name] = 0.0;
+      double_inputs[unshifted_name] = 0.0;
       inputtree->SetBranchAddress(
-          quantity_name.c_str(),
-          &(double_inputs.find(nnconfig0.inputs.at(n).name)->second));
+          quantity_name.c_str(), &(double_inputs.find(unshifted_name)->second));
     } else {
       std::cout << "Type " << input_type
                 << " not implemented! Exiting with error code '1'" << std::endl;
@@ -243,8 +275,7 @@ int main(int argc, char **argv) {
     }
     // print the model_inputs
     // std::cout << "Model inputs: " << std::endl;
-    // for(auto& input : model_inputs)
-    // {
+    // for (auto &input : model_inputs) {
     //   std::cout << "    " << input.first << " " << input.second << std::endl;
     // }
 

@@ -189,28 +189,16 @@ find_quantities(TTree *inputtree,
 }
 
 std::vector<std::string>
-find_quantities(TTree *inputtree, std::vector<std::string> required_quantities,
-                std::vector<std::string> friend_trees) {
+find_quantities(std::vector<std::string> available_quantities,
+                std::vector<std::string> required_quantities) {
   // determine the correct quantities to be used
   std::cout << "Checking required quantities" << std::endl;
   std::vector<std::string> quantities;
-  // loop trough the leaves
-  TObjArray *leavescopy = inputtree->GetListOfLeaves();
-  // add all the fiend tree quantities
-  for (auto friend_tree_path : friend_trees) {
-    TFile *friend_file = TFile::Open(friend_tree_path.c_str());
-    TTree *friend_tree = (TTree *)friend_file->Get("ntuple");
-    TObjArray *friend_leaves = friend_tree->GetListOfLeaves();
-    for (int i = 0; i < friend_leaves->GetEntries(); i++) {
-      leavescopy->Add(friend_leaves->At(i));
-    }
-  }
-  int nLeaves = leavescopy->GetEntries();
-  for (int i = 0; i < nLeaves; i++) {
+  // loop trough the aviailable quantities
+  for (auto available_quantity : available_quantities) {
     for (auto quantity : required_quantities) {
-      std::string leaf_name = leavescopy->At(i)->GetName();
-      if (leaf_name.find(quantity) != std::string::npos) {
-        quantities.push_back(leaf_name);
+      if (available_quantity.find(quantity) != std::string::npos) {
+        quantities.push_back(available_quantity);
         break;
       }
     }
