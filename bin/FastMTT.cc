@@ -302,14 +302,14 @@ int main(int argc, char **argv) {
       Float_t mass_1, mass_2;
       if (ditaudecay.first == MeasuredTauLepton::kTauToElecDecay)
         mass_1 = 0.51100e-3;
-      else if (ditaudecay.first == MeasuredTauLepton::kTauToElecDecay)
+      else if (ditaudecay.first == MeasuredTauLepton::kTauToMuDecay)
         mass_1 = 105.658e-3;
       else
         mass_1 = m_1;
 
       if (ditaudecay.second == MeasuredTauLepton::kTauToElecDecay)
         mass_2 = 0.51100e-3;
-      else if (ditaudecay.second == MeasuredTauLepton::kTauToElecDecay)
+      else if (ditaudecay.second == MeasuredTauLepton::kTauToMuDecay)
         mass_2 = 105.658e-3;
       else
         mass_2 = m_2;
