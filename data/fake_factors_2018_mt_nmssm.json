@@ -1,0 +1,645 @@
+{
+    "schema_version": 2,
+    "description": "Fake factors for tau analysis",
+    "corrections": [
+        {
+            "name": "QCD_fake_factors",
+            "description": "Calculation of the QCD part the for data-driven background estimation (fake factors) for misindentified jets as tau leptons in H->tautau analysis.",
+            "version": 1,
+            "inputs": [
+                {
+                    "name": "tau_pt",
+                    "type": "real",
+                    "description": "transverse momentum of the hadronic tau in the tau pair; the fake factors are measured between 30 and 100 GeV; for higher/lower pt's the edge values are used"
+                },
+                {
+                    "name": "njets",
+                    "type": "real",
+                    "description": "number of jets in an event; the defined categories are ==0, ==1, >=2"
+                }
+            ],
+            "output": {
+                "name": "QCD_ff",
+                "type": "real",
+                "description": "QCD part of the fake factor"
+            },
+            "data": {
+                "nodetype": "binning",
+                "input": "njets",
+                "edges": [
+                    -0.5,
+                    0.5,
+                    1.5,
+                    2.5
+                ],
+                "content": [
+                    {
+                        "nodetype": "binning",
+                        "input": "tau_pt",
+                        "edges": [
+                            0.0,
+                            30.0,
+                            100.0,
+                            101.0
+                        ],
+                        "content": [
+                            0.08598851582950195,
+                            {
+                                "nodetype": "formula",
+                                "expression": "0.0006091017291681711*x+0.06771546395445682",
+                                "parser": "TFormula",
+                                "variables": [
+                                    "tau_pt"
+                                ]
+                            },
+                            0.12862563687127393
+                        ],
+                        "flow": "clamp"
+                    },
+                    {
+                        "nodetype": "binning",
+                        "input": "tau_pt",
+                        "edges": [
+                            0.0,
+                            30.0,
+                            100.0,
+                            101.0
+                        ],
+                        "content": [
+                            0.08460249413314934,
+                            {
+                                "nodetype": "formula",
+                                "expression": "2.0129495833262926e-05*x+0.08399860925815145",
+                                "parser": "TFormula",
+                                "variables": [
+                                    "tau_pt"
+                                ]
+                            },
+                            0.08601155884147774
+                        ],
+                        "flow": "clamp"
+                    },
+                    {
+                        "nodetype": "binning",
+                        "input": "tau_pt",
+                        "edges": [
+                            0.0,
+                            30.0,
+                            100.0,
+                            101.0
+                        ],
+                        "content": [
+                            0.08418262438383615,
+                            {
+                                "nodetype": "formula",
+                                "expression": "-0.0002718240996409944*x+0.09233734737306598",
+                                "parser": "TFormula",
+                                "variables": [
+                                    "tau_pt"
+                                ]
+                            },
+                            0.06515493740896654
+                        ],
+                        "flow": "clamp"
+                    }
+                ],
+                "flow": "clamp"
+            }
+        },
+        {
+            "name": "Wjets_fake_factors",
+            "description": "Calculation of the Wjets part the for data-driven background estimation (fake factors) for misindentified jets as tau leptons in H->tautau analysis.",
+            "version": 1,
+            "inputs": [
+                {
+                    "name": "tau_pt",
+                    "type": "real",
+                    "description": "transverse momentum of the hadronic tau in the tau pair; the fake factors are measured between 30 and 100 GeV; for higher/lower pt's the edge values are used"
+                },
+                {
+                    "name": "njets",
+                    "type": "real",
+                    "description": "number of jets in an event; the defined categories are ==0, ==1, >=2"
+                }
+            ],
+            "output": {
+                "name": "Wjets_ff",
+                "type": "real",
+                "description": "Wjets part of the fake factor"
+            },
+            "data": {
+                "nodetype": "binning",
+                "input": "njets",
+                "edges": [
+                    -0.5,
+                    0.5,
+                    1.5,
+                    2.5
+                ],
+                "content": [
+                    {
+                        "nodetype": "binning",
+                        "input": "tau_pt",
+                        "edges": [
+                            0.0,
+                            30.0,
+                            100.0,
+                            101.0
+                        ],
+                        "content": [
+                            0.13584181874358375,
+                            {
+                                "nodetype": "formula",
+                                "expression": "-0.00028582005305670844*x+0.144416420335285",
+                                "parser": "TFormula",
+                                "variables": [
+                                    "tau_pt"
+                                ]
+                            },
+                            0.11583441502961417
+                        ],
+                        "flow": "clamp"
+                    },
+                    {
+                        "nodetype": "binning",
+                        "input": "tau_pt",
+                        "edges": [
+                            0.0,
+                            30.0,
+                            100.0,
+                            101.0
+                        ],
+                        "content": [
+                            0.1278816309097629,
+                            {
+                                "nodetype": "formula",
+                                "expression": "-0.0004037441932988329*x+0.13999395670872788",
+                                "parser": "TFormula",
+                                "variables": [
+                                    "tau_pt"
+                                ]
+                            },
+                            0.0996195373788446
+                        ],
+                        "flow": "clamp"
+                    },
+                    {
+                        "nodetype": "binning",
+                        "input": "tau_pt",
+                        "edges": [
+                            0.0,
+                            30.0,
+                            100.0,
+                            101.0
+                        ],
+                        "content": [
+                            0.09833124979582271,
+                            {
+                                "nodetype": "formula",
+                                "expression": "-0.0001426267185870228*x+0.10261005135343339",
+                                "parser": "TFormula",
+                                "variables": [
+                                    "tau_pt"
+                                ]
+                            },
+                            0.08834737949473111
+                        ],
+                        "flow": "clamp"
+                    }
+                ],
+                "flow": "clamp"
+            }
+        },
+        {
+            "name": "ttbar_fake_factors",
+            "description": "Calculation of the ttbar part the for data-driven background estimation (fake factors) for misindentified jets as tau leptons in H->tautau analysis.",
+            "version": 1,
+            "inputs": [
+                {
+                    "name": "tau_pt",
+                    "type": "real",
+                    "description": "transverse momentum of the hadronic tau in the tau pair; the fake factors are measured between 30 and 100 GeV; for higher/lower pt's the edge values are used"
+                },
+                {
+                    "name": "njets",
+                    "type": "real",
+                    "description": "number of jets in an event; the defined categories are <=1, >=2"
+                }
+            ],
+            "output": {
+                "name": "ttbar_ff",
+                "type": "real",
+                "description": "ttbar part of the fake factor"
+            },
+            "data": {
+                "nodetype": "binning",
+                "input": "njets",
+                "edges": [
+                    -0.5,
+                    1.5,
+                    2.5
+                ],
+                "content": [
+                    {
+                        "nodetype": "binning",
+                        "input": "tau_pt",
+                        "edges": [
+                            0.0,
+                            30.0,
+                            100.0,
+                            101.0
+                        ],
+                        "content": [
+                            0.08461063750540798,
+                            {
+                                "nodetype": "formula",
+                                "expression": "0.0004585755486341392*x+0.0708533710463838",
+                                "parser": "TFormula",
+                                "variables": [
+                                    "tau_pt"
+                                ]
+                            },
+                            0.11671092590979773
+                        ],
+                        "flow": "clamp"
+                    },
+                    {
+                        "nodetype": "binning",
+                        "input": "tau_pt",
+                        "edges": [
+                            0.0,
+                            30.0,
+                            100.0,
+                            101.0
+                        ],
+                        "content": [
+                            0.09543727144495284,
+                            {
+                                "nodetype": "formula",
+                                "expression": "0.000205223959582982*x+0.08928055265746339",
+                                "parser": "TFormula",
+                                "variables": [
+                                    "tau_pt"
+                                ]
+                            },
+                            0.10980294861576159
+                        ],
+                        "flow": "clamp"
+                    }
+                ],
+                "flow": "clamp"
+            }
+        },
+        {
+            "name": "process_fractions",
+            "description": "Calculation of process contributions (fractions) for the fake factor calculation.",
+            "version": 1,
+            "inputs": [
+                {
+                    "name": "process",
+                    "type": "string",
+                    "description": "name of the process"
+                },
+                {
+                    "name": "lep_mt",
+                    "type": "real",
+                    "description": "transverse mass of the lepton in the tau pair; the fractions are measured between 0 and 100 GeV; for higher/lower mt's the edge values are used"
+                },
+                {
+                    "name": "nbtags",
+                    "type": "real",
+                    "description": "number of b-tagged jets in an event; the defined categories are ==0, ==1, >=2"
+                }
+            ],
+            "output": {
+                "name": "fraction",
+                "type": "real",
+                "description": "process fraction"
+            },
+            "data": {
+                "nodetype": "category",
+                "input": "process",
+                "content": [
+                    {
+                        "key": "QCD",
+                        "value": {
+                            "nodetype": "binning",
+                            "input": "nbtags",
+                            "edges": [
+                                -0.5,
+                                0.5,
+                                1.5,
+                                2.5
+                            ],
+                            "content": [
+                                {
+                                    "nodetype": "binning",
+                                    "input": "lep_mt",
+                                    "edges": [
+                                        0.0,
+                                        10.0,
+                                        20.0,
+                                        30.0,
+                                        40.0,
+                                        50.0,
+                                        60.0,
+                                        70.0,
+                                        80.0,
+                                        90.0,
+                                        100.0
+                                    ],
+                                    "content": [
+                                        0.5122051351090227,
+                                        0.4682131769070397,
+                                        0.37351692327245906,
+                                        0.2903846640340676,
+                                        0.22165808261643533,
+                                        0.17081962343009716,
+                                        0.12072578867663454,
+                                        0.11841851764191332,
+                                        0.14945350660123338,
+                                        0.1852845950488757
+                                    ],
+                                    "flow": "clamp"
+                                },
+                                {
+                                    "nodetype": "binning",
+                                    "input": "lep_mt",
+                                    "edges": [
+                                        0.0,
+                                        10.0,
+                                        20.0,
+                                        30.0,
+                                        40.0,
+                                        50.0,
+                                        60.0,
+                                        70.0,
+                                        80.0,
+                                        90.0,
+                                        100.0
+                                    ],
+                                    "content": [
+                                        0.4533924716163851,
+                                        0.40366843067048175,
+                                        0.3515795524524909,
+                                        0.2691759909377185,
+                                        0.18101232744003926,
+                                        0.20200076970467776,
+                                        0.17684994518029912,
+                                        0.15206600375586604,
+                                        0.14577963134445782,
+                                        0.2117911370133472
+                                    ],
+                                    "flow": "clamp"
+                                },
+                                {
+                                    "nodetype": "binning",
+                                    "input": "lep_mt",
+                                    "edges": [
+                                        0.0,
+                                        10.0,
+                                        20.0,
+                                        30.0,
+                                        40.0,
+                                        50.0,
+                                        60.0,
+                                        70.0,
+                                        80.0,
+                                        90.0,
+                                        100.0
+                                    ],
+                                    "content": [
+                                        0.01942667928497227,
+                                        0.0,
+                                        0.020331556535154966,
+                                        0.000801246211754487,
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        0.046198490991156575
+                                    ],
+                                    "flow": "clamp"
+                                }
+                            ],
+                            "flow": "clamp"
+                        }
+                    },
+                    {
+                        "key": "Wjets",
+                        "value": {
+                            "nodetype": "binning",
+                            "input": "nbtags",
+                            "edges": [
+                                -0.5,
+                                0.5,
+                                1.5,
+                                2.5
+                            ],
+                            "content": [
+                                {
+                                    "nodetype": "binning",
+                                    "input": "lep_mt",
+                                    "edges": [
+                                        0.0,
+                                        10.0,
+                                        20.0,
+                                        30.0,
+                                        40.0,
+                                        50.0,
+                                        60.0,
+                                        70.0,
+                                        80.0,
+                                        90.0,
+                                        100.0
+                                    ],
+                                    "content": [
+                                        0.31399184785935996,
+                                        0.37242379505049367,
+                                        0.4809546152739907,
+                                        0.5894898359709484,
+                                        0.6821332438046982,
+                                        0.752830369789795,
+                                        0.8170171321047465,
+                                        0.8329002044886012,
+                                        0.8039596586959773,
+                                        0.7660669385002243
+                                    ],
+                                    "flow": "clamp"
+                                },
+                                {
+                                    "nodetype": "binning",
+                                    "input": "lep_mt",
+                                    "edges": [
+                                        0.0,
+                                        10.0,
+                                        20.0,
+                                        30.0,
+                                        40.0,
+                                        50.0,
+                                        60.0,
+                                        70.0,
+                                        80.0,
+                                        90.0,
+                                        100.0
+                                    ],
+                                    "content": [
+                                        0.11349631583819432,
+                                        0.13865912080544443,
+                                        0.16353150694025126,
+                                        0.19517625096464927,
+                                        0.26241760441108397,
+                                        0.22761184720069683,
+                                        0.2534360861923073,
+                                        0.2764375541023416,
+                                        0.28879860591403544,
+                                        0.21062104364244774
+                                    ],
+                                    "flow": "clamp"
+                                },
+                                {
+                                    "nodetype": "binning",
+                                    "input": "lep_mt",
+                                    "edges": [
+                                        0.0,
+                                        10.0,
+                                        20.0,
+                                        30.0,
+                                        40.0,
+                                        50.0,
+                                        60.0,
+                                        70.0,
+                                        80.0,
+                                        90.0,
+                                        100.0
+                                    ],
+                                    "content": [
+                                        0.017379860946926118,
+                                        0.025986645258542235,
+                                        0.0,
+                                        0.007151301909222028,
+                                        0.0048466444322105605,
+                                        0.015423384120266025,
+                                        0.020966384007741933,
+                                        0.0215771565188719,
+                                        0.047705415217556627,
+                                        0.015495257474126759
+                                    ],
+                                    "flow": "clamp"
+                                }
+                            ],
+                            "flow": "clamp"
+                        }
+                    },
+                    {
+                        "key": "ttbar",
+                        "value": {
+                            "nodetype": "binning",
+                            "input": "nbtags",
+                            "edges": [
+                                -0.5,
+                                0.5,
+                                1.5,
+                                2.5
+                            ],
+                            "content": [
+                                {
+                                    "nodetype": "binning",
+                                    "input": "lep_mt",
+                                    "edges": [
+                                        0.0,
+                                        10.0,
+                                        20.0,
+                                        30.0,
+                                        40.0,
+                                        50.0,
+                                        60.0,
+                                        70.0,
+                                        80.0,
+                                        90.0,
+                                        100.0
+                                    ],
+                                    "content": [
+                                        0.009507592581732886,
+                                        0.011237720341058542,
+                                        0.013452526886193996,
+                                        0.015238712989671093,
+                                        0.01600835120774125,
+                                        0.016160774442642023,
+                                        0.015744906581638456,
+                                        0.015149578047236089,
+                                        0.01616035394628017,
+                                        0.019314328699892597
+                                    ],
+                                    "flow": "clamp"
+                                },
+                                {
+                                    "nodetype": "binning",
+                                    "input": "lep_mt",
+                                    "edges": [
+                                        0.0,
+                                        10.0,
+                                        20.0,
+                                        30.0,
+                                        40.0,
+                                        50.0,
+                                        60.0,
+                                        70.0,
+                                        80.0,
+                                        90.0,
+                                        100.0
+                                    ],
+                                    "content": [
+                                        0.335483441420619,
+                                        0.36586148999698226,
+                                        0.39610292027626326,
+                                        0.44175133482610224,
+                                        0.47428918461148883,
+                                        0.4908655369581714,
+                                        0.5012248307715157,
+                                        0.5101649493372972,
+                                        0.5037552009627579,
+                                        0.5069331934509378
+                                    ],
+                                    "flow": "clamp"
+                                },
+                                {
+                                    "nodetype": "binning",
+                                    "input": "lep_mt",
+                                    "edges": [
+                                        0.0,
+                                        10.0,
+                                        20.0,
+                                        30.0,
+                                        40.0,
+                                        50.0,
+                                        60.0,
+                                        70.0,
+                                        80.0,
+                                        90.0,
+                                        100.0
+                                    ],
+                                    "content": [
+                                        0.8581679645292931,
+                                        0.8681486666693208,
+                                        0.8758764440584486,
+                                        0.8920118902956923,
+                                        0.8941253482315306,
+                                        0.8904878333168113,
+                                        0.8872961157961295,
+                                        0.8890488267702198,
+                                        0.8580080208498341,
+                                        0.8303196315080006
+                                    ],
+                                    "flow": "clamp"
+                                }
+                            ],
+                            "flow": "clamp"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -5,7 +5,7 @@ Software setup to produce additional quantities on top of ntuples in sync format
 To setup the environment, please download the checkout and execute the checkout script as follows:
 
 ```bash
-wget https://raw.githubusercontent.com/KIT-CMS/friend-tree-producer/master/scripts/checkout.sh
+wget https://raw.githubusercontent.com/KIT-CMS/friend-tree-producer/ul_crown_ffs/scripts/checkout.sh
 bash checkout.sh
 ```
 ## General setup of friend tree executables
@@ -32,6 +32,10 @@ Asuming the absolute path to the input file is `/path/to/the/<input>.root`, the 
 
 ```bash
 SVFit --input DY1JetsToLLM50_RunIIFall17MiniAODv2_PU2017_13TeV_MINIAOD_madgraph-pythia8_v1.root --folder mt_nominal --last_entry 999 --tree ntuple --first_entry 0
+```
+### Example command with FakeFactors executable
+```bash
+FakeFactors --input /ceph/olavoryk/smhtt/2022_07_v6/ntuples/2018/SingleMuon_Run2018A-UL2018/mt/SingleMuon_Run2018A-UL2018_0.root --ff_file data/fake_factors_2018_mt_nmssm.json --channel mt --era 2018 --last_entry 99 --folder nominal
 ```
 
 ## Job management for condor batch systems
