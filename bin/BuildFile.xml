@@ -1,4 +1,4 @@
-<bin   file="SVFit.cc" name="SVFit">
+<!-- <bin   file="SVFit.cc" name="SVFit">
   <use name="TauAnalysis/ClassicSVfit"/>
   <use name="TauAnalysis/SVfitTF"/>
   <use name="root"/>
@@ -15,6 +15,14 @@
   <use name="boost_filesystem"/>
   <use name="boost_python"/>
   <use name="boost_regex"/>
+</bin> -->
+<bin   file="FFs.cc" name="FakeFactors">
+  <use name="root"/>
+  <use name="correctionlib"/>
+  <use name="boost_program_options"/>
+  <use name="boost_filesystem"/>
+  <use name="boost_python"/>
+  <use name="boost_regex"/>
 </bin>
 <!--
   <bin   file="MELA.cc" name="MELA">
@@ -26,7 +34,7 @@
   <use name="boost_regex"/>
 </bin> 
 -->
-<bin   file="NNMass.cc" name="NNMass">
+<!-- <bin   file="NNMass.cc" name="NNMass">
   <use name="root"/>
   <use name="rootmath"/>
   <use name="boost_program_options"/>
@@ -65,19 +73,19 @@
 <bin   file="ZPtMReweighting_workspace.cc" name="ZPtMReweighting_workspace">
   <Flags LDFLAGS="-rdynamic" />
   <use name="root"/>
-  <use name="rootmath"/>
+  <use name="rootmath"/> -->
 <!--   <use   name="rootminuit"/>
   <use   name="rootminuit2"/>
   <use   name="rootcore"/> -->
   <!-- <use name="rootfit"/> -->
-  <use name="roofit"/>
+  <!-- <use name="roofit"/>
   <use name="boost_program_options"/>
   <use name="boost_filesystem"/>
   <use name="boost_python"/>
   <use name="boost_regex"/>
   <use name="lwtnn"/>
-</bin>
-<bin   file="TauTriggers.cc" name="TauTriggers">
+</bin> -->
+<!-- <bin   file="TauTriggers.cc" name="TauTriggers">
   <use name="TauAnalysisTools/TauTriggerSFs"/>
   <use name="root"/>
   <use name="boost_program_options"/>
@@ -92,7 +100,7 @@
   <use name="boost_filesystem"/>
   <use name="boost_python"/>
   <use name="boost_regex"/>
-</bin>
+</bin> -->
 <!-- <bin   file="HHKinFit.cc" name="HHKinFit">
   <use name="HHKinFit/HHKinFit"/>
   <use name="root"/>
@@ -101,7 +109,7 @@
   <use name="boost_python"/>
   <use name="boost_regex"/>
 </bin> -->
-<bin   file="ImperialFakeFactors.cc" name="ImperialFakeFactors">
+<!-- <bin   file="ImperialFakeFactors.cc" name="ImperialFakeFactors">
   <use name="root"/>
   <use name="rootmath"/>
   <use name="roofit"/>
@@ -118,4 +126,4 @@
   <use name="boost_filesystem"/>
   <use name="boost_python"/>
   <use name="boost_regex"/>
-</bin>
+</bin> -->

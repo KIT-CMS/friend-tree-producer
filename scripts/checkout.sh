@@ -23,33 +23,33 @@ eval $(scramv1 runtime -sh)
 ### Checkout of external software
 
 # SVfit and fastMTT
-git clone git@github.com:SVfit/ClassicSVfit TauAnalysis/ClassicSVfit -b fastMTT_19_02_2019
-git clone git@github.com:SVfit/SVfitTF TauAnalysis/SVfitTF
+# git clone git@github.com:SVfit/ClassicSVfit TauAnalysis/ClassicSVfit -b fastMTT_19_02_2019
+# git clone git@github.com:SVfit/SVfitTF TauAnalysis/SVfitTF
 
 # MELA
-git clone git@github.com:JHUGen/JHUGenMELA.git ZZMatrixElement
+# git clone git@github.com:JHUGen/JHUGenMELA.git ZZMatrixElement
 # NOTE: The following two lines should be needed following the wiki, but it
 # seems to work either way. However, these lines introduce a dependency on AFS.
 # Wiki: https://twiki.cern.ch/twiki/bin/view/CMS/MELAProject#Checkout_instructions
 #cp ZZMatrixElement/MELA/data/mcfm.xml ../config/toolbox/$SCRAM_ARCH/tools/selected/
 #scram setup mcfm
-cd ZZMatrixElement/
-bash setup.sh -j $NUM_CORES
-cd ..
+# cd ZZMatrixElement/
+# bash setup.sh -j $NUM_CORES
+# cd ..
 
 # TODO NN mass
 
 # FF weights
-git clone ssh://git@github.com/CMS-HTT/Jet2TauFakes.git HTTutilities/Jet2TauFakes
-cd HTTutilities/Jet2TauFakes
-git checkout v0.2.2
+# git clone ssh://git@github.com/CMS-HTT/Jet2TauFakes.git HTTutilities/Jet2TauFakes
+# cd HTTutilities/Jet2TauFakes
+# git checkout v0.2.2
 
-read -p "lxplus-username: " USERNMLXP
+# read -p "lxplus-username: " USERNMLXP
 
-rsync -vhrP /ceph/htautau/fakefactor_files/sm_new/* .
+# rsync -vhrP /ceph/htautau/fakefactor_files/sm_new/* .
 
-cd ../..
-git clone git@github.com:KIT-CMS/fake-factor-application.git HiggsAnalysis/fake-factor-application -b ul_crown_ff
+# cd ../..
+# git clone git@github.com:KIT-CMS/fake-factor-application.git HiggsAnalysis/fake-factor-application -b ul_crown_ff
 
 # cd -
 # # TODO NN MET
